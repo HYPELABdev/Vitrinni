@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carregando Vitrine...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --main: #00ff88; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:Poppins,sans-serif; }
+        body { background:#0b1020; color:white; overflow-x:hidden; }
+
+        /* Background Dinâmico */
+        .bg { position:fixed; inset:0; z-index:-1; background: radial-gradient(circle at top left, var(--main), transparent 15%), linear-gradient(-45deg,#0b1020,#11182b,#0f1726); opacity: 0.4; }
+        
+        header { text-align:center; padding:50px 20px 30px; }
+        .logo { font-size:72px; font-weight:800; letter-spacing:4px; text-transform: uppercase; }
+        .logo .highlight { color:var(--main); text-shadow:0 0 20px var(--main); }
+        .hero { margin-top:14px; font-size:30px; font-weight:700; }
+        .sub { margin-top:8px; color:#9ca6ba; font-size:14px; }
+
+        .stats { display:flex; justify-content:center; gap:12px; margin-top:22px; flex-wrap:wrap; }
+        .stat { padding:12px 15px; border-radius:16px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06); font-size:13px; }
+
+        .container { max-width:900px; margin:auto; padding:20px 120px; }
+        .alert { padding:14px; border-radius:18px; margin-bottom:20px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--main); color: var(--main); text-align:center; font-weight: 600; }
+
+        .cards { display:grid; gap:18px; }
+        .card { padding:24px; border-radius:26px; background: rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06); transition:.25s; cursor:pointer; }
+        .card.active { border-color:var(--main); box-shadow:0 0 30px rgba(0,255,136,.16); transform:scale(1.02); }
+        .price { margin-top:14px; font-size:42px; font-weight:800; color:var(--main); }
+        
+        .form { margin-top:24px; padding:24px; border-radius:24px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06); }
+        input { width:100%; padding:15px; border-radius:16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); color:white; margin-top:14px; outline: none; }
+        input:focus { border-color: var(--main); }
+        
+        button { width:100%; padding:16px; margin-top:16px; border:none; border-radius:18px; background: var(--main); color:#000; font-size:15px; font-weight:800; cursor:pointer; transition:.2s; }
+        button:hover { filter: brightness(1.2); transform: scale(1.01); }
+
+        @media(max-width:700px){ .logo{ font-size:42px; } .hero{ font-size:22px; } .container { padding: 20px; } }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <header>
+        <div class="logo">
+            <span id="brand1"></span><span class="highlight" id="brand2"></span>
+        </div>
+        <div class="hero" id="hero"></div>
+        <div class="sub" id="subtitle"></div>
+        <div class="stats">
+            <div class="stat">🔥 <span id="sales"></span> ativações hoje</div>
+            <div class="stat">🔴 <span id="online"></span> online agora</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="alert" id="promo"></div>
+        <div class="cards" id="plans"></div>
+        <div class="form">
+            <div class="form-title">🚀 Finalize seu pedido</div>
+            <input type="text" id="instagram" placeholder="Digite seu @ do Instagram">
+            <button onclick="finishOrder()" id="cta"></button>
+        </div>
+    </div>
+
+    <script>
+        // O SEGREDO: O script descobre sozinho o nome do arquivo JSON baseado no nome do HTML
+        // Se o arquivo for joao.html, ele vai buscar config_joao.json automaticamente
+        const currentFile = window.location.pathname.split("/").pop().replace(".html", "");
+        const configPath = currentFile ? `./config_${currentFile}.json` : './config.json';
+
+        let CONFIG = {};
+        let selectedPlan = null;
+
+        async function loadConfig() {
+            try {
+                const response = await fetch(configPath);
+                if(!response.ok) throw new Error();
+                CONFIG = await response.json();
+                renderSite();
+            } catch (e) {
+                console.error("Config não encontrada, usando padrão.");
+                // Aqui você pode colocar um JSON padrão caso falhe
+            }
+        }
+
+        function renderSite() {
+            document.title = `${CONFIG.brand} ${CONFIG.brandHighlight}`;
+            document.documentElement.style.setProperty('--main', CONFIG.color);
+            document.getElementById('brand1').innerText = CONFIG.brand;
+            document.getElementById('brand2').innerText = CONFIG.brandHighlight;
+            document.getElementById('hero').innerText = CONFIG.hero;
+            document.getElementById('subtitle').innerText = CONFIG.subtitle;
+            document.getElementById('promo').innerText = CONFIG.promo;
+            document.getElementById('sales').innerText = CONFIG.stats.sales;
+            document.getElementById('online').innerText = CONFIG.stats.online;
+            
+            const plansContainer = document.getElementById('plans');
+            plansContainer.innerHTML = CONFIG.plans.map((plan, i) => `
+                <div class="card ${i === 0 ? 'active' : ''}" onclick="selectPlan(this, ${i})">
+                    <div style="display:flex; justify-content:space-between">
+                        <h3>${plan.name}</h3>
+                        <span style="font-size:10px; opacity:0.6">${plan.badge}</span>
+                    </div>
+                    <div class="price">${plan.price}</div>
+                    <p style="font-size:12px; color:#9ca6ba">${plan.description}</p>
+                </div>
+            `).join('');
+
+            selectPlan(document.querySelector('.card'), 0);
+        }
+
+        function selectPlan(element, index) {
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+            selectedPlan = CONFIG.plans[index];
+            document.getElementById('cta').innerText = `Receber ${selectedPlan.name}`;
+        }
+
+        function finishOrder() {
+            const insta = document.getElementById('instagram').value;
+            if(!insta) return alert("Digite o Instagram!");
+            const msg = encodeURIComponent(`🚀 NOVO PEDIDO\n\n📦 Pacote: ${selectedPlan.name}\n💰 Valor: ${selectedPlan.price}\n📸 Instagram: ${insta}`);
+            window.open(`https://wa.me/${CONFIG.whatsapp}?text=${msg}`, '_blank');
+        }
+
+        loadConfig();
+    </script>
+</body>
+</html>
