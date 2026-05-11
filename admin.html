@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LEVEL UP</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--main:#00ff88;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#0b1020;
+color:white;
+overflow-x:hidden;
+}
+
+/* BG */
+
+.bg{
+position:fixed;
+inset:0;
+z-index:-1;
+
+background:
+radial-gradient(circle at top left,rgba(0,255,136,.10),transparent 30%),
+linear-gradient(-45deg,#0b1020,#11182b,#0f1726);
+
+background-size:300% 300%;
+animation:bg 10s ease infinite;
+}
+
+@keyframes bg{
+
+0%{
+background-position:0% 50%;
+}
+
+50%{
+background-position:100% 50%;
+}
+
+100%{
+background-position:0% 50%;
+}
+
+}
+
+/* HEADER */
+
+header{
+text-align:center;
+padding:50px 20px 30px;
+}
+
+.logo{
+font-size:72px;
+font-weight:800;
+letter-spacing:4px;
+}
+
+.logo .main{
+color:white;
+}
+
+.logo .highlight{
+color:var(--main);
+text-shadow:0 0 20px var(--main);
+}
+
+.hero{
+margin-top:14px;
+font-size:30px;
+font-weight:700;
+}
+
+.sub{
+margin-top:8px;
+color:#9ca6ba;
+font-size:14px;
+}
+
+/* STATS */
+
+.stats{
+display:flex;
+justify-content:center;
+gap:12px;
+margin-top:22px;
+flex-wrap:wrap;
+}
+
+.stat{
+padding:12px 15px;
+border-radius:16px;
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
+font-size:13px;
+}
+
+/* CONTAINER */
+
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+padding-bottom:120px;
+}
+
+/* ALERT */
+
+.alert{
+padding:14px;
+border-radius:18px;
+margin-bottom:20px;
+
+background:
+rgba(255,140,0,.08);
+
+border:
+1px solid rgba(255,140,0,.18);
+
+color:#ffb347;
+text-align:center;
+}
+
+/* CARDS */
+
+.cards{
+display:grid;
+gap:18px;
+}
+
+.card{
+position:relative;
+
+padding:24px;
+
+border-radius:26px;
+
+background:
+linear-gradient(
+180deg,
+rgba(255,255,255,.05),
+rgba(255,255,255,.03)
+);
+
+border:1px solid rgba(255,255,255,.06);
+
+transition:.25s;
+cursor:pointer;
+}
+
+.card:hover{
+transform:translateY(-4px);
+}
+
+.card.active{
+border-color:var(--main);
+box-shadow:0 0 30px rgba(0,255,136,.16);
+transform:scale(1.02);
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.badge{
+padding:6px 10px;
+border-radius:12px;
+background:rgba(255,255,255,.06);
+font-size:11px;
+}
+
+.price{
+margin-top:14px;
+font-size:42px;
+font-weight:800;
+color:var(--main);
+}
+
+.desc{
+margin-top:12px;
+color:#aab4c7;
+line-height:1.7;
+font-size:14px;
+}
+
+/* FORM */
+
+.form{
+margin-top:24px;
+
+padding:24px;
+
+border-radius:24px;
+
+background:
+rgba(255,255,255,.04);
+
+border:
+1px solid rgba(255,255,255,.06);
+}
+
+.form-title{
+font-size:17px;
+font-weight:700;
+}
+
+input{
+width:100%;
+padding:15px;
+border:none;
+outline:none;
+border-radius:16px;
+background:rgba(255,255,255,.05);
+color:white;
+margin-top:14px;
+font-size:15px;
+}
+
+button{
+width:100%;
+padding:16px;
+margin-top:16px;
+border:none;
+border-radius:18px;
+
+background:
+linear-gradient(
+45deg,
+var(--main),
+#00bfff
+);
+
+color:white;
+font-size:15px;
+font-weight:700;
+cursor:pointer;
+transition:.25s;
+}
+
+button:hover{
+transform:scale(1.02);
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+.logo{
+font-size:52px;
+}
+
+.hero{
+font-size:23px;
+}
+
+.price{
+font-size:36px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<header>
+
+<div class="logo">
+<span class="main" id="brand1"></span>
+<span class="highlight" id="brand2"></span>
+</div>
+
+<div class="hero" id="hero"></div>
+
+<div class="sub" id="subtitle"></div>
+
+<div class="stats">
+
+<div class="stat">
+🔥 <span id="sales"></span> ativações hoje
+</div>
+
+<div class="stat">
+🔴 <span id="online"></span> online agora
+</div>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="alert" id="promo"></div>
+
+<div class="cards" id="plans"></div>
+
+<div class="form">
+
+<div class="form-title">
+Finalize seu pedido
+</div>
+
+<input
+type="text"
+id="instagram"
+placeholder="Digite seu @ do Instagram"
+>
+
+<button
+onclick="finishOrder()"
+id="cta"
+>
+🚀 Finalizar pedido
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let CONFIG = {};
+let selectedPlan = null;
+
+fetch('./config.json')
+
+.then(response => {
+
+if(!response.ok){
+
+throw new Error('config.json não encontrado');
+
+}
+
+return response.json();
+
+})
+
+.then(data => {
+
+console.log(data);
+
+CONFIG = data;
+
+/* COLOR */
+
+document.documentElement
+.style
+.setProperty(
+'--main',
+CONFIG.color
+);
+
+/* BRAND */
+
+document.getElementById(
+'brand1'
+).innerHTML =
+CONFIG.brand;
+
+document.getElementById(
+'brand2'
+).innerHTML =
+CONFIG.brandHighlight;
+
+/* HERO */
+
+document.getElementById(
+'hero'
+).innerHTML =
+CONFIG.hero;
+
+/* SUBTITLE */
+
+document.getElementById(
+'subtitle'
+).innerHTML =
+CONFIG.subtitle;
+
+/* PROMO */
+
+document.getElementById(
+'promo'
+).innerHTML =
+CONFIG.promo;
+
+/* STATS */
+
+document.getElementById(
+'sales'
+).innerHTML =
+CONFIG.stats.sales;
+
+document.getElementById(
+'online'
+).innerHTML =
+CONFIG.stats.online;
+
+/* RENDER */
+
+renderPlans();
+
+})
+
+.catch(error => {
+
+document.body.innerHTML = `
+
+<div style="
+padding:40px;
+font-family:Poppins;
+color:white;
+">
+
+<h1>
+❌ Erro ao carregar config.json
+</h1>
+
+<p style="margin-top:10px;color:#aaa;">
+${error}
+</p>
+
+</div>
+
+`;
+
+console.log(error);
+
+});
+
+function renderPlans(){
+
+const plans =
+document.getElementById(
+'plans'
+);
+
+plans.innerHTML = '';
+
+CONFIG.plans.forEach((plan,index)=>{
+
+plans.innerHTML += `
+
+<div
+class="card ${index===0 ? 'active':''}"
+onclick="selectPlan(this,${index})"
+>
+
+<div class="top">
+
+<h3>${plan.name}</h3>
+
+<div class="badge">
+${plan.badge}
+</div>
+
+</div>
+
+<div class="price">
+${plan.price}
+</div>
+
+<div class="desc">
+${plan.description}
+</div>
+
+</div>
+
+`;
+
+});
+
+selectedPlan =
+CONFIG.plans[0];
+
+document.getElementById(
+'cta'
+).innerHTML =
+
+`🚀 Receber ${selectedPlan.followers} seguidores`;
+
+}
+
+function selectPlan(card,index){
+
+document
+.querySelectorAll('.card')
+.forEach(c=>{
+
+c.classList.remove(
+'active'
+);
+
+});
+
+card.classList.add(
+'active'
+);
+
+selectedPlan =
+CONFIG.plans[index];
+
+document.getElementById(
+'cta'
+).innerHTML =
+
+`🚀 Receber ${selectedPlan.followers} seguidores`;
+
+}
+
+function finishOrder(){
+
+let insta =
+document.getElementById(
+'instagram'
+).value.trim();
+
+if(insta === ''){
+
+alert(
+'Digite seu Instagram'
+);
+
+return;
+
+}
+
+if(!insta.startsWith('@')){
+
+insta = '@'+insta;
+
+}
+
+const msg = `
+🚀 NOVO PEDIDO
+
+📦 Pacote: ${selectedPlan.name}
+
+💰 Valor: ${selectedPlan.price}
+
+📸 Instagram: ${insta}
+`;
+
+window.open(
+`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`,
+'_blank'
+);
+
+}
+
+</script>
+
+</body>
+</html>
