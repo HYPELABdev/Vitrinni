@@ -61,7 +61,18 @@
           "badge": "Popular",
           "price": "R$ 2,00",
           "followers": "1000",
-          "delivery": "5 Min",
+          "delivery": "30 Min",
+          "quality": "Alta retenção",
+          "refill": "7 dias",
+          "description": "Mais engajamento nos posts."
+        }
+
+{
+          "name": "10K Curtidas",
+          "badge": "Popular",
+          "price": "R$ 20,00",
+          "followers": "1000",
+          "delivery": "300 Min",
           "quality": "Alta retenção",
           "refill": "7 dias",
           "description": "Mais engajamento nos posts."
