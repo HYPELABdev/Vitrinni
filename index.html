@@ -2,143 +2,64 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HYPELAB | ÁREA RESTRITA</title>
+    <title>HypeAI | Scraper</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@900&display=swap');
-
-        :root {
-            --primary: #6e40c9;
-            --bg: #0d1117;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Space Mono', monospace;
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .scanner {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(0deg, rgba(110, 64, 201, 0.05) 0%, rgba(13, 17, 23, 0) 50%, rgba(110, 64, 201, 0.05) 100%);
-            background-size: 100% 8px;
-            z-index: 10;
-            pointer-events: none;
-            animation: scan 3s linear infinite;
-        }
-
-        @keyframes scan {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-
-        .glitch {
-            font-family: 'Inter', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            position: relative;
-            color: white;
-            text-shadow: 2px 2px var(--primary);
-        }
-
-        .hero-gif {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            border: 2px solid var(--primary);
-            padding: 5px;
-            box-shadow: 0 0 30px rgba(110, 64, 201, 0.3);
-            filter: hue-rotate(280deg); /* Ajusta a cor do gif para combinar com o roxo */
-        }
-
-        .warning-box {
-            background: rgba(22, 27, 34, 0.9);
-            border: 1px solid rgba(110, 64, 201, 0.4);
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .warning-box::before {
-            content: "UNAUTHORIZED ACCESS";
-            position: absolute;
-            top: 0; left: 0; width: 100%;
-            background: #da3633;
-            color: white;
-            font-size: 8px;
-            font-weight: bold;
-            padding: 2px;
-            text-align: center;
-        }
-    </style>
 </head>
-<body>
-
-    <div class="scanner"></div>
-
-    <div class="container max-w-md mx-auto p-8 relative z-20">
-        <div class="text-center space-y-8">
-            
-            <div class="flex justify-center">
-                <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJid3R1YXp6amZ6amZ6amZ6amZ6amZ6amZ6amZ6amZ6amZ6amZ6amZ6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7TKuylOmX8ReL3mU/giphy.gif" class="hero-gif" alt="Robo Security">
-            </div>
-
-            <div class="space-y-1">
-                <h2 class="text-purple-500 font-bold tracking-[0.4em] text-[10px]">SYSTEM ALERT</h2>
-                <h1 class="glitch">HYPELAB</h1>
-            </div>
-
-            <div class="warning-box p-8 space-y-6">
-                <div class="space-y-4">
-                    <p class="text-white text-sm font-bold">
-                        Opa! Parece que você se perdeu, hein? 🕵️‍♂️
-                    </p>
-                    <p class="text-gray-400 text-xs leading-relaxed italic">
-                        "Esta página é tipo a cozinha de restaurante chique: se você não trabalha aqui, não deveria estar bisbilhotando."
-                    </p>
-                    <p class="text-purple-400 text-[10px] font-bold uppercase tracking-tighter">
-                        Seu rastro digital foi registrado: <br>
-                        <span id="user-ip" class="text-white bg-purple-900/50 px-2 rounded">LOCALIZANDO...</span>
-                    </p>
-                </div>
-
-                <div class="pt-4 border-t border-white/5">
-                    <p class="text-red-500 text-[9px] font-bold animate-pulse">
-                        Sugerimos que feche esta aba antes que o sistema morda.
-                    </p>
-                </div>
-            </div>
-
-            <div class="flex justify-center gap-4 text-gray-600 text-xs">
-                <i class="fas fa-fingerprint"></i>
-                <i class="fas fa-eye-slash"></i>
-                <i class="fas fa-user-secret"></i>
-            </div>
-
-            <p class="text-[7px] text-gray-700 uppercase tracking-[0.5em]">
-                PROPRIEDADE PRIVADA - HYPELAB CORP
-            </p>
+<body class="bg-zinc-950 text-zinc-300 p-8 font-mono">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-green-500 text-2xl mb-6">HYPE_AI | MINER</h1>
+        
+        <div class="flex gap-2 mb-6">
+            <input id="nicho" placeholder="Nicho" class="bg-black border border-zinc-700 p-2 w-full text-white">
+            <input id="local" placeholder="Local" class="bg-black border border-zinc-700 p-2 w-full text-white">
+            <button onclick="minerar()" class="bg-green-600 px-6 text-black font-bold">SCAN</button>
         </div>
+
+        <div id="status" class="mb-4 text-xs">Pronto.</div>
+        <div id="resultados" class="space-y-2"></div>
     </div>
 
     <script>
-        // Pega o IP real
-        fetch('https://api.ipify.org?format=json')
-            .then(res => res.json())
-            .then(data => document.getElementById('user-ip').innerText = data.ip)
-            .catch(() => document.getElementById('user-ip').innerText = 'ANONYMOUS_GENIUS');
+        async function minerar() {
+            const nicho = document.getElementById('nicho').value;
+            const local = document.getElementById('local').value;
+            const status = document.getElementById('status');
+            const resDiv = document.getElementById('resultados');
+            
+            status.innerText = "Minerando...";
+            
+            try {
+                // Proxy + Busca no DuckDuckGo (HTML)
+                const query = encodeURIComponent(`${nicho} ${local} "email" OR "telefone"`);
+                const url = `https://api.allorigins.win/get?url=${encodeURIComponent('https://duckduckgo.com/html/?q=' + query)}`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                // 1. Pega todo o texto da página
+                const text = data.contents;
 
-        // Bloqueia o clique direito só pra irritar o curioso
-        document.addEventListener('contextmenu', e => e.preventDefault());
+                // 2. Regex E-mail
+                const emails = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g) || [];
+                
+                // 3. Regex Telefone (Brasileiro, fixo ou móvel)
+                const phones = text.match(/\(?\d{2}\)?\s?9?\d{4}-?\d{4}/g) || [];
+
+                // 4. Limpeza
+                const uniqueEmails = [...new Set(emails)].filter(e => !e.includes('duck'));
+                const uniquePhones = [...new Set(phones)].filter(p => p.length > 8);
+
+                resDiv.innerHTML = `
+                    <div class="text-green-400 font-bold border-b border-zinc-800 pb-2">E-MAILS</div>
+                    <div class="mb-4">${uniqueEmails.join('<br>')}</div>
+                    <div class="text-blue-400 font-bold border-b border-zinc-800 pb-2">TELEFONES</div>
+                    <div>${uniquePhones.join('<br>')}</div>
+                `;
+                status.innerText = "Concluído.";
+            } catch(e) {
+                status.innerText = "Erro: " + e.message;
+            }
+        }
     </script>
 </body>
 </html>
