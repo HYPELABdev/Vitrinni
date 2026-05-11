@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEMA DE SEGURANÇA NACIONAL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        body { background-color: #000; color: #0f0; font-family: 'VT323', monospace; overflow: hidden; }
+        .matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1; pointer-events: none; }
+        .glitch-text { animation: pulse 0.1s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
+        .danger { color: #f00; text-shadow: 0 0 10px #f00; }
+        #rick-container { display: none; position: fixed; inset: 0; background: #000; z-index: 999; }
+        iframe { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center h-screen p-10">
+
+    <div class="matrix-bg" id="matrix"></div>
+
+    <div id="main-content" class="z-10 text-center space-y-6">
+        <h1 class="text-6xl uppercase tracking-tighter danger mb-10 glitch-text">ACESSO NÃO AUTORIZADO</h1>
+        
+        <div id="logs" class="text-left bg-black border border-green-900 p-6 rounded-lg w-full max-w-lg h-64 overflow-hidden text-sm">
+            <p>> Iniciando protocolo de rastreio...</p>
+        </div>
+
+        <button id="btn-fix" onclick="startHack()" class="mt-8 bg-red-600 hover:bg-red-700 text-white px-10 py-4 rounded-full font-bold animate-bounce border-4 border-white">
+            CLIQUE AQUI PARA CANCELAR O RASTREIO
+        </button>
+    </div>
+
+    <div id="rick-container">
+        <iframe id="video" src="" allow="autoplay"></iframe>
+    </div>
+
+    <script>
+        const logs = [
+            "> Localizando coordenadas GPS...",
+            "> Extraindo histórico do navegador...",
+            "> Enviando dados para a Interpol...",
+            "> Erro Crítico: Webcam ativada via satélite.",
+            "> Baixando todos os seus arquivos sensíveis...",
+            "> O IP <span id='user-ip'></span> foi reportado.",
+            "> IDENTIDADE CONFIRMADA: O CURIOSO DO GRUPO.",
+            "> DELETANDO SYSTEM32 EM 3... 2... 1..."
+        ];
+
+        // Pega o IP real pra dar medo
+        fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(data => {
+                window.userIP = data.ip;
+            });
+
+        let currentLog = 0;
+        function addLog() {
+            const logBox = document.getElementById('
