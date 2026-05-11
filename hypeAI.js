@@ -1,6 +1,6 @@
 /**
- * HypeAI.js - Engine de Extração Independente
- * Desenvolvido para rodar em ambientes estáticos (GitHub Pages)
+ * HypeAI.js - Engine de Extração Independente v1.1
+ * Método: DuckDuckGo HTML Stealth Scan
  */
 
 const terminal = document.getElementById('terminal');
@@ -12,72 +12,85 @@ function log(msg, color = 'text-zinc-400') {
     p.className = color;
     p.innerHTML = `> [${new Date().toLocaleTimeString()}] ${msg}`;
     terminal.appendChild(p);
-    terminal.scrollTop = terminal.scrollHeight;
+    terminal.scrollTop = terminal.scrollHeight; // Auto-scroll
 }
 
-// O Motor de Mineração
 async function startMining() {
     const nicho = document.getElementById('nicho').value;
     const local = document.getElementById('local').value;
+    const btn = document.getElementById('btnStart');
 
     if (!nicho || !local) {
-        log('ERRO: Parâmetros de busca ausentes.', 'text-red-500');
+        log('ERRO: Defina o nicho e a localização.', 'text-red-500');
         return;
     }
 
-    // Reset de UI
+    // Reset de UI e Feedback Visual
     resultsTable.innerHTML = '';
-    log(`Iniciando protocolo de mineração para: ${nicho} em ${local}...`, 'text-green-500');
-    document.getElementById('btnStart').classList.add('scanning');
-
-    // Montando a Query "Dork" Avançada (Hardcoded)
-    // Buscamos no Instagram e Facebook onde os emails ficam expostos
-    const query = encodeURIComponent(`site:instagram.com "${nicho}" "${local}" "@gmail.com" OR "@hotmail.com"`);
-    const searchUrl = `https://www.google.com/search?q=${query}`;
+    btn.disabled = true;
+    btn.innerHTML = "ESCANEANDO...";
+    btn.classList.add('scanning');
     
-    // Proxy AllOrigins para burlar o CORS
-    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(searchUrl)}`;
+    log(`Iniciando HypeAI Engine...`, 'text-green-500');
+    log(`Alvo: ${nicho} em ${local}`);
+
+    /**
+     * ESTRATÉGIA: DuckDuckGo HTML
+     * O Google bloqueia o Proxy AllOrigins quase instantaneamente.
+     * O DuckDuckGo permite a leitura do HTML sem JavaScript (versão /html/).
+     */
+    const query = encodeURIComponent(`"${nicho}" "${local}" email contato "@gmail.com"`);
+    const targetUrl = `https://duckduckgo.com/html/?q=${query}`;
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
 
     try {
-        log('Conectando ao túnel de busca via AllOrigins...');
+        log('Enviando requisição via túnel Proxy...');
         const response = await fetch(proxyUrl);
-        const data = await response.json();
         
-        log('Resposta recebida. Decodificando HTML bruto...');
-        
-        // Usando Regex para capturar e-mails direto do texto bruto do Google
-        // Essa é a parte "Hardcoded" onde não usamos API de IA para extrair
-        const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
-        const rawContent = data.contents;
-        
-        // Encontrando todos os emails
-        const foundEmails = rawContent.match(emailRegex) || [];
-        
-        // Removendo emails genéricos do próprio Google para limpar a lista
-        const filteredEmails = [...new Set(foundEmails)].filter(email => 
-            !email.includes('google') && !email.includes('sentry') && !email.includes('schema')
-        );
+        if (!response.ok) throw new Error('O servidor Proxy não respondeu.');
 
-        if (filteredEmails.length > 0) {
-            log(`${filteredEmails.length} Leads detectados com sucesso!`, 'text-green-400');
+        const data = await response.json();
+        const htmlBruto = data.contents;
+
+        log(`Analisando pacotes recebidos (${htmlBruto.length} bytes)...`);
+
+        // REGEX HARDCODED - Captura e-mails
+        const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+        const foundEmails = htmlBruto.match(emailRegex) || [];
+
+        // FILTRAGEM - Remove lixo técnico
+        const blacklist = ['duckduckgo', 'sentry', 'w3.org', 'apple-touch', 'favicon'];
+        const uniqueEmails = [...new Set(foundEmails)].filter(email => {
+            return !blacklist.some(word => email.toLowerCase().includes(word));
+        });
+
+        if (uniqueEmails.length > 0) {
+            log(`SUCESSO: ${uniqueEmails.length} leads identificados!`, 'text-green-400');
             
-            filteredEmails.forEach(email => {
+            uniqueEmails.forEach(email => {
                 const row = `
-                    <tr class="border-t border-zinc-800 hover:bg-zinc-800 transition-colors">
-                        <td class="p-3 text-zinc-500 italic">Google Snippet Scan</td>
+                    <tr class="border-t border-zinc-800 hover:bg-zinc-900 transition-colors">
+                        <td class="p-3 text-zinc-500 italic font-mono text-[10px]">DuckScan_Output</td>
                         <td class="p-3 text-green-400 font-bold">${email}</td>
                     </tr>
                 `;
                 resultsTable.innerHTML += row;
             });
         } else {
-            log('Nenhum dado legível encontrado nesta camada. Tente outro nicho.', 'text-yellow-500');
+            log('FALHA: Nenhum lead encontrado no HTML retornado.', 'text-yellow-500');
+            log('DICA: O motor pode ter retornado um desafio (Bot Check). Tente em 1 minuto.', 'text-zinc-500');
+            
+            // Debug: Se falhar, vamos ver o que o HTML trouxe (primeiros 200 caracteres)
+            console.log("HTML Recebido:", htmlBruto.substring(0, 500));
         }
 
     } catch (error) {
-        log(`ERRO CRÍTICO: ${error.message}`, 'text-red-500');
+        log(`ERRO DE CONEXÃO: ${error.message}`, 'text-red-500');
+        console.error(error);
     } finally {
-        document.getElementById('btnStart').classList.remove('scanning');
-        log('Protocolo finalizado.', 'text-zinc-600');
+        btn.disabled = false;
+        btn.innerHTML = "INICIAR VARREDURA";
+        btn.classList.remove('scanning');
+        log('Sessão finalizada.', 'text-zinc-600');
     }
 }
