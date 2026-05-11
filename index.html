@@ -2,64 +2,105 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>HypeAI | Scraper</title>
+    <title>Painel de Edição | Level Up</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-zinc-950 text-zinc-300 p-8 font-mono">
-    <div class="max-w-2xl mx-auto">
-        <h1 class="text-green-500 text-2xl mb-6">HYPE_AI | MINER</h1>
-        
-        <div class="flex gap-2 mb-6">
-            <input id="nicho" placeholder="Nicho" class="bg-black border border-zinc-700 p-2 w-full text-white">
-            <input id="local" placeholder="Local" class="bg-black border border-zinc-700 p-2 w-full text-white">
-            <button onclick="minerar()" class="bg-green-600 px-6 text-black font-bold">SCAN</button>
-        </div>
+<body class="bg-[#0b1020] text-white p-6">
 
-        <div id="status" class="mb-4 text-xs">Pronto.</div>
-        <div id="resultados" class="space-y-2"></div>
+    <div class="max-w-xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6 text-green-400">Editor de Vitrine</h1>
+        
+        <div id="form-edicao" class="bg-gray-900 p-6 rounded-2xl border border-gray-800 space-y-4">
+            <!-- Campos serão gerados aqui -->
+            <div id="inputs-dinamicos" class="space-y-4"></div>
+
+            <button onclick="salvarAlteracoes()" id="btn-save" class="w-full bg-green-600 hover:bg-green-500 py-4 rounded-xl font-bold transition-all mt-6">
+                SALVAR ALTERAÇÕES
+            </button>
+        </div>
+        
+        <p id="status" class="mt-4 text-center text-sm text-gray-500"></p>
     </div>
 
     <script>
-        async function minerar() {
-            const nicho = document.getElementById('nicho').value;
-            const local = document.getElementById('local').value;
-            const status = document.getElementById('status');
-            const resDiv = document.getElementById('resultados');
+        const params = new URLSearchParams(window.location.search);
+        const arquivoJson = params.get('file'); // Pega o nome do arquivo no link ?file=config_joao.json
+        const REPO = "hypelabdev/Vitrinni";
+        const TOKEN = "SEU_TOKEN_AQUI"; // Coloque seu token aqui
+
+        let currentData = {};
+        let currentSha = "";
+
+        // 1. CARREGAR DADOS DO JSON
+        async function carregar() {
+            if(!arquivoJson) return alert("Arquivo não especificado na URL!");
             
-            status.innerText = "Minerando...";
+            document.getElementById('status').innerText = "Carregando dados...";
             
-            try {
-                // Proxy + Busca no DuckDuckGo (HTML)
-                const query = encodeURIComponent(`${nicho} ${local} "email" OR "telefone"`);
-                const url = `https://api.allorigins.win/get?url=${encodeURIComponent('https://duckduckgo.com/html/?q=' + query)}`;
-                
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                // 1. Pega todo o texto da página
-                const text = data.contents;
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${arquivoJson}`);
+            const file = await res.json();
+            
+            currentSha = file.sha;
+            currentData = JSON.parse(atob(file.content));
 
-                // 2. Regex E-mail
-                const emails = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g) || [];
-                
-                // 3. Regex Telefone (Brasileiro, fixo ou móvel)
-                const phones = text.match(/\(?\d{2}\)?\s?9?\d{4}-?\d{4}/g) || [];
+            renderizarInputs();
+            document.getElementById('status').innerText = "Editando: " + arquivoJson;
+        }
 
-                // 4. Limpeza
-                const uniqueEmails = [...new Set(emails)].filter(e => !e.includes('duck'));
-                const uniquePhones = [...new Set(phones)].filter(p => p.length > 8);
+        // 2. CRIAR OS INPUTS NA TELA
+        function renderizarInputs() {
+            const container = document.getElementById('inputs-dinamicos');
+            container.innerHTML = `
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">TÍTULO DA MARCA</label>
+                    <input type="text" id="brand" value="${currentData.brand}" class="w-full bg-black p-3 rounded-lg border border-gray-700">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">DESTAQUE (COR)</label>
+                    <input type="text" id="brandHighlight" value="${currentData.brandHighlight}" class="w-full bg-black p-3 rounded-lg border border-gray-700">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">COR PRINCIPAL (HEX)</label>
+                    <input type="color" id="color" value="${currentData.color}" class="w-full h-12 bg-black p-1 rounded-lg border border-gray-700">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">WHATSAPP (COM DDD)</label>
+                    <input type="text" id="whatsapp" value="${currentData.whatsapp}" class="w-full bg-black p-3 rounded-lg border border-gray-700">
+                </div>
+            `;
+        }
 
-                resDiv.innerHTML = `
-                    <div class="text-green-400 font-bold border-b border-zinc-800 pb-2">E-MAILS</div>
-                    <div class="mb-4">${uniqueEmails.join('<br>')}</div>
-                    <div class="text-blue-400 font-bold border-b border-zinc-800 pb-2">TELEFONES</div>
-                    <div>${uniquePhones.join('<br>')}</div>
-                `;
-                status.innerText = "Concluído.";
-            } catch(e) {
-                status.innerText = "Erro: " + e.message;
+        // 3. SALVAR NO GITHUB
+        async function salvarAlteracoes() {
+            const btn = document.getElementById('btn-save');
+            btn.innerText = "SALVANDO...";
+            btn.disabled = true;
+
+            // Atualiza o objeto com o que foi digitado
+            currentData.brand = document.getElementById('brand').value;
+            currentData.brandHighlight = document.getElementById('brandHighlight').value;
+            currentData.color = document.getElementById('color').value;
+            currentData.whatsapp = document.getElementById('whatsapp').value;
+
+            const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${arquivoJson}`, {
+                method: 'PUT',
+                headers: { 'Authorization': `token ${TOKEN}` },
+                body: JSON.stringify({
+                    message: "Edição via Editor Universal",
+                    content: btoa(JSON.stringify(currentData, null, 2)),
+                    sha: currentSha
+                })
+            });
+
+            if(res.ok) {
+                alert("Sucesso! As alterações aparecerão em breve no site.");
+                location.reload(); // Recarrega para pegar o novo SHA
+            } else {
+                alert("Erro ao salvar. Verifique o token.");
             }
         }
+
+        carregar();
     </script>
 </body>
 </html>
