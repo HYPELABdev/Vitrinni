@@ -1,0 +1,18 @@
+{
+  "brand": "LEVEL",
+  "brandHighlight": "UP",
+  "color": "#00ff88",
+  "hero": "Impulsione suas Redes",
+  "subtitle": "Seguidores Reais e Brasileiros",
+  "promo": "🔥 PROMOÇÃO DE HOJE: 10% DE BÔNUS EM TODOS OS PACOTES",
+  "whatsapp": "5511999999999",
+  "stats": { "sales": "1.250", "online": "432" },
+  "plans": [
+    {
+      "name": "500 Seguidores",
+      "price": "R$ 14,90",
+      "badge": "MAIS VENDIDO",
+      "description": "Entrega em 5 minutos"
+    }
+  ]
+}
