@@ -9,11 +9,12 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;700;900&display=swap');
         :root { --main: #bc9c6c; }
-        body { background: #050505; color: #fff; font-family: 'Inter', sans-serif; }
+        body { background: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .lux-text { font-family: 'Syncopate', sans-serif; }
-        .tab-btn.active { background: var(--main); color: #000; border-color: var(--main); }
-        .card-premium { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.05); transition: 0.4s; }
+        .tab-btn.active { background: var(--main); color: #000; border-color: var(--main); box-shadow: 0 0 15px rgba(188, 156, 108, 0.4); }
+        .card-premium { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.05); transition: 0.4s; position: relative; }
         .card-premium:hover { border-color: var(--main); transform: translateY(-5px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
@@ -26,22 +27,24 @@
         </div>
     </nav>
 
-    <header class="pt-40 pb-16 px-6 text-center">
-        <p class="text-[10px] tracking-[8px] uppercase opacity-40 mb-4" id="promo-text">LEVEL UP YOUR STYLE</p>
-        <h1 class="lux-text text-5xl md:text-7xl mb-10" id="hero-title">COLLECTION</h1>
-        <div id="tab-list" class="flex justify-center gap-2 overflow-x-auto pb-4 no-scrollbar"></div>
+    <header class="pt-40 pb-12 px-6 text-center">
+        <p class="text-[10px] tracking-[8px] uppercase opacity-40 mb-4" id="promo-text">UNDERGROUND LUXURY</p>
+        <h1 class="lux-text text-4xl md:text-6xl mb-10" id="hero-title">COLLECTION</h1>
+        <div id="tab-list" class="flex justify-start md:justify-center gap-3 overflow-x-auto pb-6 no-scrollbar px-4"></div>
     </header>
 
     <main class="max-w-7xl mx-auto px-6 pb-40">
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </main>
 
-    <div id="cart-bar" class="fixed bottom-0 left-0 w-full bg-black/90 backdrop-blur-xl border-t border-[#bc9c6c] p-6 z-50 flex justify-between items-center hidden">
+    <div id="cart-bar" class="fixed bottom-0 left-0 w-full bg-black/95 backdrop-blur-xl border-t border-[#bc9c6c] p-6 z-50 flex justify-between items-center hidden">
         <div>
-            <p id="cart-count" class="text-[10px] uppercase opacity-50">0 ITENS</p>
+            <p id="cart-count" class="text-[10px] uppercase opacity-50 font-black">0 ITENS</p>
             <p id="cart-total" class="text-2xl font-black text-[#bc9c6c]">R$ 0,00</p>
         </div>
-        <button onclick="finishOrder()" class="bg-[#bc9c6c] text-black px-10 py-4 rounded-xl font-black text-xs uppercase">Finalizar WhatsApp</button>
+        <button onclick="finishOrder()" class="bg-[#bc9c6c] text-black px-8 py-4 rounded-xl font-black text-xs uppercase hover:scale-105 transition-all">
+            Finalizar Pedido
+        </button>
     </div>
 
     <script>
@@ -52,35 +55,30 @@
         async function init() {
             try {
                 const res = await fetch(`${URL_JSON}?v=${Date.now()}`);
-                const text = await res.text(); // Pega como texto primeiro para validar
-                
-                try {
-                    DATA = JSON.parse(text);
-                } catch(e) {
-                    throw new Error("Erro de sintaxe no JSON (Verifique vírgulas ou aspas)");
-                }
+                DATA = await res.json();
 
-                if (!DATA.categories) throw new Error("A chave 'categories' não foi encontrada no JSON");
-
-                // Preencher UI
+                // Atualiza Textos Gerais
+                document.getElementById('brand-logo').innerHTML = `${DATA.brand}<span style="color:${DATA.color}">${DATA.brandHighlight}</span>`;
                 document.getElementById('hero-title').innerText = DATA.hero;
+                document.getElementById('promo-text').innerText = DATA.promo || DATA.subtitle;
                 document.getElementById('s-vendas').innerText = DATA.stats.sales;
                 document.getElementById('s-online').innerText = DATA.stats.online;
                 document.documentElement.style.setProperty('--main', DATA.color);
 
                 renderTabs();
             } catch (e) {
-                document.getElementById('product-grid').innerHTML = `<div class="col-span-full text-center py-20 text-red-500 font-bold">${e.message}</div>`;
+                console.error("Erro:", e);
             }
         }
 
         function renderTabs() {
             const list = document.getElementById('tab-list');
+            list.innerHTML = "";
             DATA.categories.forEach((cat, i) => {
                 const btn = document.createElement('button');
-                btn.className = `tab-btn px-6 py-2 rounded-full border border-white/10 text-[10px] font-black uppercase transition ${i===0 ? 'active' : ''}`;
+                btn.className = `tab-btn px-8 py-3 rounded-full border border-white/10 text-[10px] font-black uppercase transition-all flex-shrink-0 ${i===0 ? 'active' : ''}`;
                 btn.innerHTML = `${cat.icon} ${cat.name}`;
-                btn.onclick = (e) => {
+                btn.onclick = () => {
                     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     renderProducts(cat.plans);
@@ -95,15 +93,16 @@
             grid.innerHTML = "";
             plans.forEach(item => {
                 grid.innerHTML += `
-                    <div class="card-premium rounded-[2rem] p-4">
-                        <div class="relative overflow-hidden rounded-[1.5rem] mb-4 aspect-[3/4]">
+                    <div class="card-premium rounded-[2.5rem] p-5">
+                        <div class="relative overflow-hidden rounded-[2rem] mb-6 aspect-[3/4] bg-white/5">
                             <img src="${item.foto}" class="w-full h-full object-cover">
-                            ${item.badge ? `<span class="absolute top-3 right-3 bg-black/80 text-[9px] font-black px-3 py-1 rounded-full border border-white/10 text-[#bc9c6c]">${item.badge}</span>` : ''}
+                            ${item.badge ? `<span class="absolute top-4 right-4 bg-black/80 text-[9px] font-bold px-3 py-1 rounded-full border border-white/10 text-[#bc9c6c]">${item.badge}</span>` : ''}
                         </div>
-                        <h3 class="lux-text text-[10px] opacity-60 mb-2">${item.name}</h3>
+                        <h3 class="lux-text text-[10px] opacity-50 mb-2 tracking-widest">${item.name}</h3>
+                        <p class="text-[11px] opacity-30 mb-4 h-8 overflow-hidden">${item.description || ''}</p>
                         <div class="flex justify-between items-center">
-                            <p class="text-2xl font-black">R$ ${item.price}</p>
-                            <button onclick="addToCart('${item.name}', ${item.price})" class="w-10 h-10 rounded-full bg-[#bc9c6c] text-black flex items-center justify-center">
+                            <p class="text-3xl font-black tracking-tighter">R$ ${item.price}</p>
+                            <button onclick="addToCart('${item.name}', '${item.price}')" class="w-12 h-12 rounded-2xl bg-[#bc9c6c] text-black flex items-center justify-center hover:scale-110 transition-all">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -112,17 +111,35 @@
             });
         }
 
-        function addToCart(name, price) {
-            cart.push({name, price});
+        function addToCart(name, priceRaw) {
+            // Limpa o preço (tira R$, espaços e troca vírgula por ponto)
+            let cleanPrice = priceRaw.replace('R$', '').replace(/\s/g, '').replace(',', '.');
+            let price = parseFloat(cleanPrice);
+
+            cart.push({ name, price });
+            updateCartUI();
+
+            // Efeito de feedback no botão
+            event.currentTarget.innerHTML = '<i class="fa fa-check"></i>';
+            setTimeout(() => { 
+                renderProducts(document.querySelector('.tab-btn.active').innerText.split(' ')[1] === DATA.categories[0].name ? DATA.categories[0].plans : DATA.categories.find(c => btn.innerText.includes(c.name)).plans) 
+                // Simplificando o refresh do ícone:
+                init(); 
+            }, 800);
+        }
+
+        function updateCartUI() {
             const total = cart.reduce((acc, i) => acc + i.price, 0);
-            document.getElementById('cart-bar').classList.remove('hidden');
-            document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2)}`;
+            const bar = document.getElementById('cart-bar');
+            bar.classList.remove('hidden');
+            document.getElementById('cart-total').innerText = `R$ ${total.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
             document.getElementById('cart-count').innerText = `${cart.length} ITENS SELECIONADOS`;
         }
 
         function finishOrder() {
             const total = cart.reduce((acc, i) => acc + i.price, 0);
-            const msg = encodeURIComponent(`🛒 *PEDIDO HYPELAB*\n\n${cart.map(i => `• ${i.name}`).join('\n')}\n\n*TOTAL:* R$ ${total.toFixed(2)}`);
+            const itens = cart.map(i => `• ${i.name} (R$ ${i.price.toFixed(2)})`).join('%0A');
+            const msg = `🛒 *NOVO PEDIDO - ${DATA.brand}*%0A%0A${itens}%0A%0A*TOTAL:* R$ ${total.toFixed(2)}%0A%0A_Favor enviar dados para PIX!_`;
             window.open(`https://wa.me/${DATA.whatsapp}?text=${msg}`);
         }
 
