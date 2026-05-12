@@ -1,6 +1,6 @@
 {
-  "brand": "LEVEL UP",
-  "brandHighlight": "UP",
+  "brand": "Teste",
+  "brandHighlight": "Teste",
   "hero": "AUMENTE SEU ENGAJAMENTO 🚀",
   "subtitle": "Seguidores, curtidas e visualizações automáticas",
   "promo": "🔥 Promoção ativa hoje",
@@ -28,7 +28,7 @@
         {
           "name": "5K Seguidores",
           "badge": "🔥 Mais vendido",
-          "price": "R$ 49,90",
+          "price": "R$ 100",
           "followers": "5000",
           "delivery": "30 Min",
           "quality": "Premium",
