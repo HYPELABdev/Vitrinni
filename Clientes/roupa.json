@@ -2,13 +2,13 @@
   "brand": "HYPELAB",
   "brandHighlight": ".",
   "hero": "UNDERLUX COLLECTION",
-  "subtitle": "Edição Limitada // Drop 2026",
-  "promo": "🔥 10% OFF NA PRIMEIRA COMPRA",
+  "subtitle": "DROP 2026 // STREET LUXURY",
+  "promo": "🔥 FRETE GRÁTIS EM COMPRAS ACIMA DE R$ 300",
   "whatsapp": "5511949946730",
   "color": "#bc9c6c",
   "stats": {
-    "sales": "1420",
-    "online": "42"
+    "sales": "1.840",
+    "online": "56"
   },
   "categories": [
     {
@@ -16,12 +16,58 @@
       "icon": "✨",
       "plans": [
         {
-          "name": "Oversized Ghost",
+          "name": "Camiseta Ghost White",
           "badge": "LIMITADO",
           "price": "189.90",
           "oldPrice": "249.00",
           "description": "Algodão Egípcio, gramatura 240g.",
           "foto": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800"
+        },
+        {
+          "name": "Moletom Night Crawler",
+          "badge": "MAIS VENDIDO",
+          "price": "320.00",
+          "oldPrice": "380.00",
+          "description": "Corte Boxy, interior flanelado.",
+          "foto": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800"
+        },
+        {
+          "name": "T-Shirt Acid Wash",
+          "badge": "VINTAGE",
+          "price": "159.00",
+          "oldPrice": null,
+          "description": "Lavagem ácida premium.",
+          "foto": "https://images.unsplash.com/photo-1576566582418-b134a817c667?w=800"
+        }
+      ]
+    },
+    {
+      "name": "Calças",
+      "icon": "👖",
+      "plans": [
+        {
+          "name": "Cargo Techwear V2",
+          "badge": "NEW",
+          "price": "259.00",
+          "oldPrice": null,
+          "description": "Tecido repelente à água, 6 bolsos.",
+          "foto": "https://images.unsplash.com/photo-1517441662441-b15a624d9f1b?w=800"
+        },
+        {
+          "name": "Jeans Baggy Raw",
+          "badge": "PROMO",
+          "price": "199.00",
+          "oldPrice": "289.00",
+          "description": "Corte amplo, lavagem escura.",
+          "foto": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800"
+        },
+        {
+          "name": "Jogger Midnight",
+          "badge": null,
+          "price": "179.00",
+          "oldPrice": null,
+          "description": "Conforto e estilo underground.",
+          "foto": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800"
         }
       ]
     },
@@ -31,11 +77,19 @@
       "plans": [
         {
           "name": "Shoulder Bag Noir",
-          "badge": "NEW",
+          "badge": "ESSENCIAL",
           "price": "89.00",
           "oldPrice": null,
           "description": "Nylon balístico de alta resistência.",
           "foto": "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800"
+        },
+        {
+          "name": "Boné Trucker Lux",
+          "badge": "HOT",
+          "price": "119.00",
+          "oldPrice": "149.00",
+          "description": "Bordado em alto relevo.",
+          "foto": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800"
         }
       ]
     }
