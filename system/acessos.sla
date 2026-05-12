@@ -1,0 +1,29 @@
+{
+  "clientes":[
+    {
+      "user":"unika",
+      "pass":"rogerio123",
+      "file":"unika.json"
+    },
+    {
+      "user":"levelup",
+      "pass":"levelup123",
+      "file":"levelup.json"
+    }
+  ]
+}
+
+{
+  "clientes":[
+    {
+      "user":"roupa",
+      "pass":"roupa123",
+      "file":"unika.json"
+    },
+    {
+      "user":"cliente4",
+      "pass":"cliente123",
+      "file":"'clientr.json"
+    }
+  ]
+}
