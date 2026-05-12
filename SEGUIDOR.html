@@ -3,85 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HYPELAB | Engagement Flux</title>
+    <title>LEVEL UP | Engagement Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;900&display=swap');
+        :root { --main: #00ff88; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif; }
+        body { background:#0b1020; color:white; overflow-x:hidden; min-height: 100vh; }
+
+        /* BG Animado */
+        .bg { position:fixed; inset:0; z-index:-1; background: radial-gradient(circle at top left,rgba(0,255,136,.10),transparent 30%), linear-gradient(-45deg,#0b1020,#11182b,#0f1726); background-size:300% 300%; animation:bg 10s ease infinite; }
+        @keyframes bg { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+
+        header { text-align:center; padding:50px 20px 30px; }
+        .logo { font-size:62px; font-weight:800; letter-spacing:4px; }
+        .logo .highlight { color:var(--main); text-shadow:0 0 20px var(--main); }
+
+        .tab-btn { padding: 12px 24px; border-radius: 14px; background: rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.1); }
+        .tab-btn.active { border-color: var(--main); background: rgba(0,255,136,0.15); color: var(--main); box-shadow: 0 0 15px rgba(0,255,136,0.1); }
+
+        .card { padding:24px; border-radius:26px; background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,.06); transition:.25s; cursor:pointer; }
+        .card.active { border-color:var(--main); box-shadow:0 0 30px rgba(0,255,136,0.16); transform:scale(1.02); }
+        .price { margin-top:10px; font-size:38px; font-weight:800; color:var(--main); }
         
-        body { background-color: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; }
-        .lux-text { font-family: 'Syncopate', sans-serif; }
-        .gold-accent { color: #bc9c6c; }
-
-        .particle-container { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-        .like-particle { position: absolute; color: #bc9c6c; opacity: 0; font-size: 14px; filter: drop-shadow(0 0 5px rgba(188, 156, 108, 0.3)); animation: floatUp linear infinite; }
-
-        @keyframes floatUp {
-            0% { transform: translateY(110vh) scale(0.5) rotate(0deg); opacity: 0; }
-            20% { opacity: 0.4; }
-            80% { opacity: 0.2; }
-            100% { transform: translateY(-20vh) scale(1.2) rotate(45deg); opacity: 0; }
-        }
-
-        .main-card { background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 4rem; padding: 3rem; text-align: center; z-index: 10; box-shadow: 0 40px 100px rgba(0,0,0,0.5); width: 90%; max-width: 450px; }
+        .form { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); border-radius:24px; padding:24px; margin-top:30px; }
+        input { width:100%; padding:16px; border-radius:16px; background:rgba(255,255,255,0.08); color:white; border:1px solid rgba(255,255,255,0.1); outline:none; margin-top:12px; }
+        button#cta { width:100%; padding:20px; margin-top:16px; border-radius:20px; background: linear-gradient(45deg, var(--main), #00bfff); color:white; font-weight:800; font-size: 16px; cursor:pointer; transition: 0.3s; }
+        button#cta:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,255,136,0.2); }
     </style>
 </head>
 <body>
 
-    <div class="particle-container" id="particle-box"></div>
+<div class="bg"></div>
 
-    <main class="main-card">
-        <header class="mb-12">
-            <h1 class="lux-text text-3xl tracking-tighter mb-2">HYPELAB<span class="gold-accent">.</span></h1>
-            <div class="h-[1px] w-12 bg-[#bc9c6c] mx-auto mb-4"></div>
-            <p class="text-[9px] uppercase tracking-[6px] opacity-40">Engagement Sync</p>
-        </header>
+<header>
+    <div class="logo">LEVEL<span class="highlight">UP</span></div>
+    <div class="hero text-xl font-bold mt-2 opacity-80" id="hero-text">AGUARDANDO SYNC...</div>
+</header>
 
-        <section class="mb-12">
-            <div id="counter" class="text-7xl font-black tracking-tighter mb-2">0</div>
-            <p class="text-[10px] font-bold gold-accent uppercase tracking-[3px]">Seguidores engajados</p>
-        </section>
-    </main>
+<div class="container max-w-[700px] mx-auto p-4 pb-20">
+    
+    <!-- ABAS -->
+    <div class="flex justify-center gap-3 mb-10">
+        <button class="tab-btn active" onclick="switchTab('seguidores', this)">Seguidores</button>
+        <button class="tab-btn" onclick="switchTab('curtidas', this)">Curtidas</button>
+        <button class="tab-btn" onclick="switchTab('views', this)">Views</button>
+    </div>
 
-    <script>
-        // CONFIGURAÇÃO CENTRAL
-        const REPO = "SEU_USUARIO/Vitrinni"; 
-        const JSON_PATH = "clientes/levelup.json";
+    <!-- CARDS -->
+    <div class="grid gap-4" id="plans-grid"></div>
 
-        async function init() {
-            spawnParticles();
-            try {
-                const res = await fetch(`https://raw.githubusercontent.com/${REPO}/main/${JSON_PATH}?t=${Date.now()}`);
-                const data = await res.json();
-                // Lê o valor diretamente da pintura (levelup.json)
-                const meta = data.configuracao?.seguidores_alvo || 0;
-                animateNumber(meta);
-            } catch(e) { animateNumber(0); }
+    <!-- FORMULÁRIO -->
+    <div class="form">
+        <div class="text-sm font-bold opacity-60 uppercase tracking-widest">Passo Final</div>
+        <input type="text" id="user-target" placeholder="Digite seu @ do Instagram">
+        <button onclick="sendOrder()" id="cta">SELECIONE UM PLANO</button>
+    </div>
+</div>
+
+<script>
+    // URL CORRIGIDA PARA O SEU DOMÍNIO
+    const BASE_URL = "https://hypelabdev.github.io/Vitrinni/Clientes/";
+    let DATA = {};
+    let currentCategory = 'seguidores';
+    let selectedItem = null;
+
+    async function fetchData() {
+        try {
+            const res = await fetch(`${BASE_URL}levelup.json?t=${Date.now()}`);
+            DATA = await res.json();
+            
+            document.getElementById('hero-text').innerText = DATA.configuracao?.hero || "IMPULSIONE SEU PERFIL";
+            render('seguidores');
+        } catch (e) {
+            document.getElementById('hero-text').innerText = "ERRO AO CARREGAR PINTURA";
         }
+    }
 
-        function spawnParticles() {
-            const container = document.getElementById('particle-box');
-            for (let i = 0; i < 25; i++) {
-                const heart = document.createElement('i');
-                heart.className = 'fas fa-heart like-particle';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 8 + 7) + 's';
-                heart.style.animationDelay = '-' + Math.random() * 10 + 's';
-                container.appendChild(heart);
-            }
-        }
+    function switchTab(cat, btn) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = cat;
+        render(cat);
+    }
 
-        function animateNumber(target) {
-            let current = 0;
-            const el = document.getElementById('counter');
-            const interval = setInterval(() => {
-                current += target / 100;
-                if (current >= target) { clearInterval(interval); el.innerText = target.toLocaleString(); }
-                else { el.innerText = Math.floor(current).toLocaleString(); }
-            }, 30);
-        }
+    function render(cat) {
+        const grid = document.getElementById('plans-grid');
+        grid.innerHTML = '';
+        const items = DATA[cat] || [];
 
-        window.onload = init;
-    </script>
+        items.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = `card ${index === 0 ? 'active' : ''}`;
+            if(index === 0) selectedItem = item;
+
+            card.onclick = () => {
+                document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                selectedItem = item;
+                updateButton();
+            };
+
+            card.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-lg text-white/90">${item.quantidade} ${cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
+                    <span class="text-[10px] bg-white/10 px-3 py-1 rounded-full font-bold">${item.badge || 'ESTÁVEL'}</span>
+                </div>
+                <div class="price">R$ ${item.preco}</div>
+                <div class="text-xs opacity-40 mt-2">${item.descricao || 'Entrega rápida e segura.'}</div>
+            `;
+            grid.appendChild(card);
+        });
+        updateButton();
+    }
+
+    function updateButton() {
+        const btn = document.getElementById('cta');
+        btn.innerText = `🚀 COMPRAR ${selectedItem.quantidade} ${currentCategory.toUpperCase()}`;
+    }
+
+    function sendOrder() {
+        const user = document.getElementById('user-target').value;
+        if(!user) return alert("Digite o @ do seu perfil!");
+
+        const zap = DATA.configuracao?.whatsapp || "5511999999999";
+        const texto = encodeURIComponent(
+            `🚀 *NOVO PEDIDO - LEVEL UP*\n\n` +
+            `📦 *Serviço:* ${selectedItem.quantidade} ${currentCategory}\n` +
+            `💰 *Valor:* R$ ${selectedItem.preco}\n` +
+            `📸 *Perfil:* ${user.startsWith('@') ? user : '@' + user}`
+        );
+
+        window.open(`https://wa.me/${zap}?text=${texto}`, '_blank');
+    }
+
+    window.onload = fetchData;
+</script>
+
 </body>
 </html>
