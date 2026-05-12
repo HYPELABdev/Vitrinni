@@ -8,23 +8,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;900&display=swap');
+        
+        :root { --gold: #bc9c6c; }
         body { background-color: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        
         .lux-text { font-family: 'Syncopate', sans-serif; }
-        .gold-accent { color: #bc9c6c; }
+        .gold-accent { color: var(--gold); }
+
+        /* Estilização Premium dos Cards */
         .card-hypelab {
             background: linear-gradient(145deg, #0a0a0a 0%, #050505 100%);
             border: 1px solid rgba(255,255,255,0.03);
             transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        
         .card-hypelab:hover {
-            border-color: #bc9c6c;
+            border-color: var(--gold);
             transform: translateY(-12px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.8);
         }
-        .img-container img { transition: transform 0.8s scale; filter: grayscale(100%) contrast(110%); }
-        .card-hypelab:hover img { filter: grayscale(0%) contrast(100%); transform: scale(1.05); }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .reveal { animation: fadeInUp 0.8s ease forwards; }
+
+        /* Efeito na Imagem */
+        .img-container img { 
+            transition: all 0.8s ease; 
+            filter: grayscale(100%) contrast(110%); 
+        }
+        
+        .card-hypelab:hover img { 
+            filter: grayscale(0%) contrast(100%); 
+            transform: scale(1.05); 
+        }
+
+        /* Animação de entrada */
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        .reveal { opacity: 0; animation: fadeInUp 0.8s ease forwards; }
     </style>
 </head>
 <body>
@@ -35,45 +55,62 @@
     </nav>
 
     <header class="pt-40 pb-20 px-8 text-center">
-        <h1 class="lux-text text-6xl md:text-9xl mb-2 leading-none">UNDER<br><span class="gold-accent">LUX</span></h1>
+        <h1 class="lux-text text-5xl md:text-8xl mb-2 leading-none">UNDER<br><span class="gold-accent">LUX</span></h1>
         <p class="text-[10px] tracking-[10px] uppercase opacity-30 mt-4">Caminhando nas sombras com elegância</p>
     </header>
 
     <main class="max-w-7xl mx-auto px-6 pb-20">
-        <div id="vitrine-fluxo" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+        <div id="vitrine-fluxo" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Os itens entrarão aqui -->
+        </div>
     </main>
 
     <script>
-        // CONFIGURAÇÃO ATUALIZADA (Repositório Vitrinni e roupa.json minúsculo)
-        const GITHUB_USER = "SEU_USUARIO"; 
-        const GITHUB_REPO = "Vitrinni"; 
-        const FILE_PATH = "clientes/roupa.json"; // CORRIGIDO: minúsculo
+        // URL DIRETA DO SEU GITHUB PAGES
+        const URL_JSON = "https://hypelabdev.github.io/Vitrinni/Clientes/roupa.json";
 
         async function initVitrine() {
+            const container = document.getElementById('vitrine-fluxo');
+            
             try {
-                const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${FILE_PATH}?v=${Date.now()}`);
+                // Adicionado timestamp para evitar cache do navegador
+                const response = await fetch(`${URL_JSON}?t=${Date.now()}`);
+                
+                if (!response.ok) throw new Error("Não foi possível carregar o arquivo JSON");
+                
                 const data = await response.json();
-                const container = document.getElementById('vitrine-fluxo');
                 container.innerHTML = "";
 
-                // Nota: O seu JSON deve ter a chave "roupas" ou "estoque"
-                const lista = data.roupas || data.estoque;
+                // Mapeia tanto "roupas" quanto "estoque" para evitar erro de chave
+                const lista = data.roupas || data.estoque || data;
+
+                if (!Array.isArray(lista)) {
+                    throw new Error("O formato do JSON não é uma lista válida");
+                }
 
                 lista.forEach((item, index) => {
                     const delay = index * 0.1;
+                    
+                    // Tratamento de variáveis para aceitar diferentes nomes no JSON
+                    const nome = item.modelo || item.nome || "Sem Nome";
+                    const preco = item.valor || item.preco || "Sob Consulta";
+                    const imagem = item.foto_url || item.foto || "https://via.placeholder.com/450x600/000?text=Sem+Foto";
+                    const link = item.checkout || item.link || "#";
+                    const tag = item.tag || item.status || "Novo";
+
                     container.innerHTML += `
                         <div class="card-hypelab rounded-[2.5rem] p-4 reveal" style="animation-delay: ${delay}s">
                             <div class="img-container relative h-[450px] overflow-hidden rounded-[2rem] mb-6">
-                                <img src="${item.foto_url || item.foto}" class="w-full h-full object-cover">
-                                <div class="absolute bottom-4 left-4 bg-black/90 backdrop-blur-md px-4 py-1 rounded-full border border-white/10 text-[9px] font-bold gold-accent">
-                                    ${item.tag || item.status}
+                                <img src="${imagem}" class="w-full h-full object-cover" alt="${nome}">
+                                <div class="absolute bottom-4 left-4 bg-black/90 backdrop-blur-md px-4 py-1 rounded-full border border-white/10 text-[9px] font-bold gold-accent uppercase">
+                                    ${tag}
                                 </div>
                             </div>
                             <div class="px-4 pb-4">
-                                <h3 class="lux-text text-[10px] uppercase tracking-widest opacity-60 mb-2">${item.modelo || item.nome}</h3>
+                                <h3 class="lux-text text-[10px] uppercase tracking-widest opacity-60 mb-2">${nome}</h3>
                                 <div class="flex justify-between items-center">
-                                    <span class="text-3xl font-light tracking-tighter">R$ ${item.valor || item.preco}</span>
-                                    <button onclick="window.location.href='${item.checkout || item.link}'" class="bg-white text-black px-6 py-3 rounded-full font-black text-[10px] uppercase hover:bg-[#bc9c6c] transition-all">
+                                    <span class="text-3xl font-light tracking-tighter">R$ ${preco}</span>
+                                    <button onclick="window.open('${link}', '_blank')" class="bg-white text-black px-6 py-3 rounded-full font-black text-[10px] uppercase hover:bg-[#bc9c6c] hover:text-white transition-all">
                                         Comprar
                                     </button>
                                 </div>
@@ -83,7 +120,12 @@
                 });
             } catch (e) {
                 console.error("Erro no carregamento:", e);
-                document.getElementById('vitrine-fluxo').innerHTML = "<div class='col-span-full text-center py-20 opacity-20'>ERRO: arquivo roupa.json não encontrado no repositório Vitrinni</div>";
+                container.innerHTML = `
+                    <div class='col-span-full text-center py-20'>
+                        <p class='opacity-30 mb-4'>ARQUIVO NÃO ENCONTRADO OU FORMATO INVÁLIDO</p>
+                        <code class='text-[10px] gold-accent'>${e.message}</code>
+                    </div>
+                `;
             }
         }
 
