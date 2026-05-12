@@ -7,7 +7,7 @@
   "whatsapp": "5511949946730",
   "color": "#bc9c6c",
   "stats": {
-    "sales": "1.420",
+    "sales": "1420",
     "online": "42"
   },
   "categories": [
@@ -16,42 +16,12 @@
       "icon": "✨",
       "plans": [
         {
-          "name": "Oversized 'Ghost' White",
+          "name": "Oversized Ghost",
           "badge": "LIMITADO",
           "price": "189.90",
           "oldPrice": "249.00",
-          "description": "Algodão Egípcio, gramatura 240g. Estampa em High Density.",
-          "foto": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-          "name": "Moletom 'Night Crawler'",
-          "badge": "MAIS VENDIDO",
-          "price": "320.00",
-          "oldPrice": "380.00",
-          "description": "Corte Boxy, interior flanelado, acabamento estonado.",
-          "foto": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=800&q=80"
-        }
-      ]
-    },
-    {
-      "name": "Calças",
-      "icon": "👖",
-      "plans": [
-        {
-          "name": "Cargo Techwear V2",
-          "badge": "NEW",
-          "price": "259.00",
-          "oldPrice": null,
-          "description": "Tecido repelente à água, 6 bolsos utilitários.",
-          "foto": "https://images.unsplash.com/photo-1517441662441-b15a624d9f1b?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-          "name": "Jeans Baggy Raw",
-          "badge": "PROMO",
-          "price": "199.00",
-          "oldPrice": "289.00",
-          "description": "Corte amplo, lavagem escura clássica.",
-          "foto": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80"
+          "description": "Algodão Egípcio, gramatura 240g.",
+          "foto": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800"
         }
       ]
     },
@@ -60,12 +30,12 @@
       "icon": "🕶️",
       "plans": [
         {
-          "name": "Shoulder Bag 'Noir'",
-          "badge": "ESSENCIAL",
+          "name": "Shoulder Bag Noir",
+          "badge": "NEW",
           "price": "89.00",
           "oldPrice": null,
-          "description": "Nylon balístico com alça personalizada.",
-          "foto": "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80"
+          "description": "Nylon balístico de alta resistência.",
+          "foto": "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800"
         }
       ]
     }
