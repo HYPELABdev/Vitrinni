@@ -5,7 +5,7 @@
   "subtitle": "DROP 2026 // STREET LUXURY",
   "promo": "🔥 FRETE GRÁTIS EM COMPRAS ACIMA DE R$ 300",
   "whatsapp": "5511949946730",
-  "color": "#00ff00",
+  "color": "#0000ff",
   "stats": {
     "sales": "1.840",
     "online": "56"
@@ -90,6 +90,12 @@
           "oldPrice": "149.00",
           "description": "Bordado em alto relevo.",
           "foto": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800"
+        },
+        {
+          "name": "Novo Produto",
+          "price": "0.00",
+          "description": "",
+          "foto": ""
         }
       ]
     }
