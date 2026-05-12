@@ -93,9 +93,9 @@
         },
         {
           "name": "Novo Produto",
-          "price": "0.00",
-          "description": "",
-          "foto": ""
+          "price": "10.00",
+          "description": "Teste",
+          "foto": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800"
         }
       ]
     }
