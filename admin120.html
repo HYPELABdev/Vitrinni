@@ -2,163 +2,94 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HYPELAB | Editor de Inventário</title>
+    <title>EDITOR HYPELAB</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;700&display=swap');
         body { background: #050505; color: #eee; font-family: 'Inter', sans-serif; }
-        .lux-font { font-family: 'Syncopate', sans-serif; }
-        .gold-border { border-color: #bc9c6c; }
-        .gold-text { color: #bc9c6c; }
-        
-        /* Estilo dos Inputs */
-        input, textarea {
-            background: #111 !important;
-            border: 1px solid #333 !important;
-            color: #fff !important;
-            padding: 8px !important;
-            border-radius: 6px !important;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        input:focus { border-color: #bc9c6c !important; outline: none; }
-
-        /* Container do Preview de Imagem */
-        .image-preview-card {
-            background: #0a0a0a;
-            border-left: 4px solid #bc9c6c;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 0 15px 15px 0;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .image-preview-card img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 10px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-        }
-        .category-block {
-            border: 1px solid #222;
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            background: #080808;
-        }
+        .node { margin-left: 20px; border-left: 1px solid #222; padding-left: 10px; }
+        .key { color: #bc9c6c; font-weight: bold; font-size: 13px; }
+        input { background: #111; border: 1px solid #333; color: #fff; padding: 3px 8px; border-radius: 4px; margin: 2px 0; outline: none; width: 300px; }
+        input:focus { border-color: #bc9c6c; }
+        .preview-img { width: 60px; height: 60px; object-fit: cover; border: 1px solid #bc9c6c; border-radius: 8px; margin-left: 10px; display: inline-block; vertical-align: middle; background: #000; }
     </style>
 </head>
-<body class="p-6">
+<body class="p-10">
 
-    <nav class="flex justify-between items-center mb-10 border-b border-white/5 pb-5">
-        <div class="lux-font text-2xl">HYPELAB<span class="gold-text">.</span>EDITOR</div>
-        <div class="flex gap-4">
-            <button onclick="downloadJson()" class="bg-[#bc9c6c] text-black px-6 py-2 rounded-full font-bold uppercase text-xs hover:scale-105 transition">
-                <i class="fa fa-save"></i> Salvar JSON
-            </button>
+    <div class="flex justify-between mb-8 border-b border-white/10 pb-4">
+        <h1 class="text-xl font-black uppercase">Hypelab <span style="color:#bc9c6c">Editor</span></h1>
+        <div>
+            <input type="file" id="file" class="hidden" onchange="loadFile(event)">
+            <button onclick="document.getElementById('file').click()" class="bg-white/5 border border-white/10 px-4 py-2 rounded text-xs uppercase font-bold mr-2">Abrir</button>
+            <button onclick="saveFile()" class="bg-[#bc9c6c] text-black px-4 py-2 rounded text-xs uppercase font-bold">Salvar</button>
         </div>
-    </nav>
-
-    <div class="max-w-4xl mx-auto">
-        <div class="mb-10 p-8 border-2 border-dashed border-white/10 rounded-3xl text-center">
-            <p class="text-xs opacity-50 uppercase font-black mb-4">Arraste seu arquivo roupa.json aqui</p>
-            <input type="file" id="fileInput" accept=".json" class="hidden">
-            <label for="fileInput" class="cursor-pointer bg-white/5 px-8 py-3 rounded-xl border border-white/10 hover:bg-white/10 transition"> Selecionar Arquivo </label>
-        </div>
-
-        <div id="editor-container">
-            </div>
     </div>
 
+    <div id="editor"></div>
+
     <script>
-        let currentData = null;
+        let data = {};
 
-        // Listener para carregar o arquivo
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                currentData = JSON.parse(event.target.result);
-                renderEditor();
-            };
-            reader.readAsText(e.target.files[0]);
-        });
-
-        function renderEditor() {
-            const container = document.getElementById('editor-container');
-            container.innerHTML = "";
-
-            if(!currentData) return;
-
-            // Renderiza Informações Gerais da Loja
-            container.innerHTML += `<h2 class="lux-font gold-text mb-4 text-sm">Configurações Gerais</h2>`;
-            const generalBlock = document.createElement('div');
-            generalBlock.className = "category-block";
-            generalBlock.innerHTML = `
-                <label class="text-[10px] opacity-40 uppercase font-bold">Nome da Marca</label>
-                <input type="text" value="${currentData.brand}" oninput="currentData.brand = this.value">
+        // ESSA É A LÓGICA EXATA DA SUA BASE64
+        function render(obj, container) {
+            Object.entries(obj).forEach(([key, value]) => {
+                const div = document.createElement('div');
+                div.className = 'node';
                 
-                <label class="text-[10px] opacity-40 uppercase font-bold">WhatsApp (Ex: 5511999999999)</label>
-                <input type="text" value="${currentData.whatsapp}" oninput="currentData.whatsapp = this.value">
-            `;
-            container.appendChild(generalBlock);
+                const label = document.createElement('span');
+                label.className = 'key';
+                label.innerText = key + ": ";
+                div.appendChild(label);
 
-            // Renderiza Categorias e Produtos
-            currentData.categories.forEach((cat, catIdx) => {
-                const catDiv = document.createElement('div');
-                catDiv.className = "category-block";
-                catDiv.innerHTML = `<h3 class="lux-font text-xl mb-6">Categoria: <input type="text" class="inline-block w-auto" value="${cat.name}" oninput="currentData.categories[${catIdx}].name = this.value"></h3>`;
+                if (typeof value === 'object' && value !== null) {
+                    div.appendChild(document.createTextNode(Array.isArray(value) ? '[' : '{'));
+                    render(value, div);
+                    const close = document.createElement('div');
+                    close.innerText = Array.isArray(value) ? ']' : '}';
+                    div.appendChild(close);
+                } else {
+                    const input = document.createElement('input');
+                    input.value = value;
+                    input.oninput = (e) => {
+                        obj[key] = e.target.value;
+                        // Injeção do Preview em tempo real
+                        if (key === 'foto') {
+                            const img = div.querySelector('img');
+                            if(img) img.src = e.target.value;
+                        }
+                    };
+                    div.appendChild(input);
 
-                cat.plans.forEach((prod, prodIdx) => {
-                    const prodId = `prod-${catIdx}-${prodIdx}`;
-                    const prodDiv = document.createElement('div');
-                    prodDiv.className = "mb-8 p-6 bg-black/40 rounded-2xl border border-white/5";
-                    
-                    prodDiv.innerHTML = `
-                        <div class="image-preview-card">
-                            <img src="${prod.foto}" id="preview-${prodId}">
-                            <div class="flex-1">
-                                <label class="text-[10px] gold-text uppercase font-black">URL da Foto</label>
-                                <input type="text" value="${prod.foto}" oninput="updateImage('${prodId}', ${catIdx}, ${prodIdx}, this.value)">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="text-[10px] opacity-40 uppercase font-bold">Nome do Produto</label>
-                                <input type="text" value="${prod.name}" oninput="currentData.categories[${catIdx}].plans[${prodIdx}].name = this.value">
-                            </div>
-                            <div>
-                                <label class="text-[10px] opacity-40 uppercase font-bold">Preço (Ex: 150,00)</label>
-                                <input type="text" value="${prod.price}" oninput="currentData.categories[${catIdx}].plans[${prodIdx}].price = this.value">
-                            </div>
-                        </div>
-                    `;
-                    catDiv.appendChild(prodDiv);
-                });
-                container.appendChild(catDiv);
+                    // Lógica de Reconhecimento de Imagem
+                    if (key === 'foto') {
+                        const img = document.createElement('img');
+                        img.className = 'preview-img';
+                        img.src = value;
+                        img.onerror = () => img.style.display = 'none';
+                        img.onload = () => img.style.display = 'inline-block';
+                        div.appendChild(img);
+                    }
+                }
+                container.appendChild(div);
             });
         }
 
-        // Atualiza a imagem em tempo real
-        function updateImage(id, cIdx, pIdx, val) {
-            currentData.categories[cIdx].plans[pIdx].foto = val;
-            document.getElementById(`preview-${id}`).src = val;
+        function loadFile(e) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                data = JSON.parse(reader.result);
+                const container = document.getElementById('editor');
+                container.innerHTML = '';
+                render(data, container);
+            };
+            reader.readAsText(e.target.files[0]);
         }
 
-        // Função para baixar o JSON atualizado
-        function downloadJson() {
-            if(!currentData) return alert("Carregue um JSON primeiro!");
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentData, null, 4));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", "roupa.json");
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
+        function saveFile() {
+            const blob = new Blob([JSON.stringify(data, null, 4)], {type: 'application/json'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'roupa.json';
+            a.click();
         }
     </script>
 </body>
