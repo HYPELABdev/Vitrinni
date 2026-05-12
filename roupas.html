@@ -3,124 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HYPELAB | UnderLux Collection</title>
+    <title>HYPELAB | UnderLux</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;700;900&display=swap');
-        
-        :root { --main: #bc9c6c; --bg: #050505; }
-        
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        
+        :root { --main: #bc9c6c; }
+        body { background: #050505; color: #fff; font-family: 'Inter', sans-serif; }
         .lux-text { font-family: 'Syncopate', sans-serif; }
-
-        /* Barra de Navegação Glassmorphism */
-        nav {
-            background: rgba(5, 5, 5, 0.8);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        /* Estilização das Abas */
-        .tabs-scroll::-webkit-scrollbar { display: none; }
-        .tab-btn {
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-[900] text-[10px] uppercase tracking-widest;
-            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.02);
-            color: rgba(255,255,255,0.5);
-            white-space: nowrap;
-        }
-        .tab-btn.active {
-            background: var(--main);
-            color: #000;
-            border-color: var(--main);
-            box-shadow: 0 0 20px rgba(188, 156, 108, 0.3);
-        }
-
-        /* Card de Produto High-End */
-        .card-hypelab {
-            background: linear-gradient(145deg, #0d0d0d 0%, #050505 100%);
-            border: 1px solid rgba(255,255,255,0.03);
-            transition: 0.5s ease;
-        }
-        .card-hypelab:hover {
-            border-color: var(--main);
-            transform: translateY(-8px);
-        }
-
-        .img-zoom { transition: transform 0.8s ease; }
-        .card-hypelab:hover .img-zoom { transform: scale(1.1); }
-
-        /* Carrinho Flutuante */
-        #cart-bar {
-            background: rgba(10, 10, 10, 0.9);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--main);
-            animation: slideUp 0.5s ease-out;
-        }
-
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-        /* Fake Popup */
-        #fake-popup {
-            position: fixed; bottom: 100px; left: 20px;
-            background: #111; border: 1px solid var(--main);
-            border-radius: 15px; display: none; z-index: 100;
-        }
+        .tab-btn.active { background: var(--main); color: #000; border-color: var(--main); }
+        .card-premium { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.05); transition: 0.4s; }
+        .card-premium:hover { border-color: var(--main); transform: translateY(-5px); }
     </style>
 </head>
 <body>
 
-    <nav class="fixed w-full z-50 p-5 flex justify-between items-center">
-        <div class="lux-text text-xl tracking-tighter" id="brand-logo">HYPELAB<span class="text-[#bc9c6c]">.</span></div>
-        <div class="flex gap-6">
-            <div class="text-right">
-                <p class="text-[9px] uppercase opacity-40 font-bold">Vendas</p>
-                <p class="text-xs font-black" id="s-vendas">0</p>
-            </div>
-            <div class="text-right">
-                <p class="text-[9px] uppercase opacity-40 font-bold text-green-500">Live</p>
-                <p class="text-xs font-black" id="s-online">0</p>
-            </div>
+    <nav class="fixed w-full z-50 p-5 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/5">
+        <div class="lux-text text-xl tracking-tighter" id="brand-logo">HYPELAB<span>.</span></div>
+        <div class="flex gap-4 text-[10px] font-bold opacity-60">
+            <span>🔥 <span id="s-vendas">0</span> VENDAS</span>
+            <span class="text-green-500">● <span id="s-online" class="text-white">0</span> ONLINE</span>
         </div>
     </nav>
 
-    <header class="pt-40 pb-20 px-6 text-center bg-[radial-gradient(circle_at_top,rgba(188,156,108,0.1)_0%,transparent_50%)]">
-        <p class="text-[10px] tracking-[8px] uppercase opacity-40 mb-4" id="promo-text">Carregando promoções...</p>
-        <h1 class="lux-text text-5xl md:text-8xl mb-4" id="hero-title">DROPS</h1>
-        <div class="tabs-scroll flex justify-center gap-3 mt-12 overflow-x-auto px-4" id="tab-list"></div>
+    <header class="pt-40 pb-16 px-6 text-center">
+        <p class="text-[10px] tracking-[8px] uppercase opacity-40 mb-4" id="promo-text">LEVEL UP YOUR STYLE</p>
+        <h1 class="lux-text text-5xl md:text-7xl mb-10" id="hero-title">COLLECTION</h1>
+        <div id="tab-list" class="flex justify-center gap-2 overflow-x-auto pb-4 no-scrollbar"></div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 pb-48">
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    <main class="max-w-7xl mx-auto px-6 pb-40">
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
     </main>
 
-    <div id="cart-bar" class="fixed bottom-0 left-0 w-full p-6 z-50 flex justify-between items-center hidden">
-        <div class="flex items-center gap-4">
-            <div class="bg-white/10 p-3 rounded-2xl"><i class="fa fa-shopping-bag text-[#bc9c6c]"></i></div>
-            <div>
-                <p id="cart-count" class="text-[10px] uppercase font-bold opacity-50">0 Itens Selecionados</p>
-                <p id="cart-total" class="text-2xl font-black text-[#bc9c6c]">R$ 0,00</p>
-            </div>
+    <div id="cart-bar" class="fixed bottom-0 left-0 w-full bg-black/90 backdrop-blur-xl border-t border-[#bc9c6c] p-6 z-50 flex justify-between items-center hidden">
+        <div>
+            <p id="cart-count" class="text-[10px] uppercase opacity-50">0 ITENS</p>
+            <p id="cart-total" class="text-2xl font-black text-[#bc9c6c]">R$ 0,00</p>
         </div>
-        <button onclick="finishOrder()" class="bg-[#bc9c6c] text-black px-10 py-4 rounded-2xl font-black text-xs uppercase hover:scale-105 transition-all">
-            Finalizar via WhatsApp
-        </button>
-    </div>
-
-    <div id="fake-popup" class="p-4 shadow-2xl">
-        <div class="flex items-center gap-4">
-            <div class="w-10 h-10 bg-[#bc9c6c]/20 rounded-full flex items-center justify-center text-xl">🔥</div>
-            <div>
-                <p class="text-[11px] font-bold" id="pop-user">Alguém de Rio de Janeiro</p>
-                <p class="text-[10px] opacity-50">acabou de garantir um Drop!</p>
-            </div>
-        </div>
+        <button onclick="finishOrder()" class="bg-[#bc9c6c] text-black px-10 py-4 rounded-xl font-black text-xs uppercase">Finalizar WhatsApp</button>
     </div>
 
     <script>
@@ -128,71 +49,63 @@
         let DATA = {};
         let cart = [];
 
-        async function loadStore() {
+        async function init() {
             try {
                 const res = await fetch(`${URL_JSON}?v=${Date.now()}`);
-                DATA = await res.json();
+                const text = await res.text(); // Pega como texto primeiro para validar
                 
-                // UI Updates
+                try {
+                    DATA = JSON.parse(text);
+                } catch(e) {
+                    throw new Error("Erro de sintaxe no JSON (Verifique vírgulas ou aspas)");
+                }
+
+                if (!DATA.categories) throw new Error("A chave 'categories' não foi encontrada no JSON");
+
+                // Preencher UI
                 document.getElementById('hero-title').innerText = DATA.hero;
-                document.getElementById('promo-text').innerText = DATA.promo || DATA.subtitle;
                 document.getElementById('s-vendas').innerText = DATA.stats.sales;
                 document.getElementById('s-online').innerText = DATA.stats.online;
                 document.documentElement.style.setProperty('--main', DATA.color);
 
                 renderTabs();
-                startSocialProof();
-                liveCounters();
             } catch (e) {
-                console.error("Erro ao carregar vitrine:", e);
+                document.getElementById('product-grid').innerHTML = `<div class="col-span-full text-center py-20 text-red-500 font-bold">${e.message}</div>`;
             }
         }
 
         function renderTabs() {
-            const container = document.getElementById('tab-list');
-            DATA.categories.forEach((cat, index) => {
+            const list = document.getElementById('tab-list');
+            DATA.categories.forEach((cat, i) => {
                 const btn = document.createElement('button');
-                btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+                btn.className = `tab-btn px-6 py-2 rounded-full border border-white/10 text-[10px] font-black uppercase transition ${i===0 ? 'active' : ''}`;
                 btn.innerHTML = `${cat.icon} ${cat.name}`;
                 btn.onclick = (e) => {
                     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     renderProducts(cat.plans);
                 };
-                container.appendChild(btn);
+                list.appendChild(btn);
             });
             renderProducts(DATA.categories[0].plans);
         }
 
-        function renderProducts(products) {
+        function renderProducts(plans) {
             const grid = document.getElementById('product-grid');
             grid.innerHTML = "";
-
-            products.forEach(item => {
-                const hasPromo = item.oldPrice && parseFloat(item.oldPrice) > parseFloat(item.price);
-                const offPercent = hasPromo ? Math.round((1 - (parseFloat(item.price)/parseFloat(item.oldPrice))) * 100) : 0;
-
+            plans.forEach(item => {
                 grid.innerHTML += `
-                    <div class="card-hypelab rounded-[2.5rem] p-5">
-                        <div class="relative overflow-hidden rounded-[2rem] aspect-[3/4] mb-6">
-                            <img src="${item.foto}" class="img-zoom w-full h-full object-cover">
-                            ${hasPromo ? `<span class="absolute top-4 left-4 bg-red-600 text-[10px] font-black px-3 py-1 rounded-full">-${offPercent}% OFF</span>` : ''}
-                            ${item.badge ? `<span class="absolute top-4 right-4 bg-black/80 backdrop-blur-md border border-white/10 text-[9px] font-black px-3 py-1 rounded-full gold-accent">${item.badge}</span>` : ''}
+                    <div class="card-premium rounded-[2rem] p-4">
+                        <div class="relative overflow-hidden rounded-[1.5rem] mb-4 aspect-[3/4]">
+                            <img src="${item.foto}" class="w-full h-full object-cover">
+                            ${item.badge ? `<span class="absolute top-3 right-3 bg-black/80 text-[9px] font-black px-3 py-1 rounded-full border border-white/10 text-[#bc9c6c]">${item.badge}</span>` : ''}
                         </div>
-                        
-                        <div class="px-2">
-                            <h3 class="lux-text text-[11px] tracking-widest opacity-40 mb-2 uppercase">${item.name}</h3>
-                            <p class="text-[12px] opacity-70 mb-6 leading-relaxed h-10 overflow-hidden">${item.description}</p>
-                            
-                            <div class="flex justify-between items-end">
-                                <div>
-                                    ${hasPromo ? `<p class="text-[11px] line-through opacity-30 mb-1">R$ ${item.oldPrice}</p>` : ''}
-                                    <p class="text-3xl font-black tracking-tighter text-[#bc9c6c]">R$ ${item.price}</p>
-                                </div>
-                                <button onclick="addToCart('${item.name}', '${item.price}')" class="w-14 h-14 bg-white text-black rounded-2xl flex items-center justify-center hover:bg-[#bc9c6c] transition-all">
-                                    <i class="fa fa-plus text-lg"></i>
-                                </button>
-                            </div>
+                        <h3 class="lux-text text-[10px] opacity-60 mb-2">${item.name}</h3>
+                        <div class="flex justify-between items-center">
+                            <p class="text-2xl font-black">R$ ${item.price}</p>
+                            <button onclick="addToCart('${item.name}', ${item.price})" class="w-10 h-10 rounded-full bg-[#bc9c6c] text-black flex items-center justify-center">
+                                <i class="fa fa-plus"></i>
+                            </button>
                         </div>
                     </div>
                 `;
@@ -200,47 +113,20 @@
         }
 
         function addToCart(name, price) {
-            cart.push({ name, price: parseFloat(price) });
-            const cartBar = document.getElementById('cart-bar');
-            cartBar.classList.remove('hidden');
-            
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            document.getElementById('cart-total').innerText = `R$ ${total.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            document.getElementById('cart-count').innerText = `${cart.length} Itens no Carrinho`;
-            
-            // Efeito visual no botão
-            event.currentTarget.innerHTML = '<i class="fa fa-check"></i>';
-            setTimeout(() => { document.querySelectorAll('.fa-check').forEach(el => el.className = 'fa fa-plus text-lg') }, 1000);
+            cart.push({name, price});
+            const total = cart.reduce((acc, i) => acc + i.price, 0);
+            document.getElementById('cart-bar').classList.remove('hidden');
+            document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2)}`;
+            document.getElementById('cart-count').innerText = `${cart.length} ITENS SELECIONADOS`;
         }
 
         function finishOrder() {
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            let pedido = cart.map(i => `• ${i.name} (R$ ${i.price.toFixed(2)})`).join('%0A');
-            
-            const texto = `🛒 *NOVO PEDIDO - ${DATA.brand}*%0A%0A*Itens:*%0A${pedido}%0A%0A*Total:* R$ ${total.toFixed(2)}%0A%0A_Aguardando instruções de pagamento via PIX._`;
-            window.open(`https://wa.me/${DATA.whatsapp}?text=${texto}`, '_blank');
+            const total = cart.reduce((acc, i) => acc + i.price, 0);
+            const msg = encodeURIComponent(`🛒 *PEDIDO HYPELAB*\n\n${cart.map(i => `• ${i.name}`).join('\n')}\n\n*TOTAL:* R$ ${total.toFixed(2)}`);
+            window.open(`https://wa.me/${DATA.whatsapp}?text=${msg}`);
         }
 
-        function startSocialProof() {
-            const cities = ["São Paulo", "Rio de Janeiro", "Curitiba", "Belo Horizonte", "Brasília", "Salvador"];
-            setInterval(() => {
-                const city = cities[Math.floor(Math.random() * cities.length)];
-                document.getElementById('pop-user').innerText = `Alguém de ${city}`;
-                const pop = document.getElementById('fake-popup');
-                pop.style.display = 'block';
-                setTimeout(() => pop.style.display = 'none', 5000);
-            }, 20000);
-        }
-
-        function liveCounters() {
-            setInterval(() => {
-                const el = document.getElementById('s-online');
-                let val = parseInt(el.innerText);
-                el.innerText = val + (Math.random() > 0.5 ? 1 : -1);
-            }, 4000);
-        }
-
-        window.onload = loadStore;
+        window.onload = init;
     </script>
 </body>
 </html>
