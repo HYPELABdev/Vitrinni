@@ -1,0 +1,37 @@
+{
+  "last_update": "2026-05-12",
+  "roupas": [
+    {
+      "id": 101,
+      "modelo": "T-Shirt Oversized Death-Vibe",
+      "valor": "289,90",
+      "tag": "DROPPING NOW",
+      "foto_url": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1000",
+      "checkout": "https://checkout.exemplo.com/p1"
+    },
+    {
+      "id": 102,
+      "modelo": "Hoodie Archive Gold-Label",
+      "valor": "450,00",
+      "tag": "LIMITED EDITION",
+      "foto_url": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=1000",
+      "checkout": "https://checkout.exemplo.com/p2"
+    },
+    {
+      "id": 103,
+      "modelo": "Cargo Pants Tech-Wear V2",
+      "valor": "320,00",
+      "tag": "LAST PIECES",
+      "foto_url": "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=1000",
+      "checkout": "https://checkout.exemplo.com/p3"
+    },
+    {
+      "id": 104,
+      "modelo": "Jaqueta Bomber Midnight Lux",
+      "valor": "890,00",
+      "tag": "PREMIUM STOCK",
+      "foto_url": "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=1000",
+      "checkout": "https://checkout.exemplo.com/p4"
+    }
+  ]
+}
