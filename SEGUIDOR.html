@@ -1,10 +1,181 @@
-<script>
-(function(){
-    var _r = "==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".split('').reverse().join(''); 
-    document.open();
-    document.write(decodeURIComponent(escape(atob(_r))));
-    document.close();
-    document.oncontextmenu = () => false;
-    document.onkeydown = e => { if(e.keyCode==123 || (e.ctrlKey && e.shiftKey && e.keyCode==73)) return false; };
-})();
-</script>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYPELAB | VITRINNI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --main: #8b5cf6; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:Poppins,sans-serif; }
+        body { background:#0b1020; color:white; overflow-x:hidden; }
+        .bg { position:fixed; inset:0; z-index:-1; background: radial-gradient(circle at top left,rgba(139, 92, 246, 0.15),transparent 30%), linear-gradient(-45deg,#0b1020,#11182b,#0f1726); background-size:300% 300%; animation:bg 10s ease infinite; }
+        @keyframes bg { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        header { text-align:center; padding:50px 20px 30px; }
+        .logo { font-size:72px; font-weight:800; letter-spacing:4px; text-transform: uppercase; }
+        .logo .highlight { color:var(--main); text-shadow:0 0 20px var(--main); }
+        .hero { margin-top:14px; font-size:24px; font-weight:700; opacity: 0.8; }
+        .live-stats { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
+        .live-item { background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 50px; font-size: 11px; border: 1px solid rgba(255,255,255,0.1); }
+        .dot { height: 8px; width: 8px; background-color: #00ff88; border-radius: 50%; display: inline-block; margin-right: 5px; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        #notification-toast { position: fixed; bottom: 20px; left: 20px; background: rgba(15, 23, 42, 0.95); border: 1px solid var(--main); padding: 15px; border-radius: 15px; display: flex; align-items: center; gap: 12px; z-index: 9999; transform: translateX(-150%); transition: 0.5s; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        #notification-toast.show { transform: translateX(0); }
+        .tabs { display: flex; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 25px; border-radius: 100px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .tab-btn.active { background: var(--main); box-shadow: 0 0 15px var(--main); }
+        .container { max-width:900px; margin:auto; padding:20px; padding-bottom:120px; }
+        .cards { display:grid; gap:18px; }
+        .card { padding:24px; border-radius:26px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); transition:.25s; cursor:pointer; }
+        .card.active { border-color:var(--main); transform:scale(1.02); background: rgba(139, 92, 246, 0.05); box-shadow: 0 0 30px rgba(139, 92, 246, 0.1); }
+        .price { margin-top:10px; font-size:38px; font-weight:800; color:var(--main); }
+        .form { margin-top:24px; padding:24px; border-radius:24px; background:rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,.06); }
+        input { width:100%; padding:15px; border:none; border-radius:16px; background:rgba(255,255,255,.05); color:white; margin-top:14px; outline: none; border: 1px solid transparent; transition: 0.3s; }
+        input:focus { border-color: var(--main); }
+        button#cta { width:100%; padding:18px; margin-top:16px; border:none; border-radius:18px; background: var(--main); color:white; font-size:16px; font-weight:800; cursor:pointer; transition:.25s; text-transform: uppercase; }
+        button#cta:hover { transform: translateY(-2px); filter: brightness(1.1); }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+
+    <div id="notification-toast">
+        <div style="font-size: 20px;">🚀</div>
+        <div class="toast-content">
+            <b id="toast-user" style="color:var(--main); font-size:13px; display:block;">Carregando...</b>
+            <span id="toast-msg" style="font-size:12px;">Acabou de comprar!</span>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo"><span id="brand1"></span><span class="highlight" id="brand2"></span></div>
+        <div class="hero" id="hero"></div>
+        <div class="live-stats">
+            <div class="live-item"><span class="dot"></span> <span id="count-online">142</span> online</div>
+            <div class="live-item">🔥 <span id="count-orders">1,240</span> pedidos hoje</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tabs" id="category-tabs"></div>
+        <div class="cards" id="plans-list"></div>
+        <div class="form">
+            <input type="text" id="user-input" placeholder="Digite seu @ ou Link do Perfil">
+            <button onclick="finishOrder()" id="cta">Escolha um Pacote</button>
+        </div>
+    </div>
+
+    <script>
+        let CONFIG = {};
+        let selectedPlan = null;
+        let currentCategoryIndex = 0;
+
+        // --- LÓGICA DE DETECÇÃO DE CLIENTE (GITHUB PAGES) ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const clientId = urlParams.get('id'); 
+
+        // Se tiver ?id=levelup na URL, busca em Clientes/levelup.json
+        // Se não tiver, usa o arquivo padrão config_Seguidor.json
+        const jsonPath = clientId ? `./Clientes/${clientId}.json` : './config_Seguidor.json';
+
+        fetch(jsonPath)
+            .then(res => {
+                if(!res.ok) throw new Error("Arquivo não encontrado");
+                return res.json();
+            })
+            .then(data => {
+                CONFIG = data;
+                applyConfig();
+                startSocialProof();
+            })
+            .catch(err => {
+                console.error("Erro ao carregar dados:", err);
+                alert("Erro: ID de Vitrine não encontrado.");
+            });
+
+        function applyConfig() {
+            document.documentElement.style.setProperty('--main', CONFIG.color || '#8b5cf6');
+            document.getElementById('brand1').innerText = CONFIG.brand || 'HYPE';
+            document.getElementById('brand2').innerText = CONFIG.brandHighlight || 'LAB';
+            document.getElementById('hero').innerText = CONFIG.hero || 'Especialista em SMM';
+            renderTabs();
+            renderCategory(0);
+        }
+
+        function renderTabs() {
+            const container = document.getElementById('category-tabs');
+            container.innerHTML = CONFIG.categories.map((cat, i) => `
+                <button class="tab-btn ${i === 0 ? 'active' : ''}" onclick="changeTab(this, ${i})">
+                    ${cat.icon || '🚀'} ${cat.name}
+                </button>
+            `).join('');
+        }
+
+        function changeTab(btn, index) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderCategory(index);
+        }
+
+        function renderCategory(idx) {
+            currentCategoryIndex = idx;
+            const list = document.getElementById('plans-list');
+            const plans = CONFIG.categories[idx].plans;
+            
+            list.innerHTML = plans.map((p, i) => `
+                <div class="card" onclick="selectPlan(this, ${idx}, ${i})">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h3 style="font-size:18px;">${p.name}</h3>
+                        ${p.badge ? `<span style="background:var(--main); font-size:10px; padding:3px 8px; border-radius:50px; font-weight:bold;">${p.badge}</span>` : ''}
+                    </div>
+                    <div class="price">${p.price}</div>
+                    <p style="font-size:12px; opacity:0.6; margin-top:10px;">${p.description || p.quality || ''}</p>
+                </div>
+            `).join('');
+            
+            // Seleciona o primeiro por padrão
+            const firstCard = list.querySelector('.card');
+            if(firstCard) firstCard.click();
+        }
+
+        function selectPlan(el, cIdx, pIdx) {
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            selectedPlan = CONFIG.categories[cIdx].plans[pIdx];
+            document.getElementById('cta').innerText = `Comprar ${selectedPlan.name}`;
+        }
+
+        function finishOrder() {
+            const user = document.getElementById('user-input').value.trim();
+            if(!selectedPlan || !user) return alert("Por favor, selecione um plano e informe o seu perfil!");
+            
+            const msg = `🚀 *NOVO PEDIDO HYPELAB*\n\n📦 *Pacote:* ${selectedPlan.name}\n💰 *Valor:* ${selectedPlan.price}\n👤 *Perfil/Link:* ${user}`;
+            window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function startSocialProof() {
+            // Contador Online Aleatório
+            setInterval(() => {
+                const online = Math.floor(Math.random() * (190 - 130) + 130);
+                document.getElementById('count-online').innerText = online;
+            }, 7000);
+
+            // Toasts de Vendas
+            const names = ["Marcos", "Ana", "Felipe", "Julia", "Lucas", "Carla", "Beatriz", "Ricardo", "Amanda", "Gustavo"];
+            const actions = ["1.000 Seguidores", "500 Curtidas", "10.000 Views", "5.000 Seguidores"];
+
+            setInterval(() => {
+                const name = names[Math.floor(Math.random() * names.length)];
+                const action = actions[Math.floor(Math.random() * actions.length)];
+                const toast = document.getElementById('notification-toast');
+                
+                document.getElementById('toast-user').innerText = `${name} (Acabou de comprar)`;
+                document.getElementById('toast-msg').innerText = `Pacote: ${action}`;
+                
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 5000);
+            }, Math.random() * (20000 - 12000) + 12000);
+        }
+    </script>
+</body>
+</html>
