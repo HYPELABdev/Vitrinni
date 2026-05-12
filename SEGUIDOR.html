@@ -3,52 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEVEL UP | Engagement</title>
+    <title>LEVEL UP | Premium Engagement</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --main: #00ff00; } /* Puxando o verde do seu JSON */
+        :root { --main: #00ff00; --bg-dark: #05070a; }
+        
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif; }
-        body { background:#0b1020; color:white; overflow-x:hidden; min-height: 100vh; }
-        .bg { position:fixed; inset:0; z-index:-1; background: radial-gradient(circle at top left,rgba(0,255,0,.05),transparent 30%), linear-gradient(-45deg,#0b1020,#11182b,#0f1726); background-size:300% 300%; animation:bg 10s ease infinite; }
-        @keyframes bg { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-        header { text-align:center; padding:50px 20px 30px; }
-        .logo { font-size:62px; font-weight:800; letter-spacing:4px; text-transform: uppercase; }
-        .logo .highlight { color:var(--main); text-shadow:0 0 20px var(--main); }
-        .tab-btn { padding: 12px 20px; border-radius: 14px; background: rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s; font-size: 10px; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.1); }
-        .tab-btn.active { border-color: var(--main); background: rgba(0,255,0,0.15); color: var(--main); }
-        .card { padding:24px; border-radius:26px; background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,.06); transition:.25s; cursor:pointer; }
-        .card.active { border-color:var(--main); box-shadow:0 0 30px rgba(0,255,0,0.1); transform:scale(1.02); }
-        .price { margin-top:10px; font-size:38px; font-weight:800; color:var(--main); }
-        .form { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); border-radius:24px; padding:24px; margin-top:30px; }
-        input { width:100%; padding:16px; border-radius:16px; background:rgba(255,255,255,0.08); color:white; border:1px solid rgba(255,255,255,0.1); outline:none; margin-top:12px; }
-        button#cta { width:100%; padding:20px; margin-top:16px; border-radius:20px; background: linear-gradient(45deg, var(--main), #008000); color:black; font-weight:800; font-size: 16px; cursor:pointer; transition: 0.3s; }
+        body { background: var(--bg-dark); color:white; overflow-x:hidden; min-height: 100vh; }
+
+        /* --- EFEITO DE PARTÍCULAS --- */
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            color: var(--main);
+            opacity: 0.2;
+            filter: blur(1px);
+            animation: float 15s linear infinite;
+            font-size: 20px;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- GLASSMORPHISM & UI --- */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+        }
+
+        header { text-align:center; padding:60px 20px 40px; }
+        .logo { font-size:54px; font-weight:900; letter-spacing:-1px; text-transform: uppercase; line-height: 1; }
+        .logo .highlight { 
+            color: var(--main); 
+            text-shadow: 0 0 30px rgba(0, 255, 0, 0.5); 
+        }
+
+        .tab-btn { 
+            padding: 10px 18px; 
+            border-radius: 12px; 
+            background: rgba(255,255,255,0.05); 
+            cursor: pointer; 
+            transition: 0.4s; 
+            font-size: 11px; 
+            font-weight: 700; 
+            white-space: nowrap;
+            border: 1px solid transparent;
+        }
+        .tab-btn.active { 
+            background: var(--main); 
+            color: black; 
+            box-shadow: 0 0 20px rgba(0,255,0,0.3);
+        }
+
+        .card { 
+            padding:20px; 
+            border-radius:22px; 
+            background: rgba(255,255,255,0.02); 
+            border:1px solid rgba(255,255,255,.05); 
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card.active { 
+            border-color: var(--main); 
+            background: rgba(0,255,0,0.03);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .price { font-size:32px; font-weight:800; color:var(--main); }
+
+        input { 
+            width:100%; padding:18px; border-radius:18px; 
+            background: rgba(0,0,0,0.3); color:white; 
+            border:1px solid rgba(255,255,255,0.1); outline:none; 
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--main); box-shadow: 0 0 15px rgba(0,255,0,0.1); }
+
+        #cta { 
+            width:100%; padding:20px; margin-top:16px; border-radius:18px; 
+            background: var(--main); color:black; 
+            font-weight:900; font-size: 16px; text-transform: uppercase;
+            transition: 0.3s; cursor: pointer;
+        }
+        #cta:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+        /* Esconder scrollbar */
+        #tab-list::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 
-<div class="bg"></div>
+<div class="particles" id="particle-container"></div>
 
 <header>
     <div class="logo"><span id="b1">LEVEL</span><span class="highlight" id="b2">UP</span></div>
-    <div class="hero text-xl font-bold mt-2 opacity-80" id="hero-text">...</div>
-    <div class="flex justify-center gap-4 mt-4 text-[10px] opacity-50 uppercase tracking-widest">
-        <span>🔥 <span id="s-vendas">0</span> Vendas</span>
-        <span>🔴 <span id="s-online">0</span> Online</span>
+    <div class="hero text-gray-400 font-medium mt-3 tracking-wide" id="hero-text">Carregando...</div>
+    <div class="flex justify-center gap-6 mt-6">
+        <div class="text-center">
+            <div class="text-white font-bold text-lg" id="s-vendas">0</div>
+            <div class="text-[10px] text-gray-500 uppercase tracking-widest">Vendas</div>
+        </div>
+        <div class="h-10 w-[1px] bg-white/10"></div>
+        <div class="text-center">
+            <div class="text-white font-bold text-lg" id="s-online">0</div>
+            <div class="text-[10px] text-gray-500 uppercase tracking-widest">Online</div>
+        </div>
     </div>
 </header>
 
-<div class="container max-w-[700px] mx-auto p-4 pb-20">
-    <!-- ABAS DINÂMICAS -->
-    <div class="flex justify-center gap-2 mb-10 overflow-x-auto pb-2" id="tab-list"></div>
+<div class="container max-w-[500px] mx-auto p-6 pb-20">
+    <div class="flex gap-3 mb-8 overflow-x-auto" id="tab-list"></div>
 
-    <!-- PACOTES -->
     <div class="grid gap-4" id="plans-grid"></div>
 
-    <!-- CHECKOUT -->
-    <div class="form">
-        <input type="text" id="user-target" placeholder="Digite seu @ do Instagram">
-        <button onclick="sendOrder()" id="cta">SELECIONE UM PLANO</button>
+    <div class="form glass p-6 mt-8">
+        <label class="text-[11px] uppercase font-bold text-gray-400 ml-1">Seu usuário do Instagram</label>
+        <input type="text" id="user-target" placeholder="@seu-perfil">
+        <button onclick="sendOrder()" id="cta">Escolha um plano</button>
     </div>
 </div>
 
@@ -57,12 +142,26 @@
     let DATA = {};
     let selectedPlan = null;
 
+    // Gerador de Partículas (Likes e Seguidores)
+    function createParticles() {
+        const container = document.getElementById('particle-container');
+        const icons = ['❤️', '👤', '✨', '🔥'];
+        for (let i = 0; i < 20; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.innerText = icons[Math.floor(Math.random() * icons.length)];
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animationDelay = Math.random() * 15 + 's';
+            p.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            container.appendChild(p);
+        }
+    }
+
     async function fetchData() {
         try {
             const res = await fetch(`${URL_PINTURA}?t=${new Date().getTime()}`);
             DATA = await res.json();
             
-            // Aplicar Configurações do JSON
             document.getElementById('b1').innerText = DATA.brand;
             document.getElementById('b2').innerText = DATA.brandHighlight;
             document.getElementById('hero-text').innerText = DATA.hero;
@@ -71,35 +170,32 @@
             document.documentElement.style.setProperty('--main', DATA.color);
 
             renderTabs();
+            createParticles();
         } catch (e) {
-            document.getElementById('hero-text').innerText = "ERRO DE SINCRONIZAÇÃO";
+            document.getElementById('hero-text').innerText = "ERRO AO CARREGAR";
         }
     }
 
     function renderTabs() {
         const tabList = document.getElementById('tab-list');
         tabList.innerHTML = '';
-        
         DATA.categories.forEach((cat, index) => {
             const btn = document.createElement('button');
             btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
             btn.innerHTML = `${cat.icon} ${cat.name}`;
-            btn.onclick = (e) => {
+            btn.onclick = () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 renderPlans(cat);
             };
             tabList.appendChild(btn);
         });
-
-        // Carrega a primeira categoria por padrão
         renderPlans(DATA.categories[0]);
     }
 
     function renderPlans(category) {
         const grid = document.getElementById('plans-grid');
         grid.innerHTML = '';
-        
         category.plans.forEach((plan, index) => {
             const card = document.createElement('div');
             card.className = `card ${index === 0 ? 'active' : ''}`;
@@ -113,12 +209,18 @@
             };
 
             card.innerHTML = `
-                <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-lg text-white/90">${plan.name}</h3>
-                    ${plan.badge ? `<span class="text-[9px] bg-white/10 px-2 py-1 rounded-full font-bold text-green-400">${plan.badge}</span>` : ''}
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-bold text-white text-base">${plan.name}</h3>
+                        <div class="price">${plan.price}</div>
+                    </div>
+                    ${plan.badge ? `<span class="text-[10px] bg-green-500/20 text-green-400 px-3 py-1 rounded-full font-black border border-green-500/30">${plan.badge}</span>` : ''}
                 </div>
-                <div class="price">${plan.price}</div>
-                <div class="text-[11px] opacity-40 mt-2">${plan.description || ''} • ${plan.quality || 'Entrega Garantida'}</div>
+                <div class="flex items-center gap-2 mt-3 opacity-60 text-[11px]">
+                    <span>✔ ${plan.quality || 'Qualidade Alta'}</span>
+                    <span class="w-1 h-1 bg-white/30 rounded-full"></span>
+                    <span>⚡ Entrega Rápida</span>
+                </div>
             `;
             grid.appendChild(card);
         });
@@ -127,21 +229,21 @@
 
     function updateButton() {
         if(selectedPlan) {
-            document.getElementById('cta').innerText = `🚀 COMPRAR ${selectedPlan.name.toUpperCase()}`;
+            document.getElementById('cta').innerText = `Garantir ${selectedPlan.name}`;
         }
     }
 
     function sendOrder() {
         const user = document.getElementById('user-target').value;
-        if(!user) return alert("Digite o seu @!");
+        if(!user) return alert("Por favor, digite seu @!");
         
         const msg = encodeURIComponent(
-            `🚀 *NOVO PEDIDO - ${DATA.brand}${DATA.brandHighlight}*\n\n` +
-            `📦 *Plano:* ${selectedPlan.name}\n` +
-            `💰 *Valor:* ${selectedPlan.price}\n` +
-            `📸 *Perfil:* ${user}`
+            `🛒 *NOVO PEDIDO - ${DATA.brand}${DATA.brandHighlight}*\n\n` +
+            `⭐ *Serviço:* ${selectedPlan.name}\n` +
+            `💵 *Valor:* ${selectedPlan.price}\n` +
+            `👤 *Perfil:* ${user}\n\n` +
+            `Aguardando instruções para pagamento!`
         );
-
         window.open(`https://wa.me/${DATA.whatsapp}?text=${msg}`, '_blank');
     }
 
