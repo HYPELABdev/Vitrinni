@@ -1,11 +1,11 @@
 {
   "brand": "HYPELAB",
-  "brandHighlight": ".",
-  "hero": "UNDERLUX COLLECTION",
+  "brandHighlight": "STREET",
+  "hero": "FAÇA SUA MODA 👑",
   "subtitle": "DROP 2026 // STREET LUXURY",
   "promo": "🔥 FRETE GRÁTIS EM COMPRAS ACIMA DE R$ 300",
   "whatsapp": "5511949946730",
-  "color": "#bc9c6c",
+  "color": "#00ff00",
   "stats": {
     "sales": "1.840",
     "online": "56"
@@ -18,7 +18,7 @@
         {
           "name": "Camiseta Ghost White",
           "badge": "LIMITADO",
-          "price": "189.90",
+          "price": "185.90",
           "oldPrice": "249.00",
           "description": "Algodão Egípcio, gramatura 240g.",
           "foto": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800"
