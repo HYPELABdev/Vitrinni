@@ -7,22 +7,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --main: #00ff88; }
+        :root { --main: #00ff00; } /* Puxando o verde do seu JSON */
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif; }
         body { background:#0b1020; color:white; overflow-x:hidden; min-height: 100vh; }
-        .bg { position:fixed; inset:0; z-index:-1; background: radial-gradient(circle at top left,rgba(0,255,136,.10),transparent 30%), linear-gradient(-45deg,#0b1020,#11182b,#0f1726); background-size:300% 300%; animation:bg 10s ease infinite; }
+        .bg { position:fixed; inset:0; z-index:-1; background: radial-gradient(circle at top left,rgba(0,255,0,.05),transparent 30%), linear-gradient(-45deg,#0b1020,#11182b,#0f1726); background-size:300% 300%; animation:bg 10s ease infinite; }
         @keyframes bg { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
         header { text-align:center; padding:50px 20px 30px; }
-        .logo { font-size:62px; font-weight:800; letter-spacing:4px; }
+        .logo { font-size:62px; font-weight:800; letter-spacing:4px; text-transform: uppercase; }
         .logo .highlight { color:var(--main); text-shadow:0 0 20px var(--main); }
-        .tab-btn { padding: 12px 24px; border-radius: 14px; background: rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s; font-size: 11px; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.1); }
-        .tab-btn.active { border-color: var(--main); background: rgba(0,255,136,0.15); color: var(--main); }
+        .tab-btn { padding: 12px 20px; border-radius: 14px; background: rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s; font-size: 10px; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.1); }
+        .tab-btn.active { border-color: var(--main); background: rgba(0,255,0,0.15); color: var(--main); }
         .card { padding:24px; border-radius:26px; background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,.06); transition:.25s; cursor:pointer; }
-        .card.active { border-color:var(--main); box-shadow:0 0 30px rgba(0,255,136,0.16); transform:scale(1.02); }
+        .card.active { border-color:var(--main); box-shadow:0 0 30px rgba(0,255,0,0.1); transform:scale(1.02); }
         .price { margin-top:10px; font-size:38px; font-weight:800; color:var(--main); }
         .form { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); border-radius:24px; padding:24px; margin-top:30px; }
         input { width:100%; padding:16px; border-radius:16px; background:rgba(255,255,255,0.08); color:white; border:1px solid rgba(255,255,255,0.1); outline:none; margin-top:12px; }
-        button#cta { width:100%; padding:20px; margin-top:16px; border-radius:20px; background: linear-gradient(45deg, var(--main), #00bfff); color:white; font-weight:800; font-size: 16px; cursor:pointer; transition: 0.3s; }
+        button#cta { width:100%; padding:20px; margin-top:16px; border-radius:20px; background: linear-gradient(45deg, var(--main), #008000); color:black; font-weight:800; font-size: 16px; cursor:pointer; transition: 0.3s; }
     </style>
 </head>
 <body>
@@ -30,76 +30,95 @@
 <div class="bg"></div>
 
 <header>
-    <div class="logo">LEVEL<span class="highlight">UP</span></div>
-    <div class="hero text-xl font-bold mt-2 opacity-80" id="hero-text">SINCRONIZANDO...</div>
+    <div class="logo"><span id="b1">LEVEL</span><span class="highlight" id="b2">UP</span></div>
+    <div class="hero text-xl font-bold mt-2 opacity-80" id="hero-text">...</div>
+    <div class="flex justify-center gap-4 mt-4 text-[10px] opacity-50 uppercase tracking-widest">
+        <span>🔥 <span id="s-vendas">0</span> Vendas</span>
+        <span>🔴 <span id="s-online">0</span> Online</span>
+    </div>
 </header>
 
 <div class="container max-w-[700px] mx-auto p-4 pb-20">
-    <div class="flex justify-center gap-3 mb-10">
-        <button class="tab-btn active" onclick="switchTab('seguidores', this)">Seguidores</button>
-        <button class="tab-btn" onclick="switchTab('curtidas', this)">Curtidas</button>
-        <button class="tab-btn" onclick="switchTab('views', this)">Views</button>
-    </div>
+    <!-- ABAS DINÂMICAS -->
+    <div class="flex justify-center gap-2 mb-10 overflow-x-auto pb-2" id="tab-list"></div>
+
+    <!-- PACOTES -->
     <div class="grid gap-4" id="plans-grid"></div>
+
+    <!-- CHECKOUT -->
     <div class="form">
-        <div class="text-sm font-bold opacity-60 uppercase tracking-widest">Finalize seu Pedido</div>
         <input type="text" id="user-target" placeholder="Digite seu @ do Instagram">
-        <button onclick="sendOrder()" id="cta">SELECIONE UM PACOTE</button>
+        <button onclick="sendOrder()" id="cta">SELECIONE UM PLANO</button>
     </div>
 </div>
 
 <script>
     const URL_PINTURA = "https://hypelabdev.github.io/Vitrinni/Clientes/levelup.json";
     let DATA = {};
-    let currentCategory = 'seguidores';
-    let selectedItem = null;
+    let selectedPlan = null;
 
     async function fetchData() {
         try {
-            // Adicionamos um timestamp real para matar o cache do navegador
-            const res = await fetch(`${URL_PINTURA}?nocache=${new Date().getTime()}`);
-            if (!res.ok) throw new Error();
+            const res = await fetch(`${URL_PINTURA}?t=${new Date().getTime()}`);
             DATA = await res.json();
             
-            document.getElementById('hero-text').innerText = DATA.configuracao?.hero || "IMPULSIONE SEU PERFIL";
-            render('seguidores');
+            // Aplicar Configurações do JSON
+            document.getElementById('b1').innerText = DATA.brand;
+            document.getElementById('b2').innerText = DATA.brandHighlight;
+            document.getElementById('hero-text').innerText = DATA.hero;
+            document.getElementById('s-vendas').innerText = DATA.stats.sales;
+            document.getElementById('s-online').innerText = DATA.stats.online;
+            document.documentElement.style.setProperty('--main', DATA.color);
+
+            renderTabs();
         } catch (e) {
-            // Se falhar, ele tenta de novo em 2 segundos
-            document.getElementById('hero-text').innerText = "CONECTANDO AO SERVIDOR...";
-            setTimeout(fetchData, 2000);
+            document.getElementById('hero-text').innerText = "ERRO DE SINCRONIZAÇÃO";
         }
     }
 
-    function switchTab(cat, btn) {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentCategory = cat;
-        render(cat);
+    function renderTabs() {
+        const tabList = document.getElementById('tab-list');
+        tabList.innerHTML = '';
+        
+        DATA.categories.forEach((cat, index) => {
+            const btn = document.createElement('button');
+            btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+            btn.innerHTML = `${cat.icon} ${cat.name}`;
+            btn.onclick = (e) => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderPlans(cat);
+            };
+            tabList.appendChild(btn);
+        });
+
+        // Carrega a primeira categoria por padrão
+        renderPlans(DATA.categories[0]);
     }
 
-    function render(cat) {
+    function renderPlans(category) {
         const grid = document.getElementById('plans-grid');
         grid.innerHTML = '';
-        const items = DATA[cat] || [];
-
-        items.forEach((item, index) => {
+        
+        category.plans.forEach((plan, index) => {
             const card = document.createElement('div');
             card.className = `card ${index === 0 ? 'active' : ''}`;
-            if(index === 0) selectedItem = item;
+            if(index === 0) selectedPlan = plan;
 
             card.onclick = () => {
                 document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
                 card.classList.add('active');
-                selectedItem = item;
+                selectedPlan = plan;
                 updateButton();
             };
 
             card.innerHTML = `
                 <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-lg text-white/90">${item.quantidade} ${cat.toUpperCase()}</h3>
-                    <span class="text-[10px] bg-white/10 px-3 py-1 rounded-full font-bold">${item.badge || 'PROMO'}</span>
+                    <h3 class="font-bold text-lg text-white/90">${plan.name}</h3>
+                    ${plan.badge ? `<span class="text-[9px] bg-white/10 px-2 py-1 rounded-full font-bold text-green-400">${plan.badge}</span>` : ''}
                 </div>
-                <div class="price">R$ ${item.preco}</div>
+                <div class="price">${plan.price}</div>
+                <div class="text-[11px] opacity-40 mt-2">${plan.description || ''} • ${plan.quality || 'Entrega Garantida'}</div>
             `;
             grid.appendChild(card);
         });
@@ -107,17 +126,23 @@
     }
 
     function updateButton() {
-        if(selectedItem) {
-            document.getElementById('cta').innerText = `🚀 RECEBER ${selectedItem.quantidade} ${currentCategory.toUpperCase()}`;
+        if(selectedPlan) {
+            document.getElementById('cta').innerText = `🚀 COMPRAR ${selectedPlan.name.toUpperCase()}`;
         }
     }
 
     function sendOrder() {
         const user = document.getElementById('user-target').value;
         if(!user) return alert("Digite o seu @!");
-        const zap = DATA.configuracao?.whatsapp || "5511999999999";
-        const msg = encodeURIComponent(`🚀 *NOVO PEDIDO*\n\n📦 *Pacote:* ${selectedItem.quantidade} ${currentCategory}\n💰 *Valor:* R$ ${selectedItem.preco}\n📸 *Perfil:* ${user}`);
-        window.open(`https://wa.me/${zap}?text=${msg}`, '_blank');
+        
+        const msg = encodeURIComponent(
+            `🚀 *NOVO PEDIDO - ${DATA.brand}${DATA.brandHighlight}*\n\n` +
+            `📦 *Plano:* ${selectedPlan.name}\n` +
+            `💰 *Valor:* ${selectedPlan.price}\n` +
+            `📸 *Perfil:* ${user}`
+        );
+
+        window.open(`https://wa.me/${DATA.whatsapp}?text=${msg}`, '_blank');
     }
 
     window.onload = fetchData;
