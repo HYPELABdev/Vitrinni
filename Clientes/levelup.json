@@ -1,6 +1,6 @@
 {
   "brand": "Level",
-  "brandHighlight": "Upzada",
+  "brandHighlight": "Up",
   "hero": "AUMENTE SEU ENGAJAMENTO 🚀",
   "subtitle": "Seguidores, curtidas e visualizações automáticas",
   "promo": "🔥 Promoção ativa hoje",
@@ -28,12 +28,17 @@
         {
           "name": "5K Seguidores",
           "badge": "🔥 Mais vendido",
-          "price": "R$ 100",
+          "price": "R$ 89,99",
           "followers": "5000",
           "delivery": "30 Min",
           "quality": "Premium",
           "refill": "60 dias",
           "description": "Pacote premium de autoridade."
+        },
+        {
+          "name": "20k seguidores ",
+          "price": "R$ 500",
+          "description": "Melhor versão Premium "
         }
       ]
     },
