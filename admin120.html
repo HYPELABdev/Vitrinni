@@ -3,48 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDITOR HYPELAB | JSON Intelligence</title>
+    <title>HYPELAB | Editor de Inventário</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS ADICIONADO PARA O PREVIEW DE IMAGEM SEM QUEBRAR O ORIGINAL */
-        .img-preview-container {
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;700&display=swap');
+        body { background: #050505; color: #eee; font-family: 'Inter', sans-serif; }
+        .lux-font { font-family: 'Syncopate', sans-serif; }
+        .gold-border { border-color: #bc9c6c; }
+        .gold-text { color: #bc9c6c; }
+        
+        /* Estilo dos Inputs */
+        input, textarea {
+            background: #111 !important;
+            border: 1px solid #333 !important;
+            color: #fff !important;
+            padding: 8px !important;
+            border-radius: 6px !important;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        input:focus { border-color: #bc9c6c !important; outline: none; }
+
+        /* Container do Preview de Imagem */
+        .image-preview-card {
+            background: #0a0a0a;
+            border-left: 4px solid #bc9c6c;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 15px 15px 0;
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: #111;
-            padding: 8px;
-            border-radius: 8px;
-            margin-top: 5px;
+            gap: 20px;
+        }
+        .image-preview-card img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            background: #1a1a1a;
             border: 1px solid #333;
         }
-        .img-preview-container img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid #bc9c6c;
-            background: #000;
-        }
-        .field-highlight {
-            color: #bc9c6c !important;
-            font-weight: bold !important;
-            text-transform: uppercase;
-            font-size: 10px;
-        }
-        /* Destaque para o campo 'foto' no editor */
-        div[data-key="foto"] {
-            border-left: 2px solid #bc9c6c !important;
-            padding-left: 10px !important;
-            background: rgba(188, 156, 108, 0.05);
+        .category-block {
+            border: 1px solid #222;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            background: #080808;
         }
     </style>
 </head>
-<body class="bg-[#050505] text-white">
+<body class="p-6">
 
-    <div id="editor-wrapper">
+    <nav class="flex justify-between items-center mb-10 border-b border-white/5 pb-5">
+        <div class="lux-font text-2xl">HYPELAB<span class="gold-text">.</span>EDITOR</div>
+        <div class="flex gap-4">
+            <button onclick="downloadJson()" class="bg-[#bc9c6c] text-black px-6 py-2 rounded-full font-bold uppercase text-xs hover:scale-105 transition">
+                <i class="fa fa-save"></i> Salvar JSON
+            </button>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto">
+        <div class="mb-10 p-8 border-2 border-dashed border-white/10 rounded-3xl text-center">
+            <p class="text-xs opacity-50 uppercase font-black mb-4">Arraste seu arquivo roupa.json aqui</p>
+            <input type="file" id="fileInput" accept=".json" class="hidden">
+            <label for="fileInput" class="cursor-pointer bg-white/5 px-8 py-3 rounded-xl border border-white/10 hover:bg-white/10 transition"> Selecionar Arquivo </label>
         </div>
 
+        <div id="editor-container">
+            </div>
+    </div>
+
     <script>
-        // SEU CÓDIGO ORIGINAL EM BASE64 (PRESERVADO)
-        var _r = "=ogPs1Gdo9CPK4Tek9mYvwjC+QHcpJ3Yz9CPgACIgoQfgACIgACIgAiC9ByOlNHbhZGI9ACZlxmYhNXak5ib0JGI7IyclV7wnOcYyVGdsFEIyF2YpxmY1BlIg0DI0hXZUJXZu5Wau4GdiByegkHbsFmbpZGIgACIgACIgACIgAiC9ByOpIiLiVHS0l2RgI3bklmdyV2cg8mbgIXY2xWYzBybhBybyJXRigCdyVGbhByegkSZoACajRXYjBSfgACIgACIgACIgACIKsTKiEicpJXZm52bjBSZkByclRnbhBybjV3bwBSb1BSZkJXY1dWQg4Cbhl2YpZ2bgUGdpNHIvBichpXasFWd0FGIhJXYwBycvRXdulWbgMDIhBSMgUGZgEmdlxGIiVHS0l2Rg8EI6U2ctUmci1WZM5GXuxVIBRUQJZlTFByTDO8hDHkWJxUQVRVQgUIniLCK0JXZsFGIgACIgACIgACIgACIgACIKACIgACIgACIgACIgACIgAiC7EGaz5CduVGdu92YuIHI9ACbhVHdBFGazByOpgibvNnauMXZyBCdpF2dhBSPgIHI0NnbvNGIgACIgACIgACIgACIgACIKsTKoI3byJXRgcXZuBydvJHa0BSKr9mLzVmchgiZpBCIgACIgACIgACIgACIgAiC7kSfgACIgACIgACIgACIgACIgoQK9BCbhVHdBFGazBiOhh2cgwCN2U2chJGI6QnblRnbvNGIsAWfvhmbp1WYD9mdpVXcyF2ekAiOlRXYkBXVgQWdvx2QgIWYMVGc5hEYgoTZnF2czVWbgsHK5ZWan5WayR3cu40TTpEI6kHZvJGIgACIgACIgACIgACIgACIgACIgoAL9ByJu92cq9ibvlGdhNWasBHchdCI6cSZwlHVtQnblRnbvN0JgwCY9lXZr5yRJZkTPN0XCVFSUl0R7RCIuV2avRHYgozJu9Wa0FmepJ3boRXdBdCI7BiOzJXZkFWZoBCIgACIgACIgACIgACIgACIgACIKwyJUVFUnAiOk9Ga0VWbgACIgACIgACIgACIgACIgACIgAiC7BCLg13bo5WatF2QvZXa1FnchtHJvMHduVGdu92Yv03bwVmcucUSG50TD9lQVhEVJd0ek8ycvBXZy9SbvNmLiVHa0l2ZukGch9yL6MHc0RHaghCajRXZmBCdpF2dhBSPgMXZyBCdz52bjBCIgACIgACIgACIgACIgAiC7BSeyRHIgACIgACIgACIgAiC7kSKpkiMgwCbsVnbgwycpFWd0F0cvRWYkhSeml2Zulmc0NnLO90UKhCduVmbvBXbvNUSSVVZk92YuVGKlBXYjNXZuVHKh9GdiBSPgQjNlNXYiBCdz52bjBCIgACIgACIgACIgowOlVnc0BSPgQWZsJWYzlGZu4GdiByOi4iLu8EROF0QJxkQVBFIhqp4iASPgQHelRlcl5mbp5ib0JGIgACIgACIgACIgAiC7kyJlZXYz1ib0J2JoQWS5JEduVWblxWR0V2ZuQnbl1Wdj9GZg0DIuRnYgQ3cu92YgACIgACIgACIgACIKsHIpgichZHbhNHIu9Wa0Nmb1ZGIj5WezFGIgACIgACIgogC9BCIgACIgACIK0HIgACIgACIgACIgAiC7kiIuMXYwNXYgUGIzFGb1dmctOsdgUWdxlmZpJXZWBiLO90UKBybkByb0FWby9mZg8mbg8mcyVEIM2p4igCdyVGbhBCIgACIgACIgACIgACIgAiC7BSKlhCIoNGdhNGI9BCIgACIgACIgACIgowOpISIsFWdzlmdgwWZulWYwBybhBybzNXZjV3cg02bjBybkF2YpxGchBiTPNlSgUIniLCK0JXZsFGIgACIgACIgACIgACIgACIKsTKoI3b0lGZF52bzpUZsd2ZvRHIgACIgACIgACIgACIgACIKsTKnwWYyV2ZngSYiFkcpJnYhBCIgACIgACIgACIgACIgAiC7kCKzFmYBJXY6lmclRmblJHIgACIgACIgACIgACIgACIKsjbvNnSvZ3buBSPgMXahVHdBN3bkFGZgACIgACIgACIgACIgACIgowOpUWdsFmdukyJhVmchRHelRXLu92cqdCKklUeCRnbl1WZsVEdldmL05WZtV3YvRGKlNnchBnLO90UKBSPg42bzp0b29mbgQ3cu92YgACIgACIgACIgACIgACIgowegknc0BCIgACIgACIgACIgowegkCKu92cKJXYjlGbwFGIu9Wa0Nmb1ZGIgACIgACIgogC9BCIgACIgACIK0HIgACIgACIgACIgAiC7kyJuVGZklGangCZkFmL0NXaMN3chx2YuwWYk9WbgACIgACIgACIgACIgACIgowegU2csVGI9BCIgACIgACIgACIgowOp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RXYj5ycpFWd0F0cvRWYkJSP0VHculmbvBiI9VWbh5mLv5WYsB3ekISPlVHbhZHIiQHelRnI9UGc5RHI0VHculGP+wWZiFGbvwzbuFGbQBybkBybsVHdtOMV+ISZzF2YyVGcwVHIwATNtUGdhx2ctQHelRHIrNWYsJWL052bmBSX4BHMxsVL0hXZ0JSPzNXYsNGIsVmYhxGP+ISMtgXZsZmI9M3chx2YgYXakxDIgACIgACIgACIgACIgACIgACIgACIgACIgACIK4jI00CchdGI4VGbmJSPzNXYsNGI2lGZ8ACIgACIgACIgACIgACIgACIgACIgACIgogPu9Gd0VnYvwjPp9CP+ICazFmc01SYmBychZmI9M3chx2YgkGP+ICMwUTLkVmctQHelRnOyVmdvhGIwAjNtUGdhx2ctQHelRHI00CdodWayBCNtA3b0BSZ0VHbvNnYhJSPzNXYsNGIikSf4VGZulEc7RCIs0HelRmbJRXYjtHJo8Gd1R2byBlclZ3btVmci0zajlGbj52bg42b0RXdixDIgACIgACIgACIgACIgACIgACIgACIgAiC+ISZ2lGdhxWZyBCb4JTL39GZhh2cgQTL51SZjFGczBCMwYTLlVHbi1iclRmcvJGI00CbtIXZkJ3biBiNtAHIzNXYsdmI9M3chx2YgYXakxDIgACIgACIgACIgoAYg0zKgwWb0hGIgACIgACIgACIgACIgACIKsHI+0DIpgXZk5WSwBCLv5WYsBHKog2YhVkcvZmLz5WYsBnLhlmcvdWZ0F2YgACIgACIgACIgACIKACIgACIgACIgACIgowOg5jdpR2L8ACIgACIgACIgACIgACIgAiC+42b0RXdi9CPP5UQMBFIPZ1TOByK+ICbsFWLu9Wa0l2cuFmc0ByZs1ydvRWYoNHIzhXL0hXZ0BCZs9mYtQnbvZGIlRXaodXL0hXZ0BCb41CZlRmb19mcgITL5BHI00CewBCMwUTLlVHbi1yZipjclZ3boBCMwYTLlVHbi1yZiJSPzNXYsNGIikSf4VGZulEdhN2ekgyb0VHZvJHUyFmbvl2YpRWYi0zajlGbj52bg42b0RXdixDIgACIgACIgACIgACIgACIgACIgogP2lGZvwDIgACIgACIgACIgACIgACIgACIgogPicGbtQHelRHIlNXYjJXZwBXdgMWasFGdpByajFGbi1Cdu9mZgQnblJXYwNnbhJHdtcmYgUmbv5WLyVGZy9mYg8mcw1Cd1BnbpJSPzNXYsNGIisTKoMXYiFkchpXayVGZuVmcgsTZ1xWY25ycphGd9UWbh5mLd1HelRmbJRXYjtHJbNXZpJ3bnVGdhNmLzlWY1RXQz9GZhRmI9QXdw5Wau9GIi0XZtFmbuEWay92ZlRXYjtHJi0TZ1xWY2BiI0hXZ0JSPlBXe0BCd1BnbpxDIgACIgACIgACIgACIgACIgACIgACIgAiC+wWZiFGbvwzbjO8pDX2UgEGZgUWbv5kPiU2chNmclBHc1BCMwUTLlVHbi1Cd4VGdgs2YhxmYtQnbvZGIdhHcwEzWtQHelRnI9M3chx2YgwWZiFGb8ACIgACIgACIgACIgACIgACIgACIgACIgogPiETL4VGbmJSPzNXYsNGI2lGZ8ACIgACIgACIgACIgACIgACIgACIK4jI00iYtBiclRnblNWLz1WZ0lGIuVWZ3RXZi1SemlGdzVnaggXZsZGI18CMwYTLlVHbi1yZiBCNtAHIzNXYsdmI9M3chx2YgYXakxDIgACIgACIgACIgACIgACIKAGI9ACbtRHagQXZsBCIgACIgACIgACIgowOdhXZk5WS0F2YbNXZpJ3bnVGdhNmLzlWY1RXQz9GZhRGI9ASYpJ3bnVGdhNGI0NnbvNGIgACIgACIgACIgAiC7BSK4VGZulEdhNGIsIXZulWY052bjhycvRXdk9mcQJXZk5WZyBibvlGdj5WdmBCIgACIgACIKoQfgACIgACIgAiC7AmP2lGZvwDYgsCIs1GdoBSPgwUTUhkcl5mbp5icl5WahRnbvNGIgACIgACIgACIgAiC9BCIgACIgACIgACIgoQfgACIgACIgACIgACIgACIgowOg5jdpR2L84jdpR2L8ACIgACIgACIgACIgACIgACIgACIgACIgoQfg5jI05WZyFGcz5WYyRXLnJGIl52bu1iclRmcvJGIvJHctQXdw5Wai0zczFGbjBiIlVHbhZnLzlGa01TXn0XZ2FGajtHJns1cpFWd0F0cvRWYkJSP0VHculmbvBiI91VZ2FGajt1cpFWd0F0cvRWYktHJi0TZ1xWY2BiI0hXZ0JSPlBXe0BCd1BnbpxDYgoDIgBCIgACIgACIgACIgACIgACIgACIgACIgACIgAiC+Iyc41Cd4VGdgQnblJXYwNnbhJHdtcmYgUmbv5WLyVGZy9mYg8mcw1Cd1BnbpJSPzNXYsNGIiUWdsFmduMXaoRXPjJ3cucmbpxmYpNFduVWblxWRzV3bpZXZyBnLzlGa0ByOlVHbhZnLzlGa01TXn0XZ2FGajtHJns1cpFWd0F0cvRWYkJSP0VHculmbvBiI91VZ2FGajt1cpFWd0F0cvRWYktHJi0TZ1xWY2BiI0hXZ0JSPlBXe0BCd1BnbpxDIgACIgACIgACIgACIgACIgACIgACIgACIgACIgACIgogPicWbp1ydllmdlJHci0zczFGbjBiI91VZ2FGajt1cpFWd0F0cvRWYktHJi0zYyNHIn1Wa8ACIgACIgACIgACIgACIgACIgACIgACIgACIgACIgACIKAGI/AyZtl0cpBiOgAGIgACIgACIgACIgACIgACIgACIgACIgACIgACIK4jI05WZyFGcz5WYyRXLnJGIwADNtUGdhx2ctQHelRHIv52bt1Cdu9mZgMHetQHelRnI9M3chx2YgkHbu9GZhVmcgISfdVmdhh2YbNXahVHdBN3bkFGZ7RiI9UWdsFmdgICd4VGdi0TZwlHdgQXdw5Wa8ACIgACIgACIgACIgACIgACIgACIgACIgACIgACIgACIK4jIyVGdul2bw1icvNnc1NGI05WZyFGcz5WYyRXLnJGIl52bu1iclRmcvJGInxWLkVGZuV3byBCMx0CagATMtcnI9M3chx2YgISZ1xWY25ycphGd901J9Vmdhh2Y7RyJbNXahVHdBN3bkFGZi0Dd1Bnbp52bgISfdVmdhh2YbNXahVHdBN3bkFGZ7RiI9UWdsFmdgIicvx2bjJSPlBXe0BCd1BnbpxDIgACIgACIgACIgACIgACIgACIgACIgACIgACIgACIgoAYg8DIy9GbvN0cptHJgACIgACIgACIgACIgACIgACIgACIgACIgACIgogPiUzLlRXaodXLyVGZy9mYgIXZkJ3biBCb41CZlRmb19mcgITLwBCMz8yajFGbi1yZi ByMtAXYnBiclRnblNWLz1WZ0lGI4VGbmJSPzNXYsNGI2lGZ8ACIgACIgACIgACIgACIgACIgACIgACIgogPsVmYhx2L80XKnAyJgwyJfdCKlNWYsBXZy5SZ2FGajtHJ+ISMtwWbgQ3clRWa31yZul2ajFmc0BSZzF2YyVGcwVHIwATNtUGdhx2ctQHelRHIrNWYsJWL052bmBSX4BHMxsVL0hXZ0JSPzNXYsNGIsVmYhxGPgACIgACIgACIgACIgACIgACIgACIgACIK4jIy0SetU2YhB3ci0zczFGbjBidpRGPgBSPrACbtRHagACIgACIgACIgACIgACIgACIgAiCgACIgACIgACIgACIgACIgACIgAiC7kyJn1WangyclRWdsNmbp5SKoU2chNkcld3bM9GduUmdhh2YgwHfgkyJvd2bsdCKzVGZ1x2YulmLpgSZzF2QyV2dvx0b05SZ2FGajBCf8BSKnAHd0h2JoMXZkVHbj5Wau0VZ2FGajt1cpFWd0F0cvRWYkBSPgcWbJNXagQ3cu92YgACIgACIgACIgACIgACIgACIgAiC7kyJy92YngyclRWdsNmbp5SKoU2chNkcld3bM9GduUmdhh2YgwHfgkyJy9GbvN2JoMXZkVHbj5WaukCKlNXYDJXZ39GTvRnLlZXYoNGI9Aicvx2bDNXagQ3cu92YgACIgACIgACIgACIgACIgACIgAiC7BSKncmbpJHdzdCI90TPg0VZ2FGajt1cpFWd0F0cvRWYkBiZvVGc5RHKgYWagACIgACIgACIgACIgACIgowegkycpFWd0F0cvRWYkBibpBSZ2FGajBCdlxGKgI3bmBCIgACIgACIgACIgowOg5jI20SetU2YhB3cggTLwByczFGbnJSPzNXYsNGI2lGZ8AGI9ACbtRHagQXZsBCIgACIgACIgACIgowegkicl5WahRnbvNGKsFmcldkclRmblJHIu9Wa0Nmb1ZGIgACIgACIgogC9BCIgACIgACIKsTK4VGZulGIsQnblRnbvNGKz9Gd1R2byBlclRmblJHIlNHblByOpQnblRnbvNGKsFmcldkclRmblJHIpcCbhJXZndCI90TPggXZk5WaoYWagACIgACIgACIgACIKsjIiASPgwUTUhkcl5mbp5CduVGdu92YgACIgACIgACIgACIKsTKnQnblRnbvNWLy9GdpRWZngCZJlnQ05WZtVGbFRXZn5CduVWb1N2bkBSPgQnblRnbvNGI0NnbvNGIgACIgACIgACIgAiCgACIgACIgACIgACIKsTKnUmdpR3Yh1iYhR3JoQGZh5CdzlGTzNXYsNmLuRnYgkib0JGKmlGIgACIgACIgACIgAiC7kCY9hXZk5Wa7RSLiFGdt4GdiBGKklUeCRnbl1WZsVEdldmL05WZtV3YvRGI9Aib0JGI0NnbvNGIgACIgACIgACIgAiC7kSfgsTKnUmdpR3Yh5WatIWY0dCKkRWYuQ3cpx0czFGbj5iYgsTKnUmdpR3Yh1iYhR3JoUmdv1WZy5CdzlGTzNXYsNmLiByeg4TPgIGKoNWYFJ3bm5SKn4Gdi1iYhRnLngCbsFkcvR3YlxWZTlnclVXcuQnbl1Wdj9GZgACIgACIgACIgACIKsHIpgXZk5WaoEmYBJXayJWYg42bpR3YuVnZgACIgACIgAiCK0HIgACIgACIgowOp0HIgACIgACIgACIgAiC7AmPu9Gd0VnYvwTfl1WYu5CdhN2ek4jIlZXa0NWYulWLiFGdg4Gdi1iYhRnI9M3chx2YgISf4VGZul2ek0iYhRXLuRnYi0DZpBiIp0HelRmbptHJoEmYBJXayJWYi0zajlGbj52bg42b0RXdixDYg0zKgwUTUhkcl5mbp5icl5WahRnbvNGIgACIgACIgACIgACIgACIKsHI+0DIpgXZk5WagwCdhNGKog2YhVkcvZmLzVWay92ZlRXYj5ycpFWd0F0cvRWYkBCIgACIgACIgACIgowOg5jbvRHd1J2L8wWYyV2RgcWam52bDByj4+emaKuPiMWasFGdpBSZ2lGdjFmbp1iYhRHIuRnYtIWY0JSPzNXYsNGIiwWYyV2ZtIWY01ib0JmI9QWagISKnwWYyV2ZngSYiFkcpJnYhJSPrNWasNmbvBibvRHd1JGPgBSPgwUTUhkcl5mbp5icl5WahRnbvNGIgACIgACIgACIgAiC7kyJyVmbpFGdu92YtMnYhR3JoQWS5JEduVWblxWR0V2ZuQnbl1Wdj9GZg0DIyVmbpFGdu92YgQ3cu92YgACIgACIgACIgACIKsHIpgychJWQyFmepJXZk5WZyBibvlGdj5WdmBCIgACIgACIKoQfgACIgACIgAiC9BCIgACIgACIgACIgowOiI3bklmdyV2Ug8WYgIXY0NWZu92QiASPgQHelRlcl5mbp5ib0JGIgACIgACIgACIgACIgACIKsTKldWYzNXZt5SZoQnclxWYgACIgACIgACIgACIgACIgowegkSZoACajRXYjBSfgACIgACIgACIgACIKsTKnwWYyV2ZngSYiFkcpJnYhBCIgACIgACIgACIgACIgAiC7kCKzFmYBJXY6lmclRmblJHIgACIgACIgACIgACIgACIKowOg52bzpmL9RWa7RyLzVGduVWasN2Ly9GZpZnclNHYg0DI0hXZUJXZu5WaukyJ5FGbwNXak1Ca0FGcngCZJlnQ05WZtVGbFRXZn5CduVWb1N2bkBCIgACIgACIgACIgACIgAiC7kyJuVGZklGangSZ29WblJnL0NXaMN3chx2YukyJ05WZ052bj1icvRXakV2JoQWS5JEduVWblxWR0V2ZuQnbl1Wdj9GZgACIgACIgACIgACIgACIgowOpciblRGZph2JoUmdv1WZy5CdzlGTzNXYsNmLpcicl5WahRnbvNWLzJWY0dCKklUeCRnbl1WZsVEdldmL05WZtV3YvRGIgACIgACIgACIgACIgACIKsTKn4WZkRWaodCKlZ3btVmcuQ3cpx0czFGbj5SKnIXZkFWZo1icvRXakV2JoQWS5JEduVWblxWR0V2ZuQnbl1Wdj9GZgACIgACIgACIgACIgACIgowOpciblRGZph2JoQGZh5CdzlGTzNXYsNmLpciblVmcjNXLul2Zvx2JoQWS5JEduVWblxWR0V2ZuQnbl1Wdj9GZgACIgACIgACIgACIgACIgogC7kSKpkCduVGdu92Yu8mZulGKi9GdhhSZwF2YzVGK05WZu9Gct92QJJVVlR2bjVGZoU2cyFGcu40TTpEI9AycpFWd0F0cvRWYkBCIgACIgACIgACIgACIgAiC7EGaz5ybm5Wag0DIsFWd0FUYoNHIgACIgACIgACIgACIgACIKsTKo42bzpmLzVmcgQXahdXYg0DIvZmbpBCdz52bjBCIgACIgACIgACIgACIgAiC7kiIuQUSg8GIlVXcpZWayVmVg4ybkF2Zl5GIvN3clNWQigicvJncFBydl5GI39mcoRHIps2buMXZyFCKmlGIgACIgACIgACIgACIgACIKsTK9BCIgACIgACIgACIgACIgAiC9BCY9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BHI00CewBCMwcTLlRXYsNXLnJmOyVmdvhGIwADOtUGdhx2ctcmYi0zczFGbjBiIpgicvRXakVkbvNnSlx2Zn9Gdi0zajlGbj52bg42b0RXdixDIgACIgACIgACIgACIgACIK4jIy0CchdGI4VGbmJSPzNXYsNGI2lGZ8ACIgACIgACIgACIgogP2lGZvwDIgACIgACIgACIgAiC+YXak9CPgACIgACIgACIgACIgACIgogP2lGZvwDIgACIgACIgACIgACIgACIgACIgogPuFGcz9CP+ISZzF2YyV2dvxGIwATNtUGdhx2ctQHelRHIv52bt1Cdu9mZg0FewlzWtQHelRnI9M3chx2YgISehxGczlGZtgGdhBnI9QWag4WYwNHPgACIgACIgACIgACIgACIgACIgACIgACIK4jdpR2L84jIl5Was52btU2csVHci0zczFGbjBidpRGPgACIgACIgACIgACIgACIgACIgACIgACIK4jIx0CdtBiMtAXYnBiclRnblNWLz1WZ0lGI4VGbmJSPzNXYsNGI2lGZ8ACIgACIgACIgACIgACIgACIgACIK4jMo9CP+4WYwN3L8EUTFR1UJNlPiADM10SZ1xmYtQHelRnI9M3chx2Yg4WYwNHPgIUQMVEUZhkPiUmbv5WLn5WakFWZsBCdzVGZpdXLn5WarNWYyRHIlRXaodXL0hXZ0BSZzF2YyVGcwVHIrNWYsJWL052bmByc41Cd4VGdi0zczFGbjBiMoxDIgACIgACIgACIgACIgACIgACIgogP2lGZ8ACIgACIgACIgACIgACIgAiC+YXak9CPI5jIshXL0hXZ0ByZs1ydvRWYoNHIlRXaodXL0hXZ0ByYpxWY0lGIrNWYsJWL052bmBiclRnblNWL5ZWa0NXdqBiclRnblNWLz1WZ0lGI4VGbmBCb41CZlRmb19mcgADM20SZ1xmYtcmYgITMtgGIyETL3JSPzNXYsNGI2lGZ8ACIgACIgACIgACIgACIgAiC+ICNtAXYnBiclRnblNWLz1WZ0lGI4VGbmJSPzNXYsNGI2lGZ8ACIgACIgACIgACIgogPiATMvADM10SZ1xmYtIXZkJ3biBCb4JTL39GZhh2cgIXZ05WZj1yctVGdpBiblV2d0VmYtknZpR3c1pGI4VGbmBCNtAHIzNXYsdmI9M3chx2YgYXakxDIgACIgACIgogPiQTLwBCM10iegATLw9Gdgk3ajlGdzBiblRGZphmI9M3chx2YgIiclRWYlhWLy9GdpRWZi0DZpBiclRWYlhGPgACIgogC+YXak9CPgACIgogP2lGZvwDIgACIgACIgogP2lGZvwDIgACIgACIgACIgAiC+42b0RXdi9CPy9GZpZnclNFIvFGIyFGdjVmbvNkPicGbtc3bkFGazBSZ0lGa31Cd4VGdgUTOtUGbhN2c6UmdpR3YhBCbsFWLu9Wa0l2cuFmc0BSZzF2YyVGcwVHIrNWYsJWL052bmBCb4JTLkVGZuV3byBCNtkHcgADM10SZ1xmYtcmY6IXZ29GagADM20SZ1xmYtcmYgwGb1ZWL3JSPzNXYsNGIiIXY0NWZu92Yt4GdiJSPklGIikCKyFGdjVmbvNmI9s2Ypx2Yu9GIu9Gd0VnY8ACIgACIgACIgACIgACIgAiC+ICdzVGZpdXLn5WarNWYyRHIlNXYjJXZwBXdgs2YhxmYtQnbvZGIshXL0hXZ0BiclRnblNWL0hXZ0BybyBXL0VHculmI9M3chx2YgISKQVFTFZVRMBiOYVEKg80UTV0QBByTEBCRJJSPyVGZs9GalNWYsBHIiQWatQnbllGbjJSPklGIiQHelRnI9UGc5RHI0VHculGPgACIgACIgACIgACIgACIgogPiQTL51SZjFGczJSPzNXYsNGI2lGZ8ACIgACIgACIgACIgogPw9CPkV3bsNEIsVmbpFGUg8WYg82czV2YB5jId1WZ04CMb1yZul2ajFmc0BCMx0iYtByajFGbi1Cdu9mZgU2chNmclBHc1BCMwUTLlRXYsNXL0hXZ0BSX4BHMxsVL0hXZ0JSPzNXYsNGIwxDIgACIgACIgACIgAiC+EDavwjPuFGcz9CPCFET+ICMwUTLlVHbi1Cd4VGdi0zczFGbjBibhB3c8UEUZhkPiU2chNmclBHc1BSZ0lGa31Cd4VGdgITLi1GIjlGbhRXags2YhxmYtQnbvZGIshHNtQHelRnI9M3chx2YgEDa8ACIgACIgACIgACIgogPiwGey0ydvRWYoNHIyVGduV2YtQHelRHIk1WL31Ceh1GIsxWdm1ydgATMtAHIzNXYsdmI9M3chx2YgYXakxDIgACIgACIgogPi0VYwcDM1AzIb1yZiBSXwATMb1iegQTLwBiclRnblNWL5ZWa0NXdqBiclRnblNWLz1WZ0lGI4VGbmBCMtQXZz5WagQWZ4lmZi0zczFGbjBiIuVWZyN2ct4Wan9Gbi0DZpBidpRGPgACIgogC+IiblVmcjNXLo1ibp1mI9M3chx2YgkHZvJGPK4DZhVGavwjC+UGb5R3cvwDIgACIK0HI7Umbv5GI6UmbpxGd19GI7Umbv5GI6UmepNXZyByO4BnMxAiOlpXaz1Cdu9mZgsDewBjMgozZulGZkFGcgsDewBDM0AiO0h2ZpVGagsTJwATMgoDa0RWa3ByO4BHNxAiOzVXakFmctIXZkJ3biByO2MjNyUWMjACZpx2bzBCewFDI6IXZkJ3biByO2YmM4I2MjAiOy9GbvNGI7QDMyATMwMCI6Qmb19mcnt2YhJGI7U2YhB3cv52btBCLnUGZvNEIhJXaGdCI6kHbp1WYm1Cdu9mZgsHIy9GdpRWZt42bzpmLgACIgACIgAiCvoCIO90UKBybnlGZzO8QgUGZgI3b0lGZFBybgEmchBHIvxWa0NXRgoyLgACIgACI
+        let currentData = null;
+
+        // Listener para carregar o arquivo
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                currentData = JSON.parse(event.target.result);
+                renderEditor();
+            };
+            reader.readAsText(e.target.files[0]);
+        });
+
+        function renderEditor() {
+            const container = document.getElementById('editor-container');
+            container.innerHTML = "";
+
+            if(!currentData) return;
+
+            // Renderiza Informações Gerais da Loja
+            container.innerHTML += `<h2 class="lux-font gold-text mb-4 text-sm">Configurações Gerais</h2>`;
+            const generalBlock = document.createElement('div');
+            generalBlock.className = "category-block";
+            generalBlock.innerHTML = `
+                <label class="text-[10px] opacity-40 uppercase font-bold">Nome da Marca</label>
+                <input type="text" value="${currentData.brand}" oninput="currentData.brand = this.value">
+                
+                <label class="text-[10px] opacity-40 uppercase font-bold">WhatsApp (Ex: 5511999999999)</label>
+                <input type="text" value="${currentData.whatsapp}" oninput="currentData.whatsapp = this.value">
+            `;
+            container.appendChild(generalBlock);
+
+            // Renderiza Categorias e Produtos
+            currentData.categories.forEach((cat, catIdx) => {
+                const catDiv = document.createElement('div');
+                catDiv.className = "category-block";
+                catDiv.innerHTML = `<h3 class="lux-font text-xl mb-6">Categoria: <input type="text" class="inline-block w-auto" value="${cat.name}" oninput="currentData.categories[${catIdx}].name = this.value"></h3>`;
+
+                cat.plans.forEach((prod, prodIdx) => {
+                    const prodId = `prod-${catIdx}-${prodIdx}`;
+                    const prodDiv = document.createElement('div');
+                    prodDiv.className = "mb-8 p-6 bg-black/40 rounded-2xl border border-white/5";
+                    
+                    prodDiv.innerHTML = `
+                        <div class="image-preview-card">
+                            <img src="${prod.foto}" id="preview-${prodId}">
+                            <div class="flex-1">
+                                <label class="text-[10px] gold-text uppercase font-black">URL da Foto</label>
+                                <input type="text" value="${prod.foto}" oninput="updateImage('${prodId}', ${catIdx}, ${prodIdx}, this.value)">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-[10px] opacity-40 uppercase font-bold">Nome do Produto</label>
+                                <input type="text" value="${prod.name}" oninput="currentData.categories[${catIdx}].plans[${prodIdx}].name = this.value">
+                            </div>
+                            <div>
+                                <label class="text-[10px] opacity-40 uppercase font-bold">Preço (Ex: 150,00)</label>
+                                <input type="text" value="${prod.price}" oninput="currentData.categories[${catIdx}].plans[${prodIdx}].price = this.value">
+                            </div>
+                        </div>
+                    `;
+                    catDiv.appendChild(prodDiv);
+                });
+                container.appendChild(catDiv);
+            });
+        }
+
+        // Atualiza a imagem em tempo real
+        function updateImage(id, cIdx, pIdx, val) {
+            currentData.categories[cIdx].plans[pIdx].foto = val;
+            document.getElementById(`preview-${id}`).src = val;
+        }
+
+        // Função para baixar o JSON atualizado
+        function downloadJson() {
+            if(!currentData) return alert("Carregue um JSON primeiro!");
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentData, null, 4));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "roupa.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+    </script>
+</body>
+</html>
