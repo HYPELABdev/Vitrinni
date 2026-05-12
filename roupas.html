@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYPELAB | UnderLux Collection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;900&display=swap');
+        
+        body { background-color: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .lux-text { font-family: 'Syncopate', sans-serif; }
+        .gold-accent { color: #bc9c6c; }
+        
+        /* Glassmorphism Card */
+        .card-hypelab {
+            background: linear-gradient(145deg, #0a0a0a 0%, #050505 100%);
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .card-hypelab:hover {
+            border-color: #bc9c6c;
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+
+        .img-container img {
+            transition: transform 0.8s scale;
+            filter: grayscale(100%) contrast(110%);
+        }
+
+        .card-hypelab:hover img {
+            filter: grayscale(0%) contrast(100%);
+            transform: scale(1.05);
+        }
+
+        /* Animação de entrada */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .reveal { animation: fadeInUp 0.8s ease forwards; }
+    </style>
+</head>
+<body>
+
+    <!-- Navegação Superior -->
+    <nav class="fixed w-full z-50 p-6 flex justify-between items-center bg-black/80 backdrop-blur-xl border-b border-white/5">
+        <div class="lux-text text-xl tracking-tighter">HYPELAB<span class="gold-accent">.</span></div>
+        <div class="text-[9px] font-black tracking-[5px] uppercase opacity-40">Drop 2026 // Street Lux</div>
+    </nav>
+
+    <!-- Header -->
+    <header class="pt-40 pb-20 px-8 text-center">
+        <h1 class="lux-text text-6xl md:text-9xl mb-2 leading-none">UNDER<br><span class="gold-accent">LUX</span></h1>
+        <p class="text-[10px] tracking-[10px] uppercase opacity-30 mt-4">Caminhando nas sombras com elegância</p>
+    </header>
+
+    <!-- Grid de Produtos -->
+    <main class="max-w-7xl mx-auto px-6 pb-20">
+        <div id="vitrine-fluxo" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Injetado via JS -->
+        </div>
+    </main>
+
+    <script>
+        // CONFIGURAÇÃO AUTOMÁTICA
+        const GITHUB_USER = "SEU_USUARIO"; // O editor vai preencher isso
+        const GITHUB_REPO = "LEVELUP";
+        const FILE_PATH = "clientes/Roupa.json";
+
+        async function initVitrine() {
+            try {
+                const response = await fetch(`https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${FILE_PATH}?v=${Date.now()}`);
+                const data = await response.json();
+                const container = document.getElementById('vitrine-fluxo');
+                container.innerHTML = "";
+
+                data.roupas.forEach((item, index) => {
+                    const delay = index * 0.1;
+                    container.innerHTML += `
+                        <div class="card-hypelab rounded-[2.5rem] p-4 reveal" style="animation-delay: ${delay}s">
+                            <div class="img-container relative h-[450px] overflow-hidden rounded-[2rem] mb-6">
+                                <img src="${item.foto_url}" class="w-full h-full object-cover">
+                                <div class="absolute bottom-4 left-4 bg-black/90 backdrop-blur-md px-4 py-1 rounded-full border border-white/10 text-[9px] font-bold gold-accent">
+                                    ${item.tag}
+                                </div>
+                            </div>
+                            <div class="px-4 pb-4">
+                                <h3 class="lux-text text-[10px] uppercase tracking-widest opacity-60 mb-2">${item.modelo}</h3>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-3xl font-light tracking-tighter">R$ ${item.valor}</span>
+                                    <button onclick="window.location.href='${item.checkout}'" class="bg-white text-black px-6 py-3 rounded-full font-black text-[10px] uppercase hover:bg-[#bc9c6c] transition-all">
+                                        Comprar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (e) {
+                console.error("Erro no carregamento:", e);
+                document.getElementById('vitrine-fluxo').innerHTML = "<div class='col-span-full text-center py-20 opacity-20'>Aguardando Roupa.json...</div>";
+            }
+        }
+
+        // Simulação do Super Shield: Trava de Rota
+        (function() {
+            if(!window.location.href.includes('github.io') && !window.location.href.includes('localhost') && !window.location.href.includes('127.0.0.1')) {
+                document.body.innerHTML = "Acesso Negado";
+            }
+        })();
+
+        window.onload = initVitrine;
+    </script>
+</body>
+</html>
