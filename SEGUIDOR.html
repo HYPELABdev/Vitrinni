@@ -3,137 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEVEL UP | Premium Engagement</title>
+    <title>LEVEL UP | Engagement Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --main: #00ff00; --bg-dark: #05070a; }
+        :root { --main: #00ff00; --bg-dark: #06080c; }
         
         * { margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif; }
         body { background: var(--bg-dark); color:white; overflow-x:hidden; min-height: 100vh; }
 
-        /* --- EFEITO DE PARTÍCULAS --- */
-        .particles {
+        /* --- BACKGROUND MODERNO (Luzes Difusas) --- */
+        .bg-wrapper {
             position: fixed;
             inset: 0;
             z-index: -1;
+            background: var(--bg-dark);
             overflow: hidden;
-            pointer-events: none;
         }
 
-        .particle {
+        .light-blob {
             position: absolute;
-            color: var(--main);
-            opacity: 0.2;
-            filter: blur(1px);
-            animation: float 15s linear infinite;
-            font-size: 20px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 255, 0, 0.07) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: move 25s infinite alternate ease-in-out;
         }
 
-        @keyframes float {
-            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        @keyframes move {
+            0% { transform: translate(-10%, -10%); }
+            100% { transform: translate(30%, 20%); }
         }
 
-        /* --- GLASSMORPHISM & UI --- */
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
+        /* --- INTERFACE --- */
+        header { text-align:center; padding:60px 20px 30px; }
+        
+        .logo { 
+            font-size: 52px; 
+            font-weight: 800; 
+            letter-spacing: -2px; 
+            text-transform: uppercase; 
+            line-height: 1;
         }
-
-        header { text-align:center; padding:60px 20px 40px; }
-        .logo { font-size:54px; font-weight:900; letter-spacing:-1px; text-transform: uppercase; line-height: 1; }
+        
         .logo .highlight { 
             color: var(--main); 
-            text-shadow: 0 0 30px rgba(0, 255, 0, 0.5); 
+            text-shadow: 0 0 30px rgba(0, 255, 0, 0.3); 
         }
 
+        /* Abas Estilizadas */
         .tab-btn { 
-            padding: 10px 18px; 
-            border-radius: 12px; 
-            background: rgba(255,255,255,0.05); 
+            padding: 12px 22px; 
+            border-radius: 100px; 
+            background: rgba(255,255,255,0.03); 
             cursor: pointer; 
-            transition: 0.4s; 
+            transition: 0.3s; 
             font-size: 11px; 
             font-weight: 700; 
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.05);
             white-space: nowrap;
-            border: 1px solid transparent;
         }
+        
         .tab-btn.active { 
             background: var(--main); 
             color: black; 
-            box-shadow: 0 0 20px rgba(0,255,0,0.3);
+            border-color: var(--main);
+            box-shadow: 0 0 20px rgba(0,255,0,0.2);
         }
 
+        /* Cards de Plano */
         .card { 
-            padding:20px; 
-            border-radius:22px; 
+            padding:24px; 
+            border-radius:28px; 
             background: rgba(255,255,255,0.02); 
-            border:1px solid rgba(255,255,255,.05); 
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .card.active { 
-            border-color: var(--main); 
-            background: rgba(0,255,0,0.03);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,.06); 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .price { font-size:32px; font-weight:800; color:var(--main); }
+        .card.active { 
+            background: rgba(255,255,255,0.04);
+            border-color: var(--main); 
+            transform: scale(1.02);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        .card.active::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--main);
+        }
+
+        .price { 
+            margin-top: 8px;
+            font-size: 36px; 
+            font-weight: 800; 
+            color: var(--main); 
+            letter-spacing: -1px;
+        }
+
+        /* Formulário e Input */
+        .form-container {
+            background: rgba(255,255,255,0.03);
+            border-radius: 30px;
+            padding: 28px;
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+        }
 
         input { 
-            width:100%; padding:18px; border-radius:18px; 
-            background: rgba(0,0,0,0.3); color:white; 
-            border:1px solid rgba(255,255,255,0.1); outline:none; 
+            width:100%; 
+            padding:18px; 
+            border-radius:18px; 
+            background: rgba(0,0,0,0.2); 
+            color:white; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            outline:none; 
+            font-size: 15px;
             transition: 0.3s;
         }
-        input:focus { border-color: var(--main); box-shadow: 0 0 15px rgba(0,255,0,0.1); }
 
-        #cta { 
-            width:100%; padding:20px; margin-top:16px; border-radius:18px; 
-            background: var(--main); color:black; 
-            font-weight:900; font-size: 16px; text-transform: uppercase;
-            transition: 0.3s; cursor: pointer;
+        input:focus {
+            border-color: var(--main);
+            background: rgba(0,0,0,0.4);
         }
-        #cta:hover { transform: scale(1.02); filter: brightness(1.1); }
 
-        /* Esconder scrollbar */
-        #tab-list::-webkit-scrollbar { display: none; }
+        button#cta { 
+            width:100%; 
+            padding:22px; 
+            margin-top:16px; 
+            border-radius:18px; 
+            background: var(--main); 
+            color:black; 
+            font-weight:800; 
+            font-size: 16px; 
+            text-transform: uppercase;
+            cursor:pointer; 
+            transition: 0.3s;
+            border: none;
+        }
+
+        button#cta:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,255,0,0.2);
+        }
+
+        /* Utilitários */
+        .hide-scroll::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 
-<div class="particles" id="particle-container"></div>
+<div class="bg-wrapper">
+    <div class="light-blob" style="top: -10%; left: -10%;"></div>
+    <div class="light-blob" style="bottom: -10%; right: -10%; animation-delay: -5s; opacity: 0.04;"></div>
+</div>
 
 <header>
     <div class="logo"><span id="b1">LEVEL</span><span class="highlight" id="b2">UP</span></div>
-    <div class="hero text-gray-400 font-medium mt-3 tracking-wide" id="hero-text">Carregando...</div>
-    <div class="flex justify-center gap-6 mt-6">
-        <div class="text-center">
-            <div class="text-white font-bold text-lg" id="s-vendas">0</div>
-            <div class="text-[10px] text-gray-500 uppercase tracking-widest">Vendas</div>
+    <p class="hero text-gray-400 mt-4 font-medium tracking-wide" id="hero-text">Carregando serviços...</p>
+    
+    <div class="flex justify-center gap-8 mt-8">
+        <div class="flex flex-col">
+            <span class="text-xl font-bold" id="s-vendas">0</span>
+            <span class="text-[9px] uppercase tracking-[2px] opacity-40">Pedidos</span>
         </div>
-        <div class="h-10 w-[1px] bg-white/10"></div>
-        <div class="text-center">
-            <div class="text-white font-bold text-lg" id="s-online">0</div>
-            <div class="text-[10px] text-gray-500 uppercase tracking-widest">Online</div>
+        <div class="w-[1px] bg-white/10 h-10"></div>
+        <div class="flex flex-col">
+            <span class="text-xl font-bold" id="s-online">0</span>
+            <span class="text-[9px] uppercase tracking-[2px] opacity-40">Online</span>
         </div>
     </div>
 </header>
 
-<div class="container max-w-[500px] mx-auto p-6 pb-20">
-    <div class="flex gap-3 mb-8 overflow-x-auto" id="tab-list"></div>
+<div class="container max-w-[600px] mx-auto p-5 pb-24">
+    <!-- Seleção de Categorias -->
+    <div class="tab-container flex gap-3 mb-10 overflow-x-auto pb-4 hide-scroll" id="tab-list"></div>
 
-    <div class="grid gap-4" id="plans-grid"></div>
+    <!-- Lista de Planos -->
+    <div class="grid gap-5" id="plans-grid"></div>
 
-    <div class="form glass p-6 mt-8">
-        <label class="text-[11px] uppercase font-bold text-gray-400 ml-1">Seu usuário do Instagram</label>
-        <input type="text" id="user-target" placeholder="@seu-perfil">
+    <!-- Finalização -->
+    <div class="form-container mt-10">
+        <p class="text-xs font-bold text-gray-500 uppercase mb-3 ml-1 tracking-widest">Informações de Entrega</p>
+        <input type="text" id="user-target" placeholder="Digite seu @ do Instagram ou Link">
         <button onclick="sendOrder()" id="cta">Escolha um plano</button>
+        <p class="text-[10px] text-center mt-4 opacity-30 italic">Entrega automática via WhatsApp</p>
     </div>
 </div>
 
@@ -142,26 +202,12 @@
     let DATA = {};
     let selectedPlan = null;
 
-    // Gerador de Partículas (Likes e Seguidores)
-    function createParticles() {
-        const container = document.getElementById('particle-container');
-        const icons = ['❤️', '👤', '✨', '🔥'];
-        for (let i = 0; i < 20; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            p.innerText = icons[Math.floor(Math.random() * icons.length)];
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.animationDelay = Math.random() * 15 + 's';
-            p.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            container.appendChild(p);
-        }
-    }
-
     async function fetchData() {
         try {
             const res = await fetch(`${URL_PINTURA}?t=${new Date().getTime()}`);
             DATA = await res.json();
             
+            // Configurações Globais
             document.getElementById('b1').innerText = DATA.brand;
             document.getElementById('b2').innerText = DATA.brandHighlight;
             document.getElementById('hero-text').innerText = DATA.hero;
@@ -170,15 +216,15 @@
             document.documentElement.style.setProperty('--main', DATA.color);
 
             renderTabs();
-            createParticles();
         } catch (e) {
-            document.getElementById('hero-text').innerText = "ERRO AO CARREGAR";
+            document.getElementById('hero-text').innerText = "Erro ao sincronizar dados.";
         }
     }
 
     function renderTabs() {
         const tabList = document.getElementById('tab-list');
         tabList.innerHTML = '';
+        
         DATA.categories.forEach((cat, index) => {
             const btn = document.createElement('button');
             btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
@@ -190,12 +236,14 @@
             };
             tabList.appendChild(btn);
         });
+
         renderPlans(DATA.categories[0]);
     }
 
     function renderPlans(category) {
         const grid = document.getElementById('plans-grid');
         grid.innerHTML = '';
+        
         category.plans.forEach((plan, index) => {
             const card = document.createElement('div');
             card.className = `card ${index === 0 ? 'active' : ''}`;
@@ -211,15 +259,17 @@
             card.innerHTML = `
                 <div class="flex justify-between items-start">
                     <div>
-                        <h3 class="font-bold text-white text-base">${plan.name}</h3>
+                        <h3 class="font-bold text-lg leading-tight">${plan.name}</h3>
                         <div class="price">${plan.price}</div>
                     </div>
-                    ${plan.badge ? `<span class="text-[10px] bg-green-500/20 text-green-400 px-3 py-1 rounded-full font-black border border-green-500/30">${plan.badge}</span>` : ''}
+                    ${plan.badge ? `<span class="bg-white/5 text-white text-[10px] px-3 py-1 rounded-full font-bold border border-white/10">${plan.badge}</span>` : ''}
                 </div>
-                <div class="flex items-center gap-2 mt-3 opacity-60 text-[11px]">
-                    <span>✔ ${plan.quality || 'Qualidade Alta'}</span>
-                    <span class="w-1 h-1 bg-white/30 rounded-full"></span>
-                    <span>⚡ Entrega Rápida</span>
+                <div class="mt-4 flex items-center gap-3 text-xs opacity-50 font-medium">
+                    <span class="flex items-center gap-1">⚡ Rápido</span>
+                    <span class="w-1 h-1 bg-white/20 rounded-full"></span>
+                    <span>🔒 Seguro</span>
+                    <span class="w-1 h-1 bg-white/20 rounded-full"></span>
+                    <span>${plan.quality || 'Garantido'}</span>
                 </div>
             `;
             grid.appendChild(card);
@@ -229,21 +279,22 @@
 
     function updateButton() {
         if(selectedPlan) {
-            document.getElementById('cta').innerText = `Garantir ${selectedPlan.name}`;
+            document.getElementById('cta').innerText = `Comprar ${selectedPlan.name}`;
         }
     }
 
     function sendOrder() {
         const user = document.getElementById('user-target').value;
-        if(!user) return alert("Por favor, digite seu @!");
+        if(!user) return alert("Por favor, informe seu perfil!");
         
         const msg = encodeURIComponent(
-            `🛒 *NOVO PEDIDO - ${DATA.brand}${DATA.brandHighlight}*\n\n` +
-            `⭐ *Serviço:* ${selectedPlan.name}\n` +
-            `💵 *Valor:* ${selectedPlan.price}\n` +
-            `👤 *Perfil:* ${user}\n\n` +
-            `Aguardando instruções para pagamento!`
+            `🚀 *NOVO PEDIDO - ${DATA.brand}${DATA.brandHighlight}*\n\n` +
+            `📦 *Serviço:* ${selectedPlan.name}\n` +
+            `💰 *Valor:* ${selectedPlan.price}\n` +
+            `📸 *Destino:* ${user}\n\n` +
+            `_Gostaria de prosseguir com o pagamento!_`
         );
+
         window.open(`https://wa.me/${DATA.whatsapp}?text=${msg}`, '_blank');
     }
 
