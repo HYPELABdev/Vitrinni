@@ -5,14 +5,12 @@
   "subtitle": "Moda íntima premium para revenda de alto lucro.",
   "promo": "🔥 Promoção ativa hoje",
   "whatsapp": "5511949946730",
-  "color": "#ff003c",
+  "color": "#00ff00",
   "footer_text": "© 2026 UNIKA PRIVATE — Todos os direitos reservados",
-  
   "stats": {
     "sales": "320",
     "online": "58"
   },
-
   "about_section": {
     "about_image": "https://i.ibb.co/xKPYsbsy/1778445628355.png",
     "about_title": "A essência da UNIKA PRIVATE",
@@ -20,18 +18,23 @@
     "about_p2": "Criamos peças sofisticadas com alta saída e excelente margem de lucro.",
     "about_p3": "Cada detalhe da marca transmite exclusividade e desejo."
   },
-
   "categories": [
     {
       "name": "Calcinha Renda",
       "icon": "👙",
       "plans": [
         {
+          "name": "Kit 100 unidades ",
+          "description": "Descrição...",
+          "price": "500.00",
+          "foto": "https://i.ibb.co/qYDNxqRd/file-00000000d5f871fb9aed7268768b34e2.png"
+        },
+        {
           "name": "Kit 10 unidades",
           "badge": "🔥 Mais vendido",
           "price": "R$ 50,00",
           "description": "Modelo premium com alta saída no atacado.",
-          "foto": "https://i.ibb.co/xKPYsbsy/1778445628355.png",
+          "foto": "https://i.ibb.co/qYDNxqRd/file-00000000d5f871fb9aed7268768b34e2.png",
           "info_1": "Entrega rápida",
           "info_2": "Alta qualidade",
           "info_3": "Revenda lucrativa"
