@@ -3,302 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEVEL UP | Engagement Pro</title>
+    <title>LEVEL UP | Professional SMM</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root { --main: #00ff00; --bg-dark: #06080c; }
-        
-        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif; }
-        body { background: var(--bg-dark); color:white; overflow-x:hidden; min-height: 100vh; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        body { background: var(--bg-dark); color:white; overflow-x:hidden; }
 
-        /* --- BACKGROUND MODERNO (Luzes Difusas) --- */
-        .bg-wrapper {
+        /* Pop-up de Vendas */
+        #sale-popup {
             position: fixed;
-            inset: 0;
-            z-index: -1;
-            background: var(--bg-dark);
-            overflow: hidden;
-        }
-
-        .light-blob {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 255, 0, 0.07) 0%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(80px);
-            animation: move 25s infinite alternate ease-in-out;
-        }
-
-        @keyframes move {
-            0% { transform: translate(-10%, -10%); }
-            100% { transform: translate(30%, 20%); }
-        }
-
-        /* --- INTERFACE --- */
-        header { text-align:center; padding:60px 20px 30px; }
-        
-        .logo { 
-            font-size: 52px; 
-            font-weight: 800; 
-            letter-spacing: -2px; 
-            text-transform: uppercase; 
-            line-height: 1;
-        }
-        
-        .logo .highlight { 
-            color: var(--main); 
-            text-shadow: 0 0 30px rgba(0, 255, 0, 0.3); 
-        }
-
-        /* Abas Estilizadas */
-        .tab-btn { 
-            padding: 12px 22px; 
-            border-radius: 100px; 
-            background: rgba(255,255,255,0.03); 
-            cursor: pointer; 
-            transition: 0.3s; 
-            font-size: 11px; 
-            font-weight: 700; 
-            text-transform: uppercase;
-            border: 1px solid rgba(255,255,255,0.05);
-            white-space: nowrap;
-        }
-        
-        .tab-btn.active { 
-            background: var(--main); 
-            color: black; 
-            border-color: var(--main);
-            box-shadow: 0 0 20px rgba(0,255,0,0.2);
-        }
-
-        /* Cards de Plano */
-        .card { 
-            padding:24px; 
-            border-radius:28px; 
-            background: rgba(255,255,255,0.02); 
-            border: 1px solid rgba(255,255,255,.06); 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card.active { 
-            background: rgba(255,255,255,0.04);
-            border-color: var(--main); 
-            transform: scale(1.02);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-        }
-
-        .card.active::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: var(--main);
-        }
-
-        .price { 
-            margin-top: 8px;
-            font-size: 36px; 
-            font-weight: 800; 
-            color: var(--main); 
-            letter-spacing: -1px;
-        }
-
-        /* Formulário e Input */
-        .form-container {
-            background: rgba(255,255,255,0.03);
-            border-radius: 30px;
-            padding: 28px;
-            border: 1px solid rgba(255,255,255,0.05);
+            bottom: 20px;
+            left: 20px;
+            background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 20px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+            transform: translateY(150%);
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
+        #sale-popup.active { transform: translateY(0); }
+        .popup-dot { width: 8px; height: 8px; background: var(--main); border-radius: 50%; animation: pulse 1.5s infinite; }
 
-        input { 
-            width:100%; 
-            padding:18px; 
-            border-radius:18px; 
-            background: rgba(0,0,0,0.2); 
-            color:white; 
-            border: 1px solid rgba(255,255,255,0.1); 
-            outline:none; 
-            font-size: 15px;
-            transition: 0.3s;
-        }
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
 
-        input:focus {
-            border-color: var(--main);
-            background: rgba(0,0,0,0.4);
-        }
+        /* Design de Cards e Background */
+        .bg-wrapper { position: fixed; inset: 0; z-index: -1; background: var(--bg-dark); overflow: hidden; }
+        .light-blob { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0, 255, 0, 0.05) 0%, transparent 70%); border-radius: 50%; filter: blur(80px); animation: move 20s infinite alternate ease-in-out; }
+        @keyframes move { 0% { transform: translate(-10%, -10%); } 100% { transform: translate(20%, 10%); } }
 
-        button#cta { 
-            width:100%; 
-            padding:22px; 
-            margin-top:16px; 
-            border-radius:18px; 
-            background: var(--main); 
-            color:black; 
-            font-weight:800; 
-            font-size: 16px; 
-            text-transform: uppercase;
-            cursor:pointer; 
-            transition: 0.3s;
-            border: none;
-        }
+        .card { padding:24px; border-radius:28px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,.06); transition: 0.3s; cursor: pointer; }
+        .card.active { border-color: var(--main); background: rgba(255,255,255,0.04); transform: scale(1.02); }
+        .tab-btn { padding: 12px 22px; border-radius: 100px; background: rgba(255,255,255,0.03); font-size: 11px; font-weight: 700; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; white-space: nowrap; }
+        .tab-btn.active { background: var(--main); color: black; border-color: var(--main); }
+        
+        .price { font-size: 32px; font-weight: 800; color: var(--main); letter-spacing: -1px; }
+        .input-hero { width:100%; padding:18px; border-radius:18px; background: rgba(0,0,0,0.3); color:white; border: 1px solid rgba(255,255,255,0.1); outline:none; transition: 0.3s; }
+        .input-hero:focus { border-color: var(--main); }
+        
+        #cta { width:100%; padding:20px; border-radius:18px; background: var(--main); color:black; font-weight:800; text-transform: uppercase; transition: 0.3s; border: none; cursor: pointer; }
+        #cta:hover { filter: brightness(1.1); box-shadow: 0 0 20px rgba(0,255,0,0.3); }
 
-        button#cta:hover {
-            filter: brightness(1.1);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,255,0,0.2);
-        }
-
-        /* Utilitários */
-        .hide-scroll::-webkit-scrollbar { display: none; }
+        .about-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 32px; padding: 30px; }
     </style>
 </head>
 <body>
 
-<div class="bg-wrapper">
-    <div class="light-blob" style="top: -10%; left: -10%;"></div>
-    <div class="light-blob" style="bottom: -10%; right: -10%; animation-delay: -5s; opacity: 0.04;"></div>
+<div class="bg-wrapper"><div class="light-blob" style="top:-5%; left:-5%;"></div></div>
+
+<!-- Pop-up de Emergência -->
+<div id="sale-popup">
+    <div class="popup-dot"></div>
+    <div class="text-[11px] leading-tight">
+        <p class="text-gray-400">Novo pedido de <b class="text-white" id="pop-user">@marcos...</b></p>
+        <p class="font-bold text-white" id="pop-item">5.000 Seguidores</p>
+    </div>
 </div>
 
-<header>
-    <div class="logo"><span id="b1">LEVEL</span><span class="highlight" id="b2">UP</span></div>
-    <p class="hero text-gray-400 mt-4 font-medium tracking-wide" id="hero-text">Carregando serviços...</p>
+<header class="text-center pt-16 pb-8 px-6">
+    <div class="logo text-5xl font-extrabold uppercase tracking-tighter"><span id="b1"></span><span class="text-[var(--main)]" id="b2"></span></div>
+    <p class="text-gray-400 mt-4 font-medium" id="hero-text"></p>
     
-    <div class="flex justify-center gap-8 mt-8">
-        <div class="flex flex-col">
-            <span class="text-xl font-bold" id="s-vendas">0</span>
-            <span class="text-[9px] uppercase tracking-[2px] opacity-40">Pedidos</span>
-        </div>
-        <div class="w-[1px] bg-white/10 h-10"></div>
-        <div class="flex flex-col">
-            <span class="text-xl font-bold" id="s-online">0</span>
-            <span class="text-[9px] uppercase tracking-[2px] opacity-40">Online</span>
-        </div>
+    <div class="flex justify-center gap-10 mt-8">
+        <div class="text-center"><p class="text-2xl font-black" id="s-vendas">0</p><p class="text-[9px] uppercase opacity-40 tracking-widest">Pedidos</p></div>
+        <div class="text-center"><p class="text-2xl font-black" id="s-online">0</p><p class="text-[9px] uppercase opacity-40 tracking-widest">Online</p></div>
     </div>
 </header>
 
-<div class="container max-w-[600px] mx-auto p-5 pb-24">
-    <!-- Seleção de Categorias -->
-    <div class="tab-container flex gap-3 mb-10 overflow-x-auto pb-4 hide-scroll" id="tab-list"></div>
+<div class="max-w-[600px] mx-auto p-5 space-y-10">
+    <!-- Seleção -->
+    <div class="flex gap-3 overflow-x-auto pb-2" id="tab-list"></div>
 
-    <!-- Lista de Planos -->
-    <div class="grid gap-5" id="plans-grid"></div>
+    <!-- Planos -->
+    <div class="grid gap-4" id="plans-grid"></div>
 
-    <!-- Finalização -->
-    <div class="form-container mt-10">
-        <p class="text-xs font-bold text-gray-500 uppercase mb-3 ml-1 tracking-widest">Informações de Entrega</p>
-        <input type="text" id="user-target" placeholder="Digite seu @ do Instagram ou Link">
-        <button onclick="sendOrder()" id="cta">Escolha um plano</button>
-        <p class="text-[10px] text-center mt-4 opacity-30 italic">Entrega automática via WhatsApp</p>
+    <!-- Checkout -->
+    <div class="bg-white/5 p-6 rounded-[32px] border border-white/5">
+        <p class="text-[10px] font-bold text-gray-500 uppercase mb-4 tracking-widest text-center">Configurações do Pedido</p>
+        <input type="text" id="user-target" placeholder="Seu @usuário ou Link do post" class="input-hero mb-4">
+        <button onclick="sendOrder()" id="cta">Escolha um Plano</button>
     </div>
+
+    <!-- Quem Somos (Estilo Unika) -->
+    <section class="pt-10">
+        <div class="about-box space-y-6">
+            <img id="aboutImg" class="w-full h-48 object-cover rounded-2xl shadow-2xl">
+            <h2 id="aboutTitle" class="text-3xl font-extrabold leading-tight"></h2>
+            <div id="aboutText" class="text-sm text-gray-400 leading-relaxed space-y-3"></div>
+        </div>
+    </section>
+
+    <footer class="text-center py-10 opacity-30 text-[11px]" id="footer-text"></footer>
 </div>
 
 <script>
-    const URL_PINTURA = "https://hypelabdev.github.io/Vitrinni/Clientes/levelup.json";
+    const params = new URLSearchParams(window.location.search);
+    const storeID = params.get('id') || 'seguidor';
     let DATA = {};
     let selectedPlan = null;
 
-    async function fetchData() {
+    async function init() {
         try {
-            const res = await fetch(`${URL_PINTURA}?t=${new Date().getTime()}`);
+            const res = await fetch(`https://hypelabdev.github.io/Vitrinni/Clientes/${storeID}.json?v=${Date.now()}`);
             DATA = await res.json();
             
-            // Configurações Globais
+            document.documentElement.style.setProperty('--main', DATA.color);
             document.getElementById('b1').innerText = DATA.brand;
             document.getElementById('b2').innerText = DATA.brandHighlight;
             document.getElementById('hero-text').innerText = DATA.hero;
             document.getElementById('s-vendas').innerText = DATA.stats.sales;
             document.getElementById('s-online').innerText = DATA.stats.online;
-            document.documentElement.style.setProperty('--main', DATA.color);
+            document.getElementById('footer-text').innerText = DATA.footer_text;
+
+            // Sobre
+            document.getElementById('aboutImg').src = DATA.about_section.about_image;
+            document.getElementById('aboutTitle').innerText = DATA.about_section.about_title;
+            document.getElementById('aboutText').innerHTML = `<p>${DATA.about_section.about_p1}</p><p>${DATA.about_section.about_p2}</p><p>${DATA.about_section.about_p3}</p>`;
 
             renderTabs();
-        } catch (e) {
-            document.getElementById('hero-text').innerText = "Erro ao sincronizar dados.";
-        }
+            startPopups();
+        } catch (e) { console.error(e); }
     }
 
     function renderTabs() {
-        const tabList = document.getElementById('tab-list');
-        tabList.innerHTML = '';
-        
-        DATA.categories.forEach((cat, index) => {
+        const list = document.getElementById('tab-list');
+        DATA.categories.forEach((cat, i) => {
             const btn = document.createElement('button');
-            btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+            btn.className = `tab-btn ${i===0?'active':''}`;
             btn.innerHTML = `${cat.icon} ${cat.name}`;
             btn.onclick = () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
                 btn.classList.add('active');
                 renderPlans(cat);
             };
-            tabList.appendChild(btn);
+            list.appendChild(btn);
         });
-
         renderPlans(DATA.categories[0]);
     }
 
-    function renderPlans(category) {
+    function renderPlans(cat) {
         const grid = document.getElementById('plans-grid');
         grid.innerHTML = '';
-        
-        category.plans.forEach((plan, index) => {
+        cat.plans.forEach((plan, i) => {
             const card = document.createElement('div');
-            card.className = `card ${index === 0 ? 'active' : ''}`;
-            if(index === 0) selectedPlan = plan;
-
+            card.className = `card ${i===0?'active':''}`;
+            if(i===0) selectedPlan = plan;
             card.onclick = () => {
-                document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+                document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
                 card.classList.add('active');
                 selectedPlan = plan;
                 updateButton();
             };
-
             card.innerHTML = `
                 <div class="flex justify-between items-start">
-                    <div>
-                        <h3 class="font-bold text-lg leading-tight">${plan.name}</h3>
-                        <div class="price">${plan.price}</div>
-                    </div>
-                    ${plan.badge ? `<span class="bg-white/5 text-white text-[10px] px-3 py-1 rounded-full font-bold border border-white/10">${plan.badge}</span>` : ''}
+                    <div><h3 class="font-bold text-lg">${plan.name}</h3><div class="price">${plan.price}</div></div>
+                    ${plan.badge?`<span class="bg-white/10 text-[9px] px-3 py-1 rounded-full font-bold border border-white/10">${plan.badge}</span>`:''}
                 </div>
-                <div class="mt-4 flex items-center gap-3 text-xs opacity-50 font-medium">
-                    <span class="flex items-center gap-1">⚡ Rápido</span>
-                    <span class="w-1 h-1 bg-white/20 rounded-full"></span>
-                    <span>🔒 Seguro</span>
-                    <span class="w-1 h-1 bg-white/20 rounded-full"></span>
-                    <span>${plan.quality || 'Garantido'}</span>
-                </div>
-            `;
+                <div class="mt-4 flex items-center gap-3 text-[10px] opacity-40 font-bold uppercase tracking-widest">
+                    <span>⚡ Entrega Fast</span><span>•</span><span>🔒 Proteção SSL</span><span>•</span><span>${plan.quality}</span>
+                </div>`;
             grid.appendChild(card);
         });
         updateButton();
     }
 
-    function updateButton() {
-        if(selectedPlan) {
-            document.getElementById('cta').innerText = `Comprar ${selectedPlan.name}`;
-        }
-    }
+    function updateButton() { document.getElementById('cta').innerText = `Comprar ${selectedPlan.name}`; }
 
     function sendOrder() {
         const user = document.getElementById('user-target').value;
-        if(!user) return alert("Por favor, informe seu perfil!");
-        
-        const msg = encodeURIComponent(
-            `🚀 *NOVO PEDIDO - ${DATA.brand}${DATA.brandHighlight}*\n\n` +
-            `📦 *Serviço:* ${selectedPlan.name}\n` +
-            `💰 *Valor:* ${selectedPlan.price}\n` +
-            `📸 *Destino:* ${user}\n\n` +
-            `_Gostaria de prosseguir com o pagamento!_`
-        );
-
+        if(!user) return alert("Digite o @usuário!");
+        const msg = encodeURIComponent(`🚀 *NOVO PEDIDO*\n\n*Serviço:* ${selectedPlan.name}\n*Valor:* ${selectedPlan.price}\n*Perfil:* ${user}\n\n_Aguardando instruções de pagamento!_`);
         window.open(`https://wa.me/${DATA.whatsapp}?text=${msg}`, '_blank');
     }
 
-    window.onload = fetchData;
+    // Sistema de Pop-ups de Vendas Falsas (Gera Urgência)
+    function startPopups() {
+        const users = ['@clara_m', '@joao.v', '@thays.estilo', '@felipe_ofc', '@loja_modas', '@gabriel_dev', '@ana.lu'];
+        const items = ['1.000 Seguidores', '500 Curtidas', '5.000 Visualizações', '10k Seguidores VIP', '3.000 Seguidores'];
+        
+        setInterval(() => {
+            const popup = document.getElementById('sale-popup');
+            document.getElementById('pop-user').innerText = users[Math.floor(Math.random()*users.length)];
+            document.getElementById('pop-item').innerText = items[Math.floor(Math.random()*items.length)];
+            
+            popup.classList.add('active');
+            setTimeout(() => popup.classList.remove('active'), 4000);
+        }, 12000); // Aparece a cada 12 segundos
+    }
+
+    init();
 </script>
 </body>
 </html>
