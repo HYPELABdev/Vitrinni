@@ -1,426 +1,174 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIKA PRIVATE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #ff003c; --bg: #050505; --card: #111; --text: #fff; --muted: #aaa; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        /* HERO */
+        .hero { padding: 90px 6%; text-align: center; background: radial-gradient(circle at top, rgba(255,0,60,.18), transparent 60%); }
+        .brand { font-size: 52px; font-weight: 900; text-transform: uppercase; }
+        .brand span { color: var(--primary); }
+        .subtitle { color: var(--muted); margin-top: 10px; font-size: 15px; }
+        .promo { margin-top: 15px; display: inline-block; padding: 10px 18px; border-radius: 50px; background: rgba(255,0,60,.12); border: 1px solid rgba(255,0,60,.3); font-size: 13px; font-weight: 600; }
+        
+        .stats { margin-top: 25px; display: flex; justify-content: center; gap: 15px; }
+        .stat { background: #111; padding: 14px 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,.05); min-width: 120px; }
+        .stat h2 { color: var(--primary); font-size: 24px; font-weight: 800; }
+        .stat p { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
 
-<title>UNIKA PRIVATE</title>
+        /* PRODUTOS */
+        .section { padding: 60px 6%; }
+        .category-title { font-size: 28px; margin-bottom: 30px; display: flex; gap: 12px; align-items: center; font-weight: 700; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 50px; }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+        /* CARD */
+        .card { background: var(--card); border-radius: 22px; padding: 20px; border: 1px solid rgba(255,255,255,.05); transition: .3s; position: relative; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(255,0,60,0.1); }
+        .badge { position: absolute; top: 15px; right: 15px; background: var(--primary); padding: 5px 12px; font-size: 10px; border-radius: 50px; font-weight: 800; text-transform: uppercase; z-index: 2; }
+        
+        .card-img { width: 100%; h-48; border-radius: 15px; object-fit: cover; margin-bottom: 15px; background: #000; }
+        .card h3 { font-size: 19px; margin-bottom: 8px; font-weight: 700; }
+        .price { font-size: 28px; color: var(--primary); font-weight: 800; margin-bottom: 8px; }
+        .desc { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 15px; flex-grow: 1; }
+        
+        .info { font-size: 12px; color: #bbb; margin-bottom: 20px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 12px; }
+        .info-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+        .info-item:before { content: '✓'; color: var(--primary); font-weight: bold; }
 
-<style>
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 16px; background: var(--primary); color: #fff; font-weight: 700; cursor: pointer; transition: .3s; text-transform: uppercase; letter-spacing: 1px; }
+        .btn:hover { opacity: .85; transform: scale(1.02); }
 
-:root{
---main:#ff003c;
-}
+        /* SOBRE */
+        .about { padding: 60px 6%; }
+        .about-box { background: #0b0b0b; padding: 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,.05); display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+        .about-img { width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .about-content h2 { font-size: 38px; margin-bottom: 20px; font-weight: 800; line-height: 1.2; }
+        .about-content p { color: var(--muted); line-height: 1.8; font-size: 15px; margin-bottom: 15px; }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins,sans-serif;
-}
+        footer { padding: 50px; text-align: center; color: #555; border-top: 1px solid rgba(255,255,255,.05); font-size: 13px; font-weight: 500; }
 
-body{
-background:#0a0a0a;
-color:white;
-overflow-x:hidden;
-}
-
-/* BG */
-
-.bg{
-position:fixed;
-inset:0;
-z-index:-1;
-
-background:
-radial-gradient(circle at top left,rgba(255,0,60,.12),transparent 35%),
-linear-gradient(-45deg,#0a0a0a,#0f0f0f,#080808);
-
-background-size:300% 300%;
-animation:bg 10s ease infinite;
-}
-
-@keyframes bg{
-
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-
-}
-
-/* HEADER */
-
-header{
-text-align:center;
-padding:50px 20px 30px;
-}
-
-.logo{
-font-size:64px;
-font-weight:800;
-letter-spacing:3px;
-}
-
-.logo .main{
-color:white;
-}
-
-.logo .highlight{
-color:var(--main);
-text-shadow:0 0 20px rgba(255,0,60,.5);
-}
-
-.hero{
-margin-top:14px;
-font-size:26px;
-font-weight:700;
-}
-
-.sub{
-margin-top:8px;
-color:#9ca6ba;
-font-size:14px;
-}
-
-/* STATS */
-
-.stats{
-display:flex;
-justify-content:center;
-gap:12px;
-margin-top:22px;
-flex-wrap:wrap;
-}
-
-.stat{
-padding:12px 15px;
-border-radius:16px;
-background:rgba(255,255,255,.04);
-border:1px solid rgba(255,255,255,.06);
-font-size:13px;
-}
-
-/* CONTAINER */
-
-.container{
-max-width:900px;
-margin:auto;
-padding:20px;
-padding-bottom:120px;
-}
-
-/* ALERT */
-
-.alert{
-padding:14px;
-border-radius:18px;
-margin-bottom:20px;
-
-background:rgba(255,0,60,.08);
-border:1px solid rgba(255,0,60,.18);
-color:#ff9db2;
-text-align:center;
-}
-
-/* CARDS */
-
-.cards{
-display:grid;
-gap:18px;
-}
-
-.card{
-position:relative;
-
-padding:24px;
-
-border-radius:26px;
-
-background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
-
-border:1px solid rgba(255,255,255,.06);
-
-transition:.25s;
-cursor:pointer;
-}
-
-.card:hover{
-transform:translateY(-4px);
-}
-
-.card.active{
-border-color:var(--main);
-box-shadow:0 0 30px rgba(255,0,60,.18);
-transform:scale(1.02);
-}
-
-.top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.badge{
-padding:6px 10px;
-border-radius:12px;
-background:rgba(255,255,255,.06);
-font-size:11px;
-}
-
-.price{
-margin-top:14px;
-font-size:40px;
-font-weight:800;
-color:var(--main);
-}
-
-.desc{
-margin-top:12px;
-color:#aab4c7;
-line-height:1.7;
-font-size:14px;
-}
-
-/* FORM */
-
-.form{
-margin-top:24px;
-padding:24px;
-border-radius:24px;
-background:rgba(255,255,255,.04);
-border:1px solid rgba(255,255,255,.06);
-}
-
-.form-title{
-font-size:17px;
-font-weight:700;
-}
-
-input{
-width:100%;
-padding:15px;
-border:none;
-outline:none;
-border-radius:16px;
-background:rgba(255,255,255,.05);
-color:white;
-margin-top:14px;
-font-size:15px;
-}
-
-button{
-width:100%;
-padding:16px;
-margin-top:16px;
-border:none;
-border-radius:18px;
-
-background:linear-gradient(45deg,var(--main),#ff4d6d);
-
-color:white;
-font-size:15px;
-font-weight:700;
-cursor:pointer;
-transition:.25s;
-}
-
-button:hover{
-transform:scale(1.02);
-}
-
-</style>
-
+        @media (max-width: 768px) {
+            .about-box { grid-template-columns: 1fr; text-align: center; padding: 30px 20px; }
+            .brand { font-size: 40px; }
+            .about-content h2 { font-size: 28px; }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="bg"></div>
+    <section class="hero">
+        <div class="brand" id="brand">Cargando...</div>
+        <div class="subtitle" id="subtitle"></div>
+        <div class="promo" id="promo"></div>
+        <div class="stats">
+            <div class="stat">
+                <h2 id="sales">0</h2>
+                <p>Vendas</p>
+            </div>
+            <div class="stat">
+                <h2 id="online">0</h2>
+                <p>Online</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="categories-container"></section>
+
+    <section class="about">
+        <div class="about-box">
+            <img id="aboutImg" src="" class="about-img">
+            <div class="about-content">
+                <h2 id="aboutTitle"></h2>
+                <div id="aboutText"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="footer"></footer>
+
+    <script>
+        // 1. PEGAR ID DA URL
+        const params = new URLSearchParams(window.location.search);
+        const storeID = params.get('id') || 'unika'; // Padrão é unika se não tiver ID
+
+        async function init() {
+            try {
+                // 2. BUSCAR JSON NO GITHUB
+                const response = await fetch(`https://hypelabdev.github.io/Vitrinni/Clientes/${storeID}.json?v=${Date.now()}`);
+                if (!response.ok) throw new Error("Loja não encontrada");
+                const DATA = await response.json();
+
+                // 3. APLICAR TEMA E CORES
+                document.documentElement.style.setProperty('--primary', DATA.color);
+                document.title = `${DATA.brand} ${DATA.brandHighlight}`;
+
+                // 4. PREENCHER HERO
+                document.getElementById("brand").innerHTML = `${DATA.brand} <span>${DATA.brandHighlight}</span>`;
+                document.getElementById("subtitle").innerText = DATA.subtitle;
+                document.getElementById("promo").innerText = DATA.promo;
+                document.getElementById("sales").innerText = DATA.stats.sales;
+                document.getElementById("online").innerText = DATA.stats.online;
+
+                // 5. RENDERIZAR CATEGORIAS E PRODUTOS
+                const container = document.getElementById("categories-container");
+                DATA.categories.forEach(cat => {
+                    let html = `
+                        <h2 class="category-title">${cat.icon || '✨'} ${cat.name}</h2>
+                        <div class="grid">
+                    `;
+
+                    cat.plans.forEach(plan => {
+                        html += `
+                            <div class="card">
+                                ${plan.badge ? `<div class="badge">${plan.badge}</div>` : ''}
+                                ${plan.foto ? `<img src="${plan.foto}" class="card-img">` : ''}
+                                <h3>${plan.name}</h3>
+                                <div class="price">${plan.price}</div>
+                                <div class="desc">${plan.description}</div>
+                                <div class="info">
+                                    <div class="info-item">${plan.info_1 || 'Qualidade Premium'}</div>
+                                    <div class="info-item">${plan.info_2 || 'Envio Imediato'}</div>
+                                    <div class="info-item">${plan.info_3 || 'Suporte VIP'}</div>
+                                </div>
+                                <button class="btn" onclick="buy('${plan.name}','${plan.price}','${DATA.whatsapp}')">Comprar Agora</button>
+                            </div>
+                        `;
+                    });
+
+                    html += `</div>`;
+                    container.innerHTML += html;
+                });
+
+                // 6. SEÇÃO SOBRE
+                document.getElementById("aboutImg").src = DATA.about_section.about_image;
+                document.getElementById("aboutTitle").innerText = DATA.about_section.about_title;
+                document.getElementById("aboutText").innerHTML = `
+                    <p>${DATA.about_section.about_p1}</p>
+                    <p>${DATA.about_section.about_p2}</p>
+                    <p>${DATA.about_section.about_p3}</p>
+                `;
+
+                // 7. RODAPÉ
+                document.getElementById("footer").innerText = DATA.footer_text;
+
+            } catch (err) {
+                console.error(err);
+                document.body.innerHTML = `<div style="color:white; text-align:center; margin-top:100px;"><h1>404</h1><p>Loja não encontrada ou ID inválido.</p></div>`;
+            }
+        }
+
+        function buy(item, price, phone) {
+            const msg = encodeURIComponent(`Olá! Gostaria de comprar:\n🎁 *${item}*\n💰 Valor: *${price}*\n\nPodemos prosseguir?`);
+            window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+        }
 
-<header>
-
-<div class="logo">
-<span class="main" id="brand1"></span>
-<span class="highlight" id="brand2"></span>
-</div>
-
-<div class="hero" id="hero"></div>
-
-<div class="sub" id="subtitle"></div>
-
-<div class="stats">
-
-<div class="stat">
-🔥 <span id="sales"></span> vendas
-</div>
-
-<div class="stat">
-🔴 <span id="online"></span> online
-</div>
-
-</div>
-
-</header>
-
-<div class="container">
-
-<div class="alert" id="promo"></div>
-
-<div class="cards" id="categories"></div>
-
-<div class="form">
-
-<div class="form-title">
-Finalizar pedido
-</div>
-
-<input type="text" id="instagram" placeholder="@seuinstagram">
-
-<button onclick="finishOrder()" id="cta">
-🚀 Comprar agora
-</button>
-
-</div>
-
-</div>
-
-<script>
-
-let CONFIG = {};
-let selectedPlan = null;
-
-/* 🔥 JSON LOCAL (GITHUB PASTA) */
-fetch('./Clientes/unika.json')
-
-.then(r => r.json())
-
-.then(data => {
-
-CONFIG = data;
-
-/* THEME */
-document.documentElement.style.setProperty('--main', CONFIG.color);
-
-/* HEADER */
-document.getElementById('brand1').innerHTML = CONFIG.brand;
-document.getElementById('brand2').innerHTML = CONFIG.brandHighlight;
-
-document.getElementById('hero').innerHTML = CONFIG.hero;
-document.getElementById('subtitle').innerHTML = CONFIG.subtitle;
-document.getElementById('promo').innerHTML = CONFIG.promo;
-
-document.getElementById('sales').innerHTML = CONFIG.stats.sales;
-document.getElementById('online').innerHTML = CONFIG.stats.online;
-
-/* RENDER */
-render();
-
-})
-
-.catch(err => {
-document.body.innerHTML = `
-<h2 style="color:white;padding:40px">
-❌ Erro ao carregar unika.json
-</h2>`;
-console.log(err);
-});
-
-/* RENDER CATEGORIES */
-
-function render(){
-
-const box = document.getElementById('categories');
-box.innerHTML = '';
-
-CONFIG.categories.forEach(cat => {
-
-let html = `
-<h2 style="margin:20px 0">${cat.icon} ${cat.name}</h2>
-`;
-
-cat.plans.forEach((plan,i) => {
-
-html += `
-<div class="card ${i===0?'active':''}"
-onclick="selectPlan(this, '${plan.name}', '${plan.price}')">
-
-<div class="top">
-<h3>${plan.name}</h3>
-<div class="badge">${plan.badge}</div>
-</div>
-
-<div class="price">${plan.price}</div>
-
-<div class="desc">${plan.description}</div>
-
-</div>
-`;
-
-});
-
-box.innerHTML += html;
-
-});
-
-/* default */
-selectedPlan = CONFIG.categories[0].plans[0];
-updateCTA();
-
-}
-
-/* SELECT */
-
-function selectPlan(el,name,price){
-
-document.querySelectorAll('.card')
-.forEach(c => c.classList.remove('active'));
-
-el.classList.add('active');
-
-selectedPlan = {name, price};
-
-updateCTA();
-
-}
-
-function updateCTA(){
-document.getElementById('cta').innerText =
-`🚀 Comprar ${selectedPlan.name}`;
-}
-
-/* BUY */
-
-function finishOrder(){
-
-let insta =
-document.getElementById('instagram').value.trim();
-
-if(!insta){
-alert("Digite seu Instagram");
-return;
-}
-
-if(!insta.startsWith('@')){
-insta = '@'+insta;
-}
-
-const msg =
-`🚀 PEDIDO UNIKA%0A%0A`+
-`📦 Produto: ${selectedPlan.name}%0A`+
-`💰 Valor: ${selectedPlan.price}%0A`+
-`📸 Insta: ${insta}`;
-
-window.open(
-`https://wa.me/${CONFIG.whatsapp}?text=${msg}`,
-'_blank'
-);
-
-}
-
-</script>
-
+        init();
+    </script>
 </body>
 </html>
