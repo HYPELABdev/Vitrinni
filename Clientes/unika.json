@@ -1,20 +1,15 @@
 {
   "brand": "UNIKA",
   "brandHighlight": "PRIVATE",
-
   "hero": "Sensualidade com elegância.",
   "subtitle": "Moda íntima premium para revenda de alto lucro.",
   "promo": "🔥 Promoção ativa hoje",
-
   "whatsapp": "5511949946730",
-
   "color": "#ff003c",
-
   "stats": {
     "sales": "320",
     "online": "58"
   },
-
   "categories": [
     {
       "name": "Calcinha Renda",
@@ -58,12 +53,12 @@
           "badge": "🚀 Oferta",
           "price": "R$ 39,90",
           "followers": "10",
-          "description": "Pacote de entrada para novas revendedoras."
+          "description": "Pacote de entrada para novas revendedoras.",
+          "foto": "https://i.ibb.co/qYDNxqRd/file-00000000d5f871fb9aed7268768b34e2.png"
         }
       ]
     }
   ],
-
   "about": {
     "image": "https://i.ibb.co/xKPYsbsy/1778445628355.png",
     "title": "A essência da UNIKA PRIVATE",
@@ -73,6 +68,5 @@
       "Cada detalhe da marca transmite exclusividade, sensualidade e valor."
     ]
   },
-
   "footer": "© 2026 UNIKA PRIVATE — Todos os direitos reservados"
 }
