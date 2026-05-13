@@ -1,0 +1,78 @@
+{
+  "brand": "UNIKA",
+  "brandHighlight": "PRIVATE",
+
+  "hero": "Sensualidade com elegância.",
+  "subtitle": "Moda íntima premium para revenda de alto lucro.",
+  "promo": "🔥 Promoção ativa hoje",
+
+  "whatsapp": "5511949946730",
+
+  "color": "#ff003c",
+
+  "stats": {
+    "sales": "320",
+    "online": "58"
+  },
+
+  "categories": [
+    {
+      "name": "Calcinha Renda",
+      "icon": "👙",
+      "plans": [
+        {
+          "name": "Kit 10 unidades",
+          "badge": "🔥 Mais vendido",
+          "price": "R$ 50,00",
+          "followers": "10",
+          "description": "Modelo premium com alta saída no atacado."
+        },
+        {
+          "name": "Kit 50 unidades",
+          "badge": "💎 Premium",
+          "price": "R$ 199,00",
+          "followers": "50",
+          "description": "Pacote ideal para revendedoras que querem escalar vendas."
+        }
+      ]
+    },
+    {
+      "name": "Conjuntos",
+      "icon": "✨",
+      "plans": [
+        {
+          "name": "Kit 10 conjuntos",
+          "badge": "🔥 Popular",
+          "price": "R$ 89,90",
+          "followers": "10",
+          "description": "Conjuntos sensuais com alto giro de venda."
+        }
+      ]
+    },
+    {
+      "name": "Promoções",
+      "icon": "💥",
+      "plans": [
+        {
+          "name": "Combo Inicial",
+          "badge": "🚀 Oferta",
+          "price": "R$ 39,90",
+          "followers": "10",
+          "description": "Pacote de entrada para novas revendedoras."
+        }
+      ]
+    }
+  ],
+
+  "about": {
+    "image": "https://i.ibb.co/xKPYsbsy/1778445628355.png",
+    "title": "A essência da UNIKA PRIVATE",
+    "text": [
+      "A UNIKA PRIVATE nasceu para transformar a moda íntima em uma experiência premium de revenda.",
+      "Criamos peças sofisticadas com alta saída e excelente margem de lucro.",
+      "Cada detalhe da marca transmite exclusividade, sensualidade e valor."
+    ]
+  },
+
+  "footer": "© 2026 UNIKA PRIVATE — Todos os direitos reservados"
+}
