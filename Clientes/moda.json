@@ -1,26 +1,29 @@
 {
-  "Nome_da_Loja": "VIRTUAL.LAB",
+  "Nome_da_Loja": "VIRTUAL.LAB | High-End Wear",
   "Zap_Vendas": "5511999999999",
-  "Cor_Tema": "#00ff41",
+  "Banner_Principal": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200",
+  "Mensagem_Boas_Vindas": "Bem-vindo ao Futuro do Streetwear",
+  "Cor_Primaria": "#00ff41",
+  "Status_da_Loja": "Operacional / Drop 03 Ativo",
   "categories": [
     {
       "name": "Drops",
       "plans": [
         {
-          "name": "Camiseta 'Glitch'",
+          "name": "Camiseta 'Glitch' Tech",
           "price": "189,00",
-          "description": "High-end product",
+          "description": "Tecido tecnológico com proteção UV e estampa em silk refletivo.",
           "foto": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800",
           "cores": "#000000,#ffffff,#333333",
           "tamanhos": "P,M,G,GG"
         },
         {
-          "name": "Hype Hoodie",
+          "name": "Hype Hoodie Magma",
           "price": "350,00",
-          "description": "High-end product",
+          "description": "Moletom heavy weight 400g, modelagem oversized.",
           "foto": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800",
           "cores": "#1a1a1a,#ff0055",
-          "tamanhos": "M,G"
+          "tamanhos": "M,G,GG"
         }
       ]
     },
@@ -29,11 +32,24 @@
       "plans": [
         {
           "name": "Cyber Boot X1",
-          "price": "749,80",
-          "description": "High-end product",
+          "price": "749,90",
+          "description": "Solado tratorado em borracha vulcanizada e detalhes em neon.",
           "foto": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800",
           "cores": "#00ff41,#000000",
-          "tamanhos": "39,40,41,42"
+          "tamanhos": "39,40,41,42,43"
+        }
+      ]
+    },
+    {
+      "name": "Acessórios",
+      "plans": [
+        {
+          "name": "Bag Tática V1",
+          "price": "120,00",
+          "description": "Shoulder bag com múltiplos compartimentos e fecho magnético.",
+          "foto": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800",
+          "cores": "#000000",
+          "tamanhos": "Único"
         }
       ]
     }
