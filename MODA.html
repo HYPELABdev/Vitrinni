@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VIRTUAL.LAB | High-End Wear</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --neon: #00ff41; --bg: #000000; --card: #0a0a0a; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
+        .font-tech { font-family: 'Orbitron', sans-serif; }
+        .neon-border { border: 1px solid rgba(0, 255, 65, 0.2); }
+        .neon-text { color: var(--neon); text-shadow: 0 0 10px rgba(0, 255, 65, 0.5); }
+        .neon-bg { background: var(--neon); box-shadow: 0 0 20px rgba(0, 255, 65, 0.4); }
+        
+        .card-cyber { background: var(--card); border-radius: 24px; transition: 0.4s; position: relative; overflow: hidden; }
+        .discount-tag { background: linear-gradient(90deg, #ff0055, #ff4d00); clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%); }
+
+        .ios-sheet {
+            position: fixed; bottom: -100%; left: 0; width: 100%;
+            background: #0d0d0d; border-top: 1px solid rgba(0, 255, 65, 0.3);
+            border-radius: 32px 32px 0 0; z-index: 300;
+            transition: 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+            max-height: 90vh; overflow-y: auto;
+        }
+        .ios-sheet.active { bottom: 0; }
+
+        .variant-btn { border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
+        .variant-btn.active { border-color: var(--neon); background: rgba(0, 255, 65, 0.1); color: var(--neon); }
+        
+        .color-dot { width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); transition: 0.3s; position: relative; }
+        .color-dot.active { border-color: var(--neon); transform: scale(1.1); }
+        .color-dot.active::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--neon); font-size: 12px; font-weight: 900; filter: invert(1); }
+
+        .tab-bar { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.05); }
+    </style>
+</head>
+<body class="pb-24">
+
+    <!-- Header -->
+    <nav class="fixed top-0 w-full z-50 p-6 flex justify-between items-center bg-black/50 backdrop-blur-lg border-b border-white/5">
+        <div class="font-tech text-xl tracking-tighter neon-text">VIRTUAL<span class="text-white opacity-50">.LAB</span></div>
+        <div class="text-[10px] text-right font-black opacity-40 uppercase">
+            <span id="visit-total">43.108</span><br>Acessos
+        </div>
+    </nav>
+
+    <header class="pt-32 px-6 mb-8">
+        <div class="card-cyber p-8 neon-border bg-[radial-gradient(circle_at_top_right,rgba(0,255,65,0.1),transparent)]">
+            <h1 class="font-tech text-4xl font-black mb-2 leading-none uppercase">High-Tech<br><span class="opacity-30">Drop 03</span></h1>
+        </div>
+    </header>
+
+    <!-- Categorias -->
+    <div class="flex gap-3 overflow-x-auto px-6 py-4 no-scrollbar" id="cat-list"></div>
+
+    <!-- Grade de Produtos -->
+    <main class="px-6 grid grid-cols-1 md:grid-cols-2 gap-6" id="product-grid"></main>
+
+    <!-- GAVETA: DETALHES DO PRODUTO -->
+    <div id="product-sheet" class="ios-sheet p-8">
+        <div class="w-12 h-1.5 bg-white/20 rounded-full mx-auto mb-8"></div>
+        <div id="sheet-content"></div>
+    </div>
+
+    <!-- GAVETA: SACOLA -->
+    <div id="cart-sheet" class="ios-sheet p-8 pb-12">
+        <div class="w-12 h-1.5 bg-white/20 rounded-full mx-auto mb-8"></div>
+        <h2 class="font-tech text-xl mb-6 neon-text uppercase text-center">Sua Sacola</h2>
+        <div id="cart-items" class="space-y-4 mb-10"></div>
+        <div class="border-t border-white/10 pt-6 mb-8">
+            <div class="flex justify-between items-center text-xl font-black">
+                <span class="opacity-40 text-[10px] uppercase">Subtotal</span>
+                <span id="cart-total" class="neon-text font-tech">R$ 0,00</span>
+            </div>
+        </div>
+        <button onclick="openPayment()" class="w-full neon-bg text-black py-5 rounded-2xl font-black uppercase text-xs">Continuar para Pagamento</button>
+    </div>
+
+    <!-- GAVETA: PAGAMENTO -->
+    <div id="payment-sheet" class="ios-sheet p-8 pb-12">
+        <div class="w-12 h-1.5 bg-white/20 rounded-full mx-auto mb-8"></div>
+        <div class="text-center">
+            <h2 class="font-tech text-xl mb-6 neon-text uppercase">Pagamento PIX</h2>
+            <div class="bg-white p-4 rounded-3xl inline-block mb-6"><img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=PIX-PAYMENT-CODE" class="w-32 h-32"></div>
+            <div class="bg-white/5 border border-white/10 p-4 rounded-2xl mb-8">
+                <p class="text-[9px] font-mono opacity-50 break-all mb-4" id="pix-code">00020126580014BR.GOV.BCB.PIX0136VIRTUAL-LAB-KEY-2026</p>
+                <button onclick="copyPix()" class="text-[10px] font-black text-[var(--neon)] uppercase tracking-tighter"><i class="fa-solid fa-copy mr-2"></i> Copiar Chave PIX</button>
+            </div>
+            <button onclick="sendToWhatsApp()" class="w-full bg-[#25D366] text-white py-5 rounded-2xl font-black uppercase text-xs flex items-center justify-center gap-3">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Confirmar no WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- Barra Inferior -->
+    <div class="fixed bottom-0 w-full z-[250] tab-bar px-10 py-5 flex justify-around items-center">
+        <button class="neon-text flex flex-col items-center gap-1"><i class="fa-solid fa-house text-xl"></i><span class="text-[8px] font-bold uppercase">Loja</span></button>
+        <button onclick="openCart()" class="relative opacity-40 hover:opacity-100 flex flex-col items-center gap-1">
+            <i class="fa-solid fa-cart-shopping text-xl"></i>
+            <span id="cart-badge" class="absolute -top-2 -right-2 bg-[var(--neon)] text-black text-[9px] font-black w-4 h-4 rounded-full hidden flex items-center justify-center">0</span>
+            <span class="text-[8px] font-bold uppercase">Sacola</span>
+        </button>
+    </div>
+
+    <div id="overlay" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-[290] hidden" onclick="closeAll()"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+    <script>
+        const STORE = {
+            whatsapp: "5511999999999",
+            categories: ["Todos", "Drops", "Footwear", "Acessórios"],
+            products: [
+                { id: 1, cat: "Drops", name: "Camiseta 'Glitch'", preco: 189.00, img: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800", cores: ["#000000", "#ffffff", "#333333"], colorNames: ["Preto", "Branco", "Grafite"], tamanhos: ["P", "M", "G", "GG"] },
+                { id: 2, cat: "Footwear", name: "Cyber Boot X1", preco: 749.90, img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800", cores: ["#00ff41", "#000000"], colorNames: ["Verde Neon", "Blackout"], tamanhos: ["39", "40", "41", "42"] },
+                { id: 3, cat: "Drops", name: "Hype Hoodie", preco: 350.00, img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800", cores: ["#1a1a1a", "#ff0055"], colorNames: ["Carbono", "Magma"], tamanhos: ["M", "G"] }
+            ]
+        };
+
+        let cart = [];
+        let selection = { id: null, size: null, color: null, colorName: null };
+
+        function init() {
+            renderCats();
+            renderProducts("Todos");
+        }
+
+        function renderCats() {
+            document.getElementById('cat-list').innerHTML = STORE.categories.map(c => `
+                <button onclick="renderProducts('${c}')" class="flex-shrink-0 px-6 py-2 rounded-xl border border-white/5 bg-white/5 text-[9px] font-black uppercase">${c}</button>
+            `).join('');
+        }
+
+        function renderProducts(cat) {
+            const filtered = cat === "Todos" ? STORE.products : STORE.products.filter(p => p.cat === cat);
+            document.getElementById('product-grid').innerHTML = filtered.map(p => `
+                <div class="card-cyber p-4 animate__animated animate__fadeInUp">
+                    <div class="relative rounded-2xl overflow-hidden aspect-square mb-4">
+                        <img src="${p.img}" class="w-full h-full object-cover">
+                        <button onclick="openProduct(${p.id})" class="absolute bottom-2 right-2 w-10 h-10 neon-bg text-black rounded-xl flex items-center justify-center"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <h2 class="font-tech text-xs uppercase mb-1">${p.name}</h2>
+                    <span class="neon-text font-black text-sm">R$ ${p.preco.toFixed(2)}</span>
+                </div>
+            `).join('');
+        }
+
+        function openProduct(id) {
+            const p = STORE.products.find(x => x.id === id);
+            selection = { id: p.id, size: p.tamanhos[0], color: p.cores[0], colorName: p.colorNames[0] };
+            
+            document.getElementById('sheet-content').innerHTML = `
+                <div class="flex gap-6 mb-8">
+                    <img src="${p.img}" class="w-24 h-32 rounded-xl object-cover neon-border">
+                    <div class="flex-1">
+                        <h2 class="font-tech text-lg uppercase mb-1">${p.name}</h2>
+                        <p class="neon-text font-black text-xl mb-4">R$ ${p.preco.toFixed(2)}</p>
+                        
+                        <p class="text-[9px] font-black uppercase opacity-40 mb-3 tracking-widest">Cor Escolhida: <span id="color-name-display" class="text-white">${selection.colorName}</span></p>
+                        <div class="flex gap-3 mb-6">
+                            ${p.cores.map((c, i) => `
+                                <button onclick="setVar('color','${c}',this,'${p.colorNames[i]}')" class="color-dot ${i===0?'active':''}" style="background:${c}"></button>
+                            `).join('')}
+                        </div>
+
+                        <p class="text-[9px] font-black uppercase opacity-40 mb-3 tracking-widest">Tamanho</p>
+                        <div class="flex gap-2 mb-8">
+                            ${p.tamanhos.map(t => `<button onclick="setVar('size','${t}',this)" class="variant-btn px-4 py-2 rounded-xl text-[10px] font-black ${t===p.tamanhos[0]?'active':''}">${t}</button>`).join('')}
+                        </div>
+                    </div>
+                </div>
+                <button onclick="addToCart()" class="w-full neon-bg text-black py-5 rounded-2xl font-black uppercase text-xs">Adicionar ao Carrinho</button>
+            `;
+            toggleSheet('product-sheet', true);
+        }
+
+        function setVar(type, val, el, extra = null) {
+            selection[type] = val;
+            if(extra) {
+                selection.colorName = extra;
+                document.getElementById('color-name-display').innerText = extra;
+            }
+            el.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function addToCart() {
+            const p = STORE.products.find(x => x.id === selection.id);
+            cart.push({...p, ...selection});
+            updateCart();
+            toggleSheet('product-sheet', false);
+        }
+
+        function updateCart() {
+            const badge = document.getElementById('cart-badge');
+            badge.innerText = cart.length;
+            badge.classList.toggle('hidden', cart.length === 0);
+            
+            const total = cart.reduce((acc, i) => acc + i.preco, 0);
+            document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2)}`;
+            
+            document.getElementById('cart-items').innerHTML = cart.map((i, idx) => `
+                <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl">
+                    <img src="${i.img}" class="w-12 h-12 rounded-lg object-cover border border-white/10">
+                    <div class="flex-1">
+                        <p class="text-[10px] font-black uppercase">${i.name}</p>
+                        <p class="text-[8px] opacity-40 uppercase">${i.size} | ${i.colorName}</p>
+                    </div>
+                    <p class="text-[10px] font-black neon-text">R$ ${i.preco.toFixed(2)}</p>
+                    <button onclick="remove(${idx})" class="opacity-20 ml-2"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function remove(idx) { cart.splice(idx, 1); updateCart(); if(cart.length === 0) closeAll(); }
+        function openCart() { if(cart.length > 0) toggleSheet('cart-sheet', true); else alert("Sua sacola está vazia!"); }
+        function openPayment() { toggleSheet('cart-sheet', false); toggleSheet('payment-sheet', true); }
+        function copyPix() { navigator.clipboard.writeText(document.getElementById('pix-code').innerText); alert("Chave PIX Copiada!"); }
+
+        function sendToWhatsApp() {
+            const total = cart.reduce((acc, i) => acc + i.preco, 0);
+            const itens = cart.map(i => `• ${i.name} [TAM: ${i.size} | COR: ${i.colorName}]`).join('\n');
+            const msg = `*NOVA COMPRA - VIRTUAL.LAB*\n\n${itens}\n\n*TOTAL DO PEDIDO:* R$ ${total.toFixed(2)}\n\n_Pagamento PIX realizado. Aguardo confirmação do envio._`;
+            window.open(`https://wa.me/${STORE.whatsapp}?text=${encodeURIComponent(msg)}`);
+        }
+
+        function toggleSheet(id, show) {
+            document.getElementById(id).classList.toggle('active', show);
+            document.getElementById('overlay').classList.toggle('hidden', !show);
+        }
+
+        function closeAll() { ['product-sheet', 'cart-sheet', 'payment-sheet'].forEach(id => toggleSheet(id, false)); }
+
+        
+    </script>
+
+<!-- HYPE SYNC v7.0 -->
+<script>
+const HYPE_SYNC = {
+    async start() {
+        const id = new URLSearchParams(window.location.search).get('id') || 'unika';
+        try {
+            const r = await fetch(`https://hypelabdev.github.io/Vitrinni/Clientes/${id.toLowerCase()}.json?v=${Date.now()}`);
+            if(!r.ok) throw new Error();
+            const p = await r.json();
+            this.apply(p);
+        } catch (e) { 
+            console.warn("Offline: Usando dados locais.");
+            if(typeof init === 'function') init();
+        }
+    },
+    apply(p) {
+        if(p.Zap_Vendas) STORE.whatsapp = p.Zap_Vendas;
+        if(p.Nome_da_Loja) document.title = p.Nome_da_Loja;
+        if(p.categories) {
+            let novosProdutos = [];
+            p.categories.forEach(cat => {
+                cat.plans.forEach((plano, i) => {
+                    novosProdutos.push({
+                        id: Date.now() + i,
+                        cat: cat.name,
+                        name: plano.name,
+                        preco: parseFloat(plano.price.replace(/\./g, '').replace(',', '.')),
+                        img: plano.foto,
+                        cores: plano.cores ? plano.cores.split(',') : ["#000"],
+                        colorNames: plano.cores ? plano.cores.split(',').map(() => "Padrão") : ["Padrão"],
+                        tamanhos: plano.tamanhos ? plano.tamanhos.split(',') : ["P","M","G"]
+                    });
+                });
+            });
+            STORE.products = novosProdutos;
+            STORE.categories = ["Todos", ...p.categories.map(c => c.name)];
+        }
+        if(typeof init === 'function') init();
+    }
+};
+window.onload = () => HYPE_SYNC.start();
+</script>\n</body>
+</html>
