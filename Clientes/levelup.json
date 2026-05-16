@@ -1,0 +1,133 @@
+{
+  "configuracao_geral": {
+    "nome_marca_parte_1": "LEVEL",
+    "nome_marca_parte_2": "UP",
+    "titulo_principal": "Crescimento Social Imediato",
+    "subtitulo": "Escolha o pacote ideal para os seus objetivos. Alavanque sua autoridade digital e engajamento em poucos cliques.",
+    "whatsapp_suporte": "5511999999999",
+    "contador_vendas_inicial": 1284,
+    "contador_online_inicial": 415,
+    "alerta_topo": "SISTEMA AUTOMATIZADO ATIVO: ENTREGAS INICIANDO EM ATÉ 5 MINUTOS APÓS CONFIRMAÇÃO",
+    "alerta_promocao": "Descontos de até 40% já aplicados nas tabelas abaixo."
+  },
+  "catalogo_produtos": {
+    "seguidores": [
+      {
+        "nome": "1.000 Seguidores Premium",
+        "preco": "27,90",
+        "entregável": "1.000 Seg.",
+        "badge": "Iniciante",
+        "descricao": "Perfis estáveis com fotos, entrega natural distribuída e garantia de reposição."
+      },
+      {
+        "nome": "3.000 Seguidores VIP",
+        "preco": "57,90",
+        "entregável": "3.000 Seg.",
+        "badge": "Mais Comprado",
+        "descricao": "Alta qualidade, recomendável para contas comerciais que buscam autoridade célere."
+      },
+      {
+        "nome": "5.000 Seguidores Elite",
+        "preco": "89,90",
+        "entregável": "5.000 Seg.",
+        "badge": "Melhor Custo",
+        "descricao": "Impulso massivo de alta retenção. Máxima credibilidade imediata garantida."
+      }
+    ],
+    "curtidas": [
+      {
+        "nome": "500 Curtidas Reais",
+        "preco": "12,90",
+        "entregável": "500 Curtidas",
+        "badge": "Ajuste Fino",
+        "descricao": "Curtidas instantâneas de perfis reais brasileiros nas últimas postagens."
+      },
+      {
+        "nome": "2.000 Curtidas Premium",
+        "preco": "29,90",
+        "entregável": "2.000 Curtidas",
+        "badge": "Super Engajado",
+        "descricao": "Distribuição ultrarrápida. Ajuda a impulsionar posts para o Explorar."
+      }
+    ],
+    "views": [
+      {
+        "nome": "5.000 Views Reels",
+        "preco": "14,90",
+        "entregável": "5.000 Views",
+        "badge": "Viral",
+        "descricao": "Visualizações imediatas para retenção de engajamento do algoritmo."
+      },
+      {
+        "nome": "20.000 Views Reels",
+        "preco": "39,90",
+        "entregável": "20.000 Views",
+        "badge": "Alavancagem",
+        "descricao": "Perfeito para impulsionar a aba Reels e ganhar alcance orgânico extra."
+      }
+    ]
+  },
+  "fluxos_hbot": {
+    "config_assistente": {
+      "nome": "H-BOT CORE",
+      "subtitulo": "Assistente Comercial • Online",
+      "avatar_url": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg",
+      "mensagem_boas_vindas": "Olá! Boas-vindas à central automatizada de atendimento **LEVEL UP**. 🚀\n\nEstou aqui para agilizar suas dúvidas sobre o impulsionamento do seu perfil. Como posso te ajudar a crescer hoje?"
+    },
+    "menu_inicial": [
+      { "texto": "Como Comprar? 💸", "proximo_passo": "como_comprar", "icone": "shopping-cart" },
+      { "texto": "Tempo de Entrega ⚡", "proximo_passo": "prazos_entrega", "icone": "bolt" },
+      { "texto": "Cai ou Tem Queda? 📉", "proximo_passo": "quedas", "icone": "trending-down" },
+      { "texto": "É Seguro? Dá Bloqueio? 🔒", "proximo_passo": "seguranca_insta", "icone": "shield-check" }
+    ],
+    "respostas": {
+      "como_comprar": {
+        "mensagem": "Fazer o seu pedido é extremamente simples e automatizado! 🚀\n\n1️⃣ Basta fechar esta janela de chat.\n2️⃣ Escolher o pacote ideal para suas metas (Seguidores, Curtidas ou Views).\n3️⃣ Digitar apenas o seu @ do Instagram e clicar no botão de confirmação.\n\nO sistema vai gerar o seu **PIX Copia e Cola** imediatamente. Após o pagamento, o servidor já inicia o envio automático!",
+        "botoes": [
+          { "texto": "Fechar Chat e Ver Pacotes", "proximo_passo": "fechar_chat_action", "icone": "eye", "layout": "full-width" },
+          { "texto": "Voltar ao Menu", "proximo_passo": "inicio", "icone": "arrow-left", "layout": "full-width" }
+        ]
+      },
+      "prazos_entrega": {
+        "mensagem": "Nossa entrega é otimizada para o algoritmo do Instagram! ⏳\n\nAssim que o Pix é identificado pelo banco (leva segundos), o nosso servidor já inicia o envio das contas em até **5 minutos**.\n\nA entrega é feita de forma gradativa e constante, simulando um crescimento 100% natural para proteger o seu perfil!",
+        "botoes": [
+          { "texto": "Perfeito, entendi!", "proximo_passo": "inicio", "icone": "check", "layout": "full-width" }
+        ]
+      },
+      "quedas": {
+        "mensagem": "Trabalhamos estritamente com perfis premium e de alta qualidade, o que reduz drasticamente as chances de queda!\n\nMesmo assim, para sua total tranquilidade, todos os nossos pacotes contam com **Garantia de Reposição de 30 dias**. Se houver qualquer oscilação natural, nosso sistema repõe automaticamente sem cobrar nada! ⚡",
+        "botoes": [
+          { "texto": "Ótimo! Quero Comprar", "proximo_passo": "como_comprar", "icone": "shopping-bag", "layout": "half" },
+          { "texto": "Voltar", "proximo_passo": "inicio", "icone": "arrow-left", "layout": "half" }
+        ]
+      },
+      "seguranca_insta": {
+        "mensagem": "Pode ficar totalmente tranquilo(a), o risco de bloqueio é **ZERO**! 🔒\n\nNós **NUNCA** vamos pedir a sua senha ou dados de acesso. Só precisamos do seu @ (nome de usuário) para direcionar o envio.\n\nSeu perfil continuará 100% seguro e crescendo de forma blindada contra punições.",
+        "botoes": [
+          { "texto": "Chamar Suporte no WhatsApp 👤", "proximo_passo": "whatsapp", "icone": "user", "layout": "full-width" },
+          { "texto": "Voltar para o Menu", "proximo_passo": "inicio", "icone": "arrow-left", "layout": "full-width" }
+        ]
+      },
+      "fechar_chat_action": {
+        "mensagem": "Combinado! Minimizando o chat para você escolher. Se precisar de ajuda humana, clique abaixo! 🚀",
+        "botoes": [
+          { "texto": "Falar com Suporte Humano 💬", "proximo_passo": "whatsapp", "icone": "message-circle", "estilo": "whatsapp" }
+        ]
+      },
+      "whatsapp": {
+        "mensagem": "Perfeito! Vou te encaminhar para um especialista agora mesmo. Clique no botão abaixo para abrir o nosso WhatsApp:",
+        "botoes": [
+          { "texto": "Chamar no WhatsApp", "link_externo": "https://wa.me/5511999999999?text=Olá, estava no chat do site e preciso de suporte.", "icone": "message-circle", "estilo": "whatsapp" },
+          { "texto": "Voltar ao Chat", "proximo_passo": "inicio", "icone": "arrow-left", "layout": "full-width" }
+        ]
+      }
+    }
+  },
+  "prova_social_notificacoes": [
+    { "nome": "Gustavo Rocha", "produto": "3.000 Seguidores VIP", "tempo": "há 2 min" },
+    { "nome": "Larissa Melo", "produto": "5.000 Seguidores Elite", "tempo": "há 4 min" },
+    { "nome": "Rodrigo Alencar", "produto": "20.000 Views Reels", "tempo": "há 1 min" },
+    { "nome": "Beatriz Costa", "produto": "1.000 Seguidores Premium", "tempo": "há 5 min" },
+    { "nome": "Camila Antunes", "produto": "2.000 Curtidas Premium", "tempo": "há 3 min" }
+  ]
+}
