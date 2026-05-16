@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -34,6 +35,65 @@
             background: var(--bg-dark);
             color: #ffffff;
             overflow-x: hidden;
+        }
+
+        /* TELA DE BLOQUEIO (QUANDO NÃO HOUVER ID NA URL) */
+        .lock-screen {
+            position: fixed;
+            inset: 0;
+            background: #070b19;
+            z-index: 9999999;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .lock-screen-glow {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.08) 0%, transparent 60%);
+            z-index: -1;
+        }
+
+        .lock-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid var(--card-border);
+            padding: 40px 30px;
+            border-radius: var(--radius-lg);
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            backdrop-filter: blur(20px);
+        }
+
+        .lock-icon {
+            font-size: 48px;
+            color: #ef4444;
+            margin-bottom: 20px;
+            animation: lock-pulse 2s infinite;
+        }
+
+        @keyframes lock-pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        .lock-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .lock-text {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
         }
 
         /* Ambient Background Glows */
@@ -678,6 +738,17 @@
 </head>
 <body>
 
+    <div class="lock-screen" id="lockScreen">
+        <div class="lock-screen-glow"></div>
+        <div class="lock-card">
+            <div class="lock-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="lock-title">Acesso Não Autorizado</div>
+            <div class="lock-text">Esta vitrine requer uma identificação de cliente ativa para ser carregada de forma segura. Certifique-se de usar o link parametrizado correto.</div>
+        </div>
+    </div>
+
     <div class="bg-glow"></div>
 
     <div class="ticker-bar">
@@ -709,7 +780,7 @@
 
         <div class="tabs-container">
             <button class="tab-btn active" onclick="switchCategory('seguidores')">
-                <i class="fa-solid fa-users"></i> Seguidores
+                <i class="fa-solid fa-users"></i> Followers
             </button>
             <button class="tab-btn" onclick="switchCategory('curtidas')">
                 <i class="fa-solid fa-heart"></i> Curtidas
@@ -806,18 +877,26 @@
         let selectedProduct = null;
         let hbotImg = "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg";
 
-        // Coleta o parâmetro "?cliente=nome" da URL de forma segura
+        // Coleta o parâmetro "?id=nome" da URL de forma segura
         function getJsonUrl() {
             const params = new URLSearchParams(window.location.search);
-            const cliente = params.get('cliente');
-            return cliente ? `Clientes/${cliente}.json` : 'Clientes/dados.json';
+            const id = params.get('id');
+            return id ? `Clientes/${id}.json` : null;
         }
 
         // Executa a requisição assíncrona trazendo os dados do Editor de Lojas
         async function loadDynamicConfig() {
             const url = getJsonUrl();
+            
+            // SE O ID ESTIVER COMPLETAMENTE AUSENTE DA URL: BLOQUEIA IMEDIATAMENTE
+            if (!url) {
+                document.getElementById('lockScreen').style.display = 'flex';
+                return; // Corta o carregamento funcional do resto da página
+            }
+
             try {
-                const response = await fetch(url);
+                // Adicionado controle de cache no fetch para ler o JSON sempre atualizado
+                const response = await fetch(url, { cache: "no-store" });
                 if (!response.ok) throw new Error(`Não foi possível ler o arquivo: ${url}`);
                 const data = await response.json();
                 
@@ -842,9 +921,16 @@
                         document.getElementById('hbot-header-img-element').src = hbotImg;
                         document.getElementById('hbot-mini-avatar-element').src = hbotImg;
                     }
+
+                    // Injeta a tabela dinâmica de planos/preços se ela estiver declarada no JSON
+                    if (config.products) {
+                        CONFIG.products = config.products;
+                    }
                 }
             } catch (e) {
                 console.warn("Utilizando a configuração padrão da Level Up. Log:", e);
+                // Caso queira travar também se o arquivo .json digitado não existir de fato, descomente a linha abaixo:
+                // document.getElementById('lockScreen').style.display = 'flex'; return;
             } finally {
                 // Roda as funções estruturais normais da página sem quebrar o carregamento
                 switchCategory('seguidores');
@@ -1062,7 +1148,7 @@
                 opcoes: [{ texto: "Falar com Suporte Humano 💬", proximo: "whatsapp", class: "hbot-btn-wa", icone: "message-circle" }]
             },
             whatsapp: {
-                msg: "Perfeito! Vou te encaminhar para um especialista agora mesmo. Clique no botão abaixo para abrir o nosso WhatsApp:",
+                msg: "Perfeito! Vou te encaminhar para um specialist agora mesmo. Clique no botão abaixo para abrir o nosso WhatsApp:",
                 opcoes: [{ texto: "Chamar no WhatsApp", link: "dinamico", class: "hbot-btn-wa", icone: "message-circle" }, { texto: "Voltar ao Chat", proximo: "inicio", icone: "arrow-left", class: "hbot-full-width" }]
             }
         };
@@ -1156,6 +1242,5 @@
             }, 850);
         }
     </script>
-
 </body>
 </html>
