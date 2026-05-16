@@ -3,7 +3,7 @@
   "Zap_Vendas": "5511999999999",
   "Banner_Principal": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778774853115.jpg",
   "Mensagem_Boas_Vindas": "Bem-vindo ao Futuro do Streetwear",
-  "Cor_Primaria": "#00ff41",
+  "Cor_Primaria": "#ff00ff",
   "Status_da_Loja": "Operacional / Drop 03 Ativo",
   "categories": [
     {
@@ -11,7 +11,7 @@
       "plans": [
         {
           "name": "Camiseta 'Glitch' Tech",
-          "price": "189,00",
+          "price": "179,00",
           "description": "Tecido tecnológico com proteção UV e estampa em silk refletivo.",
           "foto": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800",
           "cores": "#000000,#ffffff,#333333",
