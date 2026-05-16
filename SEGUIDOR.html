@@ -3,202 +3,1175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEVEL UP | Professional SMM</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root { --main: #00ff00; --bg-dark: #06080c; }
-        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
-        body { background: var(--bg-dark); color:white; overflow-x:hidden; }
+    <title id="page-title">LEVEL UP | Painel de Engajamento Premium</title>
+    
+    <!-- Fontes e Ícones Modernos -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Lucide Icons para o Widget do H-Bot -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- SweetAlert2 Premium -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        /* Pop-up de Vendas */
-        #sale-popup {
+    <style>
+        :root {
+            --main: #00ff88;
+            --main-rgb: 0, 255, 136;
+            --secondary: #00bfff;
+            --bg-dark: #070b19;
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background: var(--bg-dark);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Background Glows */
+        .bg-glow {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 20px;
-            border-radius: 16px;
+            inset: 0;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 50% -20%, rgba(0, 255, 136, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(0, 191, 255, 0.05) 0%, transparent 40%),
+                #070b19;
+        }
+
+        /* Top Notification Bar */
+        .ticker-bar {
+            background: linear-gradient(90deg, #00ff88, #00bfff);
+            color: #030712;
+            font-weight: 800;
+            font-size: 11px;
+            text-align: center;
+            padding: 10px 15px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.15);
+        }
+
+        /* HEADER */
+        header {
+            text-align: center;
+            padding: 60px 20px 30px;
+        }
+
+        .logo {
+            font-size: 56px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .logo .main {
+            color: #ffffff;
+        }
+
+        .logo .highlight {
+            color: var(--main);
+            text-shadow: 0 0 40px rgba(var(--main-rgb), 0.5);
+        }
+
+        .hero {
+            margin-top: 16px;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sub {
+            margin-top: 12px;
+            color: #94a3b8;
+            font-size: 16px;
+            max-width: 540px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* Badges de Status Modernas */
+        .stats-badge-group {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-badge {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            padding: 10px 20px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 12px;
-            z-index: 100;
-            transform: translateY(150%);
-            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            gap: 8px;
+            backdrop-filter: blur(8px);
         }
-        #sale-popup.active { transform: translateY(0); }
-        .popup-dot { width: 8px; height: 8px; background: var(--main); border-radius: 50%; animation: pulse 1.5s infinite; }
 
-        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
+        .stat-badge .pulse-icon {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse-dot 2s infinite;
+            box-shadow: 0 0 10px var(--main);
+        }
 
-        /* Design de Cards e Background */
-        .bg-wrapper { position: fixed; inset: 0; z-index: -1; background: var(--bg-dark); overflow: hidden; }
-        .light-blob { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0, 255, 0, 0.05) 0%, transparent 70%); border-radius: 50%; filter: blur(80px); animation: move 20s infinite alternate ease-in-out; }
-        @keyframes move { 0% { transform: translate(-10%, -10%); } 100% { transform: translate(20%, 10%); } }
+        @keyframes pulse-dot {
+            0% { transform: scale(0.8); opacity: 0.4; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0.4; }
+        }
 
-        .card { padding:24px; border-radius:28px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,.06); transition: 0.3s; cursor: pointer; }
-        .card.active { border-color: var(--main); background: rgba(255,255,255,0.04); transform: scale(1.02); }
-        .tab-btn { padding: 12px 22px; border-radius: 100px; background: rgba(255,255,255,0.03); font-size: 11px; font-weight: 700; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; white-space: nowrap; }
-        .tab-btn.active { background: var(--main); color: black; border-color: var(--main); }
+        /* CONTAINER PRINCIPAL */
+        .container {
+            max-width: 760px;
+            margin: auto;
+            padding: 20px 20px 120px;
+        }
+
+        /* ALERTA DE PROMOÇÃO CLEAN */
+        .alert-premium {
+            background: rgba(0, 255, 136, 0.03);
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 25px;
+            color: #bdffde;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* TABS (SEPARADORES DE CATEGORIAS) */
+        .tabs-container {
+            display: flex;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 6px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--card-border);
+            margin-bottom: 25px;
+            gap: 6px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #64748b;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            color: #ffffff;
+        }
+
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        /* CARDS DE PRODUTOS PREMIUM */
+        .cards-wrapper {
+            display: grid;
+            gap: 16px;
+        }
+
+        .product-card {
+            position: relative;
+            padding: 28px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid var(--card-border);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.15);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+        }
+
+        .product-card.selected {
+            border-color: var(--main);
+            background: linear-gradient(180deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 255, 136, 0.01) 100%);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .card-badge {
+            background: rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .product-card.selected .card-badge {
+            background: rgba(0, 255, 136, 0.12);
+            color: var(--main);
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+
+        .card-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            margin: 12px 0;
+        }
+
+        .price-currency {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--main);
+        }
+
+        .price-value {
+            font-size: 44px;
+            font-weight: 800;
+            color: var(--main);
+            letter-spacing: -1.5px;
+        }
+
+        .card-desc {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* CHECKOUT / EMBUTIDO */
+        .checkout-box {
+            margin-top: 35px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            backdrop-filter: blur(20px);
+        }
+
+        .form-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 18px;
+            color: #475569;
+            font-size: 18px;
+        }
+
+        input {
+            width: 100%;
+            padding: 18px 18px 18px 52px;
+            border: 1px solid var(--card-border);
+            outline: none;
+            border-radius: var(--radius-md);
+            background: rgba(3, 7, 18, 0.4);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.25s;
+        }
+
+        input:focus {
+            border-color: var(--main);
+            background: rgba(3, 7, 18, 0.6);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.15);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 20px;
+            margin-top: 18px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--main), var(--secondary));
+            color: #030712;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.01);
+            box-shadow: 0 10px 35px rgba(0, 255, 136, 0.3);
+        }
+
+        /* NOTIFICAÇÃO ULTRA REALISTA (PROVA SOCIAL SLOW) */
+        .live-notif {
+            position: fixed;
+            bottom: 24px;
+            left: -420px;
+            background: rgba(10, 16, 36, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            padding: 16px 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            z-index: 9999;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 350px;
+        }
+
+        .live-notif.show {
+            left: 24px;
+        }
+
+        .live-notif-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #2563eb, #00bfff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .live-notif-info p {
+            font-size: 13.5px;
+            color: #f1f5f9;
+            line-height: 1.4;
+        }
+
+        .live-notif-info span {
+            font-size: 11px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 3px;
+        }
+
+        .live-notif-info span i {
+            color: var(--main);
+        }
+
+        /* MODAL PIX EMBUTIDO ESTILIZADO */
+        .pix-modal-body { text-align: center; padding: 5px; }
+        .pix-qr { width: 190px; height: 190px; margin: 20px auto; background: #fff; padding: 12px; border-radius: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .pix-input-group { display: flex; margin-top: 18px; gap: 8px; }
+        .pix-code-static { background: rgba(0, 0, 0, 0.3); padding: 14px; border-radius: 10px; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1; text-align: left; font-family: monospace; }
+        .btn-copy-pix { background: var(--main); border: none; color: #030712; padding: 0 18px; border-radius: 10px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.2s; }
+        .btn-copy-pix:hover { opacity: 0.9; }
+
+        /* RESPONSIVIDADE */
+        @media(max-width: 700px) {
+            .logo { font-size: 42px; }
+            .hero { font-size: 24px; }
+            .price-value { font-size: 36px; }
+            header { padding: 40px 20px 20px; }
+            .checkout-box { padding: 24px; }
+        }
+
+        /* ========================================================
+           ESTILOS EXCLUSIVOS DO WIDGET H-BOT FLUTUANTE 
+           ======================================================== */
+        :root {
+            --hbot-primary: #00ff88; 
+            --hbot-bg: rgba(7, 11, 24, 0.96);
+            --hbot-glass: rgba(13, 20, 41, 0.7);
+            --hbot-border: rgba(255, 255, 255, 0.08);
+            --hbot-glow: 0 0 25px rgba(0, 255, 136, 0.25);
+        }
+
+        .hbot-widget-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999999;
+        }
+
+        /* Botão Flutuante Premium com Foto */
+        .hbot-badge {
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            background: #030712;
+            border: 2px solid rgba(0, 255, 136, 0.4);
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), var(--hbot-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            padding: 0;
+            overflow: visible;
+        }
+
+        .hbot-badge:hover { 
+            transform: scale(1.08);
+            border-color: var(--hbot-primary);
+        }
+
+        .hbot-badge-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 18px;
+            object-fit: cover;
+        }
+
+        /* Indicador de Online na Foto */
+        .hbot-badge-status-dot {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            background: var(--hbot-primary);
+            border-radius: 50%;
+            border: 2px solid #070b19;
+            box-shadow: 0 0 8px var(--hbot-primary);
+            z-index: 2;
+        }
+
+        /* Alerta de Mensagem Pendente */
+        .hbot-pulse-notification {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 12px;
+            height: 12px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid #070b19;
+            animation: hbot-pulse-anim 1.8s infinite;
+            z-index: 3;
+        }
+
+        @keyframes hbot-pulse-anim {
+            0%, 100% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Caixa Pop-up do Chat */
+        .hbot-popup {
+            position: absolute;
+            bottom: 75px;
+            right: 0;
+            width: 360px;
+            height: 520px;
+            background: var(--hbot-bg);
+            border: 1px solid var(--hbot-border);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hbot-popup.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        /* Header do Chat */
+        .hbot-header {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--hbot-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hbot-profile-info { display: flex; align-items: center; gap: 12px; }
         
-        .price { font-size: 32px; font-weight: 800; color: var(--main); letter-spacing: -1px; }
-        .input-hero { width:100%; padding:18px; border-radius:18px; background: rgba(0,0,0,0.3); color:white; border: 1px solid rgba(255,255,255,0.1); outline:none; transition: 0.3s; }
-        .input-hero:focus { border-color: var(--main); }
+        .hbot-avatar-wrapper { position: relative; width: 40px; height: 40px; }
+        .hbot-avatar-img { width: 100%; height: 100%; border-radius: 14px; object-fit: cover; border: 1px solid rgba(0, 255, 136, 0.2); }
         
-        #cta { width:100%; padding:20px; border-radius:18px; background: var(--main); color:black; font-weight:800; text-transform: uppercase; transition: 0.3s; border: none; cursor: pointer; }
-        #cta:hover { filter: brightness(1.1); box-shadow: 0 0 20px rgba(0,255,0,0.3); }
+        .hbot-status-dot { 
+            position: absolute; bottom: -2px; right: -2px; width: 8px; height: 8px; 
+            background: var(--hbot-primary); border-radius: 50%; border: 2px solid #070b14;
+        }
 
-        .about-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 32px; padding: 30px; }
+        .hbot-header h4 { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.5px; margin: 0; }
+        .hbot-header p { font-size: 11px; color: #64748b; margin: 0; }
+
+        .hbot-close-btn {
+            background: transparent; border: none; color: #64748b; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .hbot-close-btn:hover { color: #fff; }
+        .hbot-close-btn svg { width: 18px; height: 18px; }
+
+        /* Janela Interna de Mensagens */
+        #hbot-window {
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-grow: 1;
+            scrollbar-width: none;
+        }
+        #hbot-window::-webkit-scrollbar { width: 0; }
+
+        .hbot-message-row { display: flex; gap: 10px; align-items: flex-end; animation: hbot-fadeIn 0.25s ease-out; }
+        .hbot-message-row.user-row { justify-content: flex-end; }
+
+        @keyframes hbot-fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hbot-mini-avatar { width: 26px; height: 26px; border-radius: 8px; border: 1px solid rgba(0,255,136,0.15); object-fit: cover; }
+
+        .hbot-msg {
+            max-width: 82%;
+            padding: 11px 15px;
+            border-radius: 18px;
+            font-size: 13px;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .hbot-msg.bot { background: rgba(255,255,255,0.03); border: 1px solid var(--hbot-border); border-bottom-left-radius: 4px; color: #e2e8f0; }
+        .hbot-msg.user { background: var(--hbot-primary); color: #030712; font-weight: 700; border-bottom-right-radius: 4px; }
+
+        .hbot-time-stamp { display: block; font-size: 8px; opacity: 0.35; margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+        .hbot-msg.user .hbot-time-stamp { color: rgba(3, 7, 18, 0.5); }
+
+        /* Balão de Digitando */
+        .hbot-typing { display: flex; gap: 4px; padding: 10px 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--hbot-border); border-radius: 16px; border-bottom-left-radius: 4px; }
+        .hbot-dot-anim { width: 5px; height: 5px; background: var(--hbot-primary); border-radius: 50%; animation: hbot-bounce 1.4s infinite; }
+        .hbot-dot-anim:nth-child(2) { animation-delay: 0.2s; }
+        .hbot-dot-anim:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes hbot-bounce { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-5px); } }
+
+        /* Área dos Botões de Opção */
+        #hbot-options-area {
+            padding: 14px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            border-top: 1px solid var(--hbot-border);
+            background: var(--hbot-glass);
+        }
+
+        .hbot-opt-btn {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--hbot-border);
+            color: #cbd5e1;
+            padding: 11px 8px;
+            border-radius: 12px;
+            font-size: 10.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 5px;
+        }
+
+        .hbot-opt-btn:hover { 
+            background: var(--hbot-primary); 
+            color: #030712; 
+            border-color: var(--hbot-primary);
+            transform: translateY(-1.5px);
+        }
+
+        .hbot-btn-wa { background: #128C7E !important; border: none !important; color: white !important; grid-column: span 2; }
+        .hbot-btn-wa:hover { box-shadow: 0 4px 12px rgba(18, 140, 126, 0.25) !important; }
+        .hbot-full-width { grid-column: span 2; }
+
+        @media(max-width: 450px) {
+            .hbot-widget-container { bottom: 16px; right: 16px; }
+            .hbot-popup { width: calc(100vw - 32px); height: 460px; bottom: 70px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="bg-wrapper"><div class="light-blob" style="top:-5%; left:-5%;"></div></div>
+    <div class="bg-glow"></div>
 
-<!-- Pop-up de Emergência -->
-<div id="sale-popup">
-    <div class="popup-dot"></div>
-    <div class="text-[11px] leading-tight">
-        <p class="text-gray-400">Novo pedido de <b class="text-white" id="pop-user">@marcos...</b></p>
-        <p class="font-bold text-white" id="pop-item">5.000 Seguidores</p>
-    </div>
-</div>
-
-<header class="text-center pt-16 pb-8 px-6">
-    <div class="logo text-5xl font-extrabold uppercase tracking-tighter"><span id="b1"></span><span class="text-[var(--main)]" id="b2"></span></div>
-    <p class="text-gray-400 mt-4 font-medium" id="hero-text"></p>
-    
-    <div class="flex justify-center gap-10 mt-8">
-        <div class="text-center"><p class="text-2xl font-black" id="s-vendas">0</p><p class="text-[9px] uppercase opacity-40 tracking-widest">Pedidos</p></div>
-        <div class="text-center"><p class="text-2xl font-black" id="s-online">0</p><p class="text-[9px] uppercase opacity-40 tracking-widest">Online</p></div>
-    </div>
-</header>
-
-<div class="max-w-[600px] mx-auto p-5 space-y-10">
-    <!-- Seleção -->
-    <div class="flex gap-3 overflow-x-auto pb-2" id="tab-list"></div>
-
-    <!-- Planos -->
-    <div class="grid gap-4" id="plans-grid"></div>
-
-    <!-- Checkout -->
-    <div class="bg-white/5 p-6 rounded-[32px] border border-white/5">
-        <p class="text-[10px] font-bold text-gray-500 uppercase mb-4 tracking-widest text-center">Configurações do Pedido</p>
-        <input type="text" id="user-target" placeholder="Seu @usuário ou Link do post" class="input-hero mb-4">
-        <button onclick="sendOrder()" id="cta">Escolha um Plano</button>
+    <div class="ticker-bar">
+        <i class="fa-solid fa-fire"></i> SISTEMA AUTOMATIZADO ATIVO: ENTREGAS INICIANDO EM ATÉ 5 MINUTOS APÓS CONFIRMAÇÃO
     </div>
 
-    <!-- Quem Somos (Estilo Unika) -->
-    <section class="pt-10">
-        <div class="about-box space-y-6">
-            <img id="aboutImg" class="w-full h-48 object-cover rounded-2xl shadow-2xl">
-            <h2 id="aboutTitle" class="text-3xl font-extrabold leading-tight"></h2>
-            <div id="aboutText" class="text-sm text-gray-400 leading-relaxed space-y-3"></div>
+    <header>
+        <div class="logo">
+            <span class="main" id="brand1">LEVEL</span><span class="highlight" id="brand2">UP</span>
         </div>
-    </section>
+        <div class="hero" id="hero">Crescimento Social Imediato</div>
+        <div class="sub" id="subtitle">Escolha o pacote ideal para os seus objetivos. Alavanque sua autoridade digital e engajamento em poucos cliques.</div>
 
-    <footer class="text-center py-10 opacity-30 text-[11px]" id="footer-text"></footer>
-</div>
+        <div class="stats-badge-group">
+            <div class="stat-badge">
+                <i class="fa-solid fa-bolt" style="color: var(--main)"></i> <span id="sales">1.284</span> entregas enviadas hoje
+            </div>
+            <div class="stat-badge">
+                <span class="pulse-icon"></span> <span id="online">415</span> usuários na plataforma
+            </div>
+        </div>
+    </header>
 
-<script>
-    const params = new URLSearchParams(window.location.search);
-    const storeID = params.get('id') || 'seguidor';
-    let DATA = {};
-    let selectedPlan = null;
+    <div class="container">
 
-    async function init() {
-        try {
-            const res = await fetch(`https://hypelabdev.github.io/Vitrinni/Clientes/${storeID}.json?v=${Date.now()}`);
-            DATA = await res.json();
-            
-            document.documentElement.style.setProperty('--main', DATA.color);
-            document.getElementById('b1').innerText = DATA.brand;
-            document.getElementById('b2').innerText = DATA.brandHighlight;
-            document.getElementById('hero-text').innerText = DATA.hero;
-            document.getElementById('s-vendas').innerText = DATA.stats.sales;
-            document.getElementById('s-online').innerText = DATA.stats.online;
-            document.getElementById('footer-text').innerText = DATA.footer_text;
+        <div class="alert-premium">
+            <i class="fa-solid fa-tags"></i> Descontos de até 40% já aplicados nas tabelas abaixo.
+        </div>
 
-            // Sobre
-            document.getElementById('aboutImg').src = DATA.about_section.about_image;
-            document.getElementById('aboutTitle').innerText = DATA.about_section.about_title;
-            document.getElementById('aboutText').innerHTML = `<p>${DATA.about_section.about_p1}</p><p>${DATA.about_section.about_p2}</p><p>${DATA.about_section.about_p3}</p>`;
+        <!-- Abas de Segmentação de Produtos -->
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchCategory('seguidores')">
+                <i class="fa-solid fa-users"></i> Seguidores
+            </button>
+            <button class="tab-btn" onclick="switchCategory('curtidas')">
+                <i class="fa-solid fa-heart"></i> Curtidas
+            </button>
+            <button class="tab-btn" onclick="switchCategory('views')">
+                <i class="fa-solid fa-circle-play"></i> Visualizações
+            </button>
+        </div>
 
-            renderTabs();
-            startPopups();
-        } catch (e) { console.error(e); }
-    }
+        <!-- Grade Dinâmica de Produtos -->
+        <div class="cards-wrapper" id="plans"></div>
 
-    function renderTabs() {
-        const list = document.getElementById('tab-list');
-        DATA.categories.forEach((cat, i) => {
-            const btn = document.createElement('button');
-            btn.className = `tab-btn ${i===0?'active':''}`;
-            btn.innerHTML = `${cat.icon} ${cat.name}`;
-            btn.onclick = () => {
-                document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-                btn.classList.add('active');
-                renderPlans(cat);
-            };
-            list.appendChild(btn);
-        });
-        renderPlans(DATA.categories[0]);
-    }
+        <!-- Checkout de Ação Única -->
+        <div class="checkout-box">
+            <div class="form-header">
+                <i class="fa-solid fa-circle-dot" style="color:var(--main)"></i> Configuração de Destino
+            </div>
+            <div class="input-wrapper">
+                <i class="fa-brands fa-instagram"></i>
+                <input type="text" id="instagram" placeholder="Digite seu @ do Instagram">
+            </div>
+            <button onclick="processOrderCheckout()" class="btn-submit" id="cta">
+                <i class="fa-solid fa-arrow-right"></i> Solicitar Plano
+            </button>
+        </div>
 
-    function renderPlans(cat) {
-        const grid = document.getElementById('plans-grid');
-        grid.innerHTML = '';
-        cat.plans.forEach((plan, i) => {
-            const card = document.createElement('div');
-            card.className = `card ${i===0?'active':''}`;
-            if(i===0) selectedPlan = plan;
-            card.onclick = () => {
-                document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
-                card.classList.add('active');
-                selectedPlan = plan;
-                updateButton();
-            };
-            card.innerHTML = `
-                <div class="flex justify-between items-start">
-                    <div><h3 class="font-bold text-lg">${plan.name}</h3><div class="price">${plan.price}</div></div>
-                    ${plan.badge?`<span class="bg-white/10 text-[9px] px-3 py-1 rounded-full font-bold border border-white/10">${plan.badge}</span>`:''}
+    </div>
+
+    <!-- Módulo de Notificação de Prova Social Lenta e Realista -->
+    <div class="live-notif" id="live-notif">
+        <div class="live-notif-avatar" id="notif-avatar">G</div>
+        <div class="live-notif-info">
+            <p id="notif-text"><strong>Guilherme Santos</strong> comprou 3.000 Seguidores VIP</p>
+            <span><i class="fa-solid fa-circle-check"></i> Pedido processado há 1 min</span>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         ESTRUTURA HTML DO WIDGET H-BOT FLUTUANTE
+         ======================================================== -->
+    <div class="hbot-widget-container">
+        <!-- Botão Flutuante (Badge Estilizada com Foto) -->
+        <button class="hbot-badge" id="hbotBadge" onclick="toggleHBot()">
+            <img id="hbot-badge-img-element" src="https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg" class="hbot-badge-img" alt="H-Bot">
+            <span class="hbot-badge-status-dot"></span>
+            <span class="hbot-pulse-notification"></span>
+        </button>
+
+        <!-- Caixa do Chat Pop-up -->
+        <div class="hbot-popup" id="hbotPopup">
+            <!-- Header com Perfil e Botão Fechar -->
+            <div class="hbot-header">
+                <div class="hbot-profile-info">
+                    <div class="hbot-avatar-wrapper">
+                        <img id="hbot-header-img-element" src="https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg" class="hbot-avatar-img">
+                        <div class="hbot-status-dot"></div>
+                    </div>
+                    <div>
+                        <h4 id="hbot-title-name">H-BOT CORE</h4>
+                        <p>Assistente Comercial • Online</p>
+                    </div>
                 </div>
-                <div class="mt-4 flex items-center gap-3 text-[10px] opacity-40 font-bold uppercase tracking-widest">
-                    <span>⚡ Entrega Fast</span><span>•</span><span>🔒 Proteção SSL</span><span>•</span><span>${plan.quality}</span>
-                </div>`;
-            grid.appendChild(card);
-        });
-        updateButton();
-    }
+                <button class="hbot-close-btn" onclick="toggleHBot()">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
 
-    function updateButton() { document.getElementById('cta').innerText = `Comprar ${selectedPlan.name}`; }
-
-    function sendOrder() {
-        const user = document.getElementById('user-target').value;
-        if(!user) return alert("Digite o @usuário!");
-        const msg = encodeURIComponent(`🚀 *NOVO PEDIDO*\n\n*Serviço:* ${selectedPlan.name}\n*Valor:* ${selectedPlan.price}\n*Perfil:* ${user}\n\n_Aguardando instruções de pagamento!_`);
-        window.open(`https://wa.me/${DATA.whatsapp}?text=${msg}`, '_blank');
-    }
-
-    // Sistema de Pop-ups de Vendas Falsas (Gera Urgência)
-    function startPopups() {
-        const users = ['@clara_m', '@joao.v', '@thays.estilo', '@felipe_ofc', '@loja_modas', '@gabriel_dev', '@ana.lu'];
-        const items = ['1.000 Seguidores', '500 Curtidas', '5.000 Visualizações', '10k Seguidores VIP', '3.000 Seguidores'];
-        
-        setInterval(() => {
-            const popup = document.getElementById('sale-popup');
-            document.getElementById('pop-user').innerText = users[Math.floor(Math.random()*users.length)];
-            document.getElementById('pop-item').innerText = items[Math.floor(Math.random()*items.length)];
+            <!-- Janela de Conversa -->
+            <div id="hbot-window"></div>
             
-            popup.classList.add('active');
-            setTimeout(() => popup.classList.remove('active'), 4000);
-        }, 12000); // Aparece a cada 12 segundos
-    }
+            <!-- Indicador de Digitando -->
+            <div id="hbot-typing-box" style="display: none;" class="hbot-message-row">
+                <img id="hbot-mini-avatar-element" src="https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg" class="hbot-mini-avatar">
+                <div class="hbot-typing">
+                    <div class="hbot-dot-anim"></div><div class="hbot-dot-anim"></div><div class="hbot-dot-anim"></div>
+                </div>
+            </div>
 
-    init();
-</script>
+            <!-- Área Dinâmica de Botões de Opções -->
+            <div id="hbot-options-area"></div>
+        </div>
+    </div>
+
+    <script>
+        // Configuração Estrutural Base do Catálogo (Será sobrescritada caso o JSON exista)
+        let CONFIG = {
+            whatsapp: "5511999999999", 
+            products: {
+                seguidores: [
+                    { name: "1.000 Seguidores Premium", price: "27,90", followers: "1.000 Seg.", badge: "Iniciante", desc: "Perfis estáveis com fotos, entrega natural distribuída e garantia de reposição." },
+                    { name: "3.000 Seguidores VIP", price: "57,90", followers: "3.000 Seg.", badge: "Mais Comprado", desc: "Alta qualidade, recomendável para contas comerciais que buscam autoridade célere." },
+                    { name: "5.000 Seguidores Elite", price: "89,90", followers: "5.000 Seg.", badge: "Melhor Custo", desc: "Impulso massivo de alta retenção. Máxima credibilidade imediata garantida." }
+                ],
+                curtidas: [
+                    { name: "500 Curtidas Reais", price: "12,90", followers: "500 Curtidas", badge: "Ajuste Fino", desc: "Curtidas instantâneas de perfis reais brasileiros nas últimas postagens." },
+                    { name: "2.000 Curtidas Premium", price: "29,90", followers: "2.000 Curtidas", badge: "Super Engajado", desc: "Distribuição ultrarrápida. Ajuda a impulsionar posts para o Explorar." }
+                ],
+                views: [
+                    { name: "5.000 Views Reels", price: "14,90", followers: "5.000 Views", badge: "Viral", desc: "Visualizações imediatas para retenção de engajamento do algoritmo." },
+                    { name: "20.000 Views Reels", price: "39,90", followers: "20.000 Views", badge: "Alavancagem", desc: "Perfeito para impulsionar a aba Reels e ganhar alcance orgânico extra." }
+                ]
+            }
+        };
+
+        let currentCategory = 'seguidores';
+        let selectedProduct = null;
+        let hbotImg = "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg";
+
+        // Coleta o parâmetro "?cliente=nome" da URL de forma segura
+        function getJsonUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const cliente = params.get('cliente');
+            return cliente ? `Clientes/${cliente}.json` : 'Clientes/dados.json';
+        }
+
+        // Executa a requisição assíncrona trazendo os dados do Editor de Lojas
+        async function loadDynamicConfig() {
+            const url = getJsonUrl();
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Não foi possível ler o arquivo: ${url}`);
+                const data = await response.json();
+                
+                const config = data.configuracao_loja || data.configuracao_geral;
+                if (config) {
+                    // Atualiza os Textos da Identidade Visual da Marca
+                    if (config.nome_marca_parte_1 && config.nome_marca_parte_2) {
+                        document.getElementById('brand1').innerText = config.nome_marca_parte_1.toUpperCase();
+                        document.getElementById('brand2').innerText = config.nome_marca_parte_2.toUpperCase();
+                        document.getElementById('page-title').innerText = `${config.nome_marca_parte_1.toUpperCase()} ${config.nome_marca_parte_2.toUpperCase()} | Painel de Engajamento Premium`;
+                    }
+                    
+                    // Altera o número do WhatsApp Geral da Loja
+                    if (config.whatsapp_suporte) {
+                        CONFIG.whatsapp = config.whatsapp_suporte;
+                    }
+
+                    // Altera os Avatares do Robô H-Bot se fornecido no JSON
+                    if (config.avatar_bot_url) {
+                        hbotImg = config.avatar_bot_url;
+                        document.getElementById('hbot-badge-img-element').src = hbotImg;
+                        document.getElementById('hbot-header-img-element').src = hbotImg;
+                        document.getElementById('hbot-mini-avatar-element').src = hbotImg;
+                    }
+                }
+            } catch (e) {
+                console.warn("Utilizando a configuração padrão da Level Up. Log:", e);
+            } finally {
+                // Roda as funções estruturais normais da página sem quebrar o carregamento
+                switchCategory('seguidores');
+                setupSlowRealNotification();
+                setupOrganicCounter();
+                if(window.lucide) window.lucide.createIcons();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadDynamicConfig();
+            
+            // Abre o chat automaticamente após 12 segundos se o usuário não clicar antes
+            setTimeout(() => {
+                if (!hbotHasStarted) {
+                    toggleHBot();
+                }
+            }, 12000);
+        });
+
+        function switchCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.getAttribute('onclick').includes(category)) btn.classList.add('active');
+            });
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const listContainer = document.getElementById('plans');
+            listContainer.innerHTML = '';
+            const activeProducts = CONFIG.products[currentCategory];
+
+            activeProducts.forEach((prod, index) => {
+                const isSelected = index === 0; 
+                if(isSelected) selectedProduct = prod;
+
+                listContainer.innerHTML += `
+                    <div class="product-card ${isSelected ? 'selected' : ''}" onclick="selectProductElement(this, '${currentCategory}', ${index})">
+                        <div class="card-header">
+                            <div class="card-title">
+                                ${prod.name}
+                            </div>
+                            <div class="card-badge">
+                                ${prod.badge}
+                            </div>
+                        </div>
+                        <div class="card-price-row">
+                            <span class="price-currency">R$</span>
+                            <span class="price-value">${prod.price}</span>
+                        </div>
+                        <div class="card-desc">${prod.desc}</div>
+                    </div>
+                `;
+            });
+            updateCTA();
+        }
+
+        function selectProductElement(element, cat, index) {
+            document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedProduct = CONFIG.products[cat][index];
+            updateCTA();
+        }
+
+        function updateCTA() {
+            document.getElementById('cta').innerHTML = `<i class="fa-solid fa-bolt"></i> Adquirir ${selectedProduct.followers}`;
+        }
+
+        function setupOrganicCounter() {
+            let onlineElement = document.getElementById('online');
+            window.addEventListener('scroll', () => {
+                let currentOnline = parseInt(onlineElement.innerText);
+                if(Math.random() > 0.92) {
+                    onlineElement.innerText = currentOnline + (Math.random() > 0.5 ? 2 : -2);
+                }
+            }, { passive: true });
+        }
+
+        // Sistema Customizado de Prova Social - Fluido, Lento e Humano
+        function setupSlowRealNotification() {
+            const buyers = [
+                {name: "Gustavo Rocha", pack: "3.000 Seguidores VIP", time: "há 2 min", grad: "linear-gradient(135deg, #ff6b6b, #ff8e53)"},
+                {name: "Larissa Melo", pack: "5.000 Seguidores Elite", time: "há 4 min", grad: "linear-gradient(135deg, #4facfe, #00f2fe)"},
+                {name: "Rodrigo Alencar", pack: "20.000 Views Reels", time: "há 1 min", grad: "linear-gradient(135deg, #b1f91a, #00ff88)"},
+                {name: "Beatriz Costa", pack: "1.000 Seguidores Premium", time: "há 5 min", grad: "linear-gradient(135deg, #f355da, #70068c)"},
+                {name: "Camila Antunes", pack: "2.000 Curtidas Premium", time: "há 3 min", grad: "linear-gradient(135deg, #ff9a9e, #fecfef)"}
+            ];
+            
+            const notif = document.getElementById('live-notif');
+            const notifAvatar = document.getElementById('notif-avatar');
+            const notifText = document.getElementById('notif-text');
+
+            setInterval(() => {
+                const buyer = buyers[Math.floor(Math.random() * buyers.length)];
+                
+                notifAvatar.style.background = buyer.grad;
+                notifAvatar.innerText = buyer.name.charAt(0);
+                notifText.innerHTML = `<strong>${buyer.name}</strong> adquiriu o pacote de <span>${buyer.pack}</span>.`;
+                
+                notif.classList.add('show');
+                
+                setTimeout(() => {
+                    notif.classList.remove('show');
+                }, 5500);
+
+            }, 26000); 
+        }
+
+        // Checkout Pix Profissional Intermediário
+        function processOrderCheckout() {
+            let instagramInput = document.getElementById('instagram').value.trim();
+
+            if (instagramInput === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Opa! Faltou algo',
+                    text: 'Insira o seu @ do Instagram para direcionarmos a entrega corretamente.',
+                    confirmButtonColor: '#00bfff'
+                });
+                return;
+            }
+
+            if (!instagramInput.startsWith('@')) {
+                instagramInput = '@' + instagramInput;
+            }
+
+            const fakePixCode = "00020101021126580014br.gov.bcb.pix0136603a7d4a-3ba4-41d3-a4f6-5e5898688" + Math.floor(Math.random() * 89999 + 10000) + "5204000053039865405" + selectedProduct.price.replace(',', '.') + "5802BR5924LEVELUP%20ENGAJAMENTO6009SAO%20PAULO62070503***6304D1B2";
+
+            Swal.fire({
+                title: 'CONTA DE ATIVAÇÃO GERADA',
+                html: `
+                    <div class="pix-modal-body" style="color:#fff;">
+                        <p style="font-size:14px;color:#94a3b8;line-height:1.5;">Efetue o pagamento do código copia e cola para liberar a fila do servidor para a conta <strong>${instagramInput}</strong>.</p>
+                        <div class="pix-qr">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=165x165&data=${encodeURIComponent(fakePixCode)}" alt="Pix QR">
+                        </div>
+                        <p style="font-size:12px;color:#a5b4fc;font-weight:600;"><i class="fa-solid fa-shield-halved"></i> Conexão criptografada e segura</p>
+                        
+                        <div class="pix-input-group">
+                            <div class="pix-code-static" id="pixCodeText">${fakePixCode}</div>
+                            <button class="btn-copy-pix" onclick="copyPixCode()"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: '<i class="fa-brands fa-whatsapp"></i> Confirmar no WhatsApp',
+                cancelButtonText: 'Voltar',
+                confirmButtonColor: '#128C7E',
+                cancelButtonColor: 'rgba(255,255,255,0.1)',
+                background: '#0d1326',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const whatsappMsg = `🚀 *NOVO PEDIDO CONFIRMADO*\n\n` +
+                                        `📦 *Plano:* ${selectedProduct.name}\n` +
+                                        `💰 *Valor:* R$ ${selectedProduct.price}\n` +
+                                        `📸 *Destino:* ${instagramInput}\n\n` +
+                                        `Olá, acabei de realizar a cópia e pagamento do PIX. Solicito o envio imediato da minha carga de engajamento!`;
+
+                    window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(whatsappMsg)}`, '_blank');
+                }
+            });
+        }
+
+        window.copyPixCode = function() {
+            const codeText = document.getElementById('pixCodeText').innerText;
+            navigator.clipboard.writeText(codeText).then(() => {
+                const copyBtn = document.querySelector('.btn-copy-pix');
+                copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copiado!';
+                copyBtn.style.background = '#ffffff';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copiar';
+                    copyBtn.style.background = 'var(--main)';
+                }, 2000);
+            });
+        };
+
+        // ========================================================
+        // LOGICA OPERACIONAL DO WIDGET H-BOT
+        // ========================================================
+        const hbotWindow = document.getElementById('hbot-window');
+        const hbotOptionsArea = document.getElementById('hbot-options-area');
+        const hbotTypingBox = document.getElementById('hbot-typing-box');
+        let hbotHasStarted = false;
+
+        const hbotFluxos = {
+            inicio: [
+                { texto: "Como Comprar? 💸", proximo: "como_comprar", icone: "shopping-cart" },
+                { texto: "Tempo de Entrega ⚡", proximo: "prazos_entrega", icone: "bolt" },
+                { texto: "Cai ou Tem Queda? 📉", proximo: "quedas", icone: "trending-down" },
+                { texto: "É Seguro? Dá Bloqueio? 🔒", proximo: "seguranca_insta", icone: "shield-check" }
+            ],
+            como_comprar: {
+                msg: "Fazer o seu pedido é extremamente simples e automatizado! 🚀\n\n1️⃣ Basta fechar esta janela de chat.\n2️⃣ Escolher o pacote ideal para suas metas (Seguidores, Curtidas ou Views).\n3️⃣ Digitar apenas o seu @ do Instagram e clicar no botão de confirmação.\n\nO sistema vai gerar o seu **PIX Copia e Cola** imediatamente. Após o pagamento, o servidor já inicia o envio automático!",
+                opcoes: [
+                    { texto: "Fechar Chat e Ver Pacotes", proximo: "fechar_chat_action", icone: "eye", class: "hbot-full-width" },
+                    { texto: "Voltar ao Menu", proximo: "inicio", icone: "arrow-left", class: "hbot-full-width" }
+                ]
+            },
+            prazos_entrega: {
+                msg: "Nossa entrega é otimizada para o algoritmo do Instagram! ⏳\n\nAssim que o Pix é identificado pelo banco (leva segundos), o nosso servidor já inicia o envio das contas em até **5 minutos**.\n\nA entrega é feita de forma gradativa e constante, simulando um crescimento 100% natural para proteger o seu perfil!",
+                opcoes: [{ texto: "Perfeito, entendi!", proximo: "inicio", icone: "check", class: "hbot-full-width" }]
+            },
+            quedas: {
+                msg: "Trabalhamos estritamente com perfis premium e de alta qualidade, o que reduz drasticamente as chances de queda!\n\nMesmo assim, para sua total tranquilidade, todos os nossos pacotes contam com **Garantia de Reposição de 30 dias**. Se houver qualquer oscilação natural, nosso sistema repõe automaticamente sem cobrar nada! ⚡",
+                opcoes: [{ texto: "Ótimo! Quero Comprar", proximo: "como_comprar", icone: "shopping-bag" }, { texto: "Voltar", proximo: "inicio", icone: "arrow-left" }]
+            },
+            seguranca_insta: {
+                msg: "Pode ficar totalmente tranquilo(a), o risco de bloqueio é **ZERO**! 🔒\n\nNws **NUNCA** vamos pedir a sua senha ou dados de acesso. Só precisamos do seu @ (nome de usuário) para direcionar o envio.\n\nSeu perfil continuará 100% seguro e crescendo de forma blindada contra punições.",
+                opcoes: [{ texto: "Chamar Suporte no WhatsApp 👤", proximo: "whatsapp", icone: "user", class: "hbot-full-width" }, { texto: "Voltar para o Menu", proximo: "inicio", icone: "arrow-left", class: "hbot-full-width" }]
+            },
+            fechar_chat_action: {
+                msg: "Combinado! Minimizando o chat para você escolher. Se precisar de ajuda humana, clique abaixo! 🚀",
+                opcoes: [{ texto: "Falar com Suporte Humano 💬", proximo: "whatsapp", class: "hbot-btn-wa", icone: "message-circle" }]
+            },
+            whatsapp: {
+                msg: "Perfeito! Vou te encaminhar para um especialista agora mesmo. Clique no botão abaixo para abrir o nosso WhatsApp:",
+                opcoes: [{ texto: "Chamar no WhatsApp", link: "dinamico", class: "hbot-btn-wa", icone: "message-circle" }, { texto: "Voltar ao Chat", proximo: "inicio", icone: "arrow-left", class: "hbot-full-width" }]
+            }
+        };
+
+        function toggleHBot() {
+            const popup = document.getElementById('hbotPopup');
+            const badge = document.getElementById('hbotBadge');
+            const isOpening = !popup.classList.contains('open');
+            
+            popup.classList.toggle('open');
+            
+            const notification = badge.querySelector('.hbot-pulse-notification');
+            if (notification) notification.style.display = 'none';
+
+            if (isOpening && !hbotHasStarted) {
+                hbotHasStarted = true;
+                addHBotMessage("Olá! Boas-vindas à central automatizada de atendimento. 🚀\n\nEstou aqui para agilizar suas dúvidas sobre o impulsionamento do seu perfil. Como posso te ajudar a crescer hoje?");
+                renderHBotOptions('inicio');
+            }
+        }
+
+        function getHBotTime() {
+            const now = new Date();
+            return now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+        }
+
+        function addHBotMessage(text) {
+            hbotTypingBox.style.display = 'flex';
+            hbotWindow.scrollTop = hbotWindow.scrollHeight;
+
+            setTimeout(() => {
+                hbotTypingBox.style.display = 'none';
+                const row = document.createElement('div');
+                row.className = 'hbot-message-row';
+                row.innerHTML = `
+                    <img src="${hbotImg}" class="hbot-mini-avatar">
+                    <div class="hbot-msg bot">
+                        ${text.replace(/\n/g, '<br>')}
+                        <span class="hbot-time-stamp">${getHBotTime()} // ASSISTENTE</span>
+                    </div>`;
+                hbotWindow.appendChild(row);
+                hbotWindow.scrollTop = hbotWindow.scrollHeight;
+            }, 750);
+        }
+
+        function addHBotUserMessage(text) {
+            const row = document.createElement('div');
+            row.className = 'hbot-message-row user-row';
+            row.innerHTML = `<div class="hbot-msg user">${text}<span class="hbot-time-stamp">${getHBotTime()} // VOCÊ</span></div>`;
+            hbotWindow.appendChild(row);
+            hbotWindow.scrollTop = hbotWindow.scrollHeight;
+        }
+
+        function renderHBotOptions(key) {
+            hbotOptionsArea.innerHTML = '';
+            hbotOptionsArea.style.opacity = '0.3';
+            hbotOptionsArea.style.pointerEvents = 'none';
+
+            if(key === 'fechar_chat_action') {
+                setTimeout(() => toggleHBot(), 2000);
+            }
+
+            const data = key === 'inicio' ? hbotFluxos.inicio : (hbotFluxos[key].opcoes || []);
+            
+            setTimeout(() => {
+                hbotOptionsArea.style.opacity = '1';
+                hbotOptionsArea.style.pointerEvents = 'all';
+                data.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = `hbot-opt-btn ${opt.class || ''}`;
+                    
+                    const iconHtml = opt.icone ? `<i data-lucide="${opt.icone}"></i>` : '';
+                    btn.innerHTML = `${iconHtml} ${opt.texto}`;
+                    
+                    btn.onclick = () => {
+                        if(opt.link) { 
+                            let targetUrl = opt.link;
+                            if(opt.link === "dinamico") {
+                                targetUrl = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent("Olá, estava no chat do site e preciso de suporte.")}`;
+                            }
+                            window.open(targetUrl, '_blank'); 
+                            return; 
+                        }
+                        addHBotUserMessage(opt.texto);
+                        addHBotMessage(hbotFluxos[opt.proximo].msg);
+                        renderHBotOptions(opt.proximo);
+                    };
+                    hbotOptionsArea.appendChild(btn);
+                });
+                if(window.lucide) window.lucide.createIcons();
+            }, 850);
+        }
+    </script>
+
 </body>
 </html>
