@@ -34,9 +34,9 @@
             background: var(--bg-dark);
             color: #ffffff;
             overflow-x: hidden;
+            transition: background 0.3s ease;
         }
 
-        /* TELA DE BLOQUEIO DO SEU MODELO QUE FUNCIONA */
         .lock-screen {
             position: fixed; inset: 0; background: #070b19; z-index: 9999999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -55,7 +55,6 @@
         .lock-icon-anim { animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Ambient Background Glows */
         .bg-glow {
             position: fixed; inset: 0; z-index: -1;
             background: 
@@ -65,7 +64,7 @@
         }
 
         .ticker-bar {
-            background: linear-gradient(90deg, #00ff88, #00bfff); color: #030712;
+            background: linear-gradient(90deg, var(--main), var(--secondary)); color: #030712;
             font-weight: 800; font-size: 11px; text-align: center; padding: 10px 15px;
             text-transform: uppercase; letter-spacing: 1.5px; display: flex;
             justify-content: center; align-items: center; gap: 8px;
@@ -80,13 +79,13 @@
 
         .stats-badge-group { display: flex; justify-content: center; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
         .stat-badge { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); padding: 10px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .stat-badge .pulse-icon { width: 8px; height: 8px; background: #00ff88; border-radius: 50%; display: inline-block; animation: pulse-dot 2s infinite; box-shadow: 0 0 10px var(--main); }
+        .stat-badge .pulse-icon { width: 8px; height: 8px; background: var(--main); border-radius: 50%; display: inline-block; animation: pulse-dot 2s infinite; box-shadow: 0 0 10px var(--main); }
         @keyframes pulse-dot { 0%, 100% { transform: scale(0.8); opacity: 0.4; } 50% { transform: scale(1.3); opacity: 1; } }
 
         .container { max-width: 760px; margin: auto; padding: 20px 20px 120px; }
         .alert-premium { background: rgba(0, 255, 136, 0.03); border: 1px solid rgba(0, 255, 136, 0.15); padding: 16px; border-radius: var(--radius-md); margin-bottom: 25px; color: #bdffde; font-size: 14px; font-weight: 600; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-        /* TABS */
+        /* TABS DINÂMICAS */
         .tabs-container { display: flex; background: rgba(255, 255, 255, 0.02); padding: 6px; border-radius: var(--radius-md); border: 1px solid var(--card-border); margin-bottom: 25px; gap: 6px; }
         .tab-btn { flex: 1; background: transparent; border: none; color: #64748b; padding: 14px; font-size: 14px; font-weight: 700; border-radius: 12px; cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .tab-btn:hover { color: #ffffff; }
@@ -96,7 +95,7 @@
         .cards-wrapper { display: grid; gap: 16px; }
         .product-card { padding: 28px; border-radius: var(--radius-lg); background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%); border: 1px solid var(--card-border); transition: 0.3s; cursor: pointer; }
         .product-card:hover { transform: translateY(-3px); border-color: rgba(255, 255, 255, 0.15); }
-        .product-card.selected { border-color: var(--main); background: linear-gradient(180deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 255, 136, 0.01) 100%); }
+        .product-card.selected { border-color: var(--main); background: linear-gradient(180deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 255, 136, 0.01) 100%); box-shadow: 0 0 20px rgba(var(--main-rgb), 0.05); }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
         .card-title { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
         .card-badge { background: rgba(255, 255, 255, 0.05); color: #e2e8f0; padding: 6px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
@@ -104,7 +103,7 @@
         .card-price-row { display: flex; align-items: baseline; gap: 4px; margin: 12px 0; }
         .price-currency { font-size: 18px; font-weight: 700; color: var(--main); }
         .price-value { font-size: 44px; font-weight: 800; color: var(--main); }
-        .card-desc { color: #94a3b8; font-size: 14px; }
+        .card-desc { color: #94a3b8; font-size: 14px; line-height: 1.5; }
 
         /* CHECKOUT */
         .checkout-box { margin-top: 35px; background: rgba(255,255,255,0.01); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 32px; }
@@ -113,19 +112,21 @@
         .input-wrapper i { position: absolute; left: 18px; color: #475569; font-size: 18px; }
         input { width: 100%; padding: 18px 18px 18px 52px; border: 1px solid var(--card-border); outline: none; border-radius: var(--radius-md); background: rgba(3, 7, 18, 0.4); color: white; font-size: 16px; transition: 0.2s; }
         input:focus { border-color: var(--main); box-shadow: 0 0 20px rgba(0, 255, 136, 0.15); }
-        .btn-submit { width: 100%; padding: 20px; margin-top: 18px; border: none; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--main), var(--secondary)); color: #030712; font-size: 16px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-submit { width: 100%; padding: 20px; margin-top: 18px; border: none; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--main), var(--secondary)); color: #030712; font-size: 16px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
+        .btn-submit:active { transform: scale(0.98); }
 
-        /* PROVA SOCIAL e H-BOT */
+        /* NOTIFICAÇÃO PROVA SOCIAL */
         .live-notif { position: fixed; bottom: 24px; left: -420px; background: rgba(10, 16, 36, 0.9); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(16px); padding: 16px 20px; border-radius: 20px; display: flex; align-items: center; gap: 14px; z-index: 9999; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); max-width: 350px; }
         .live-notif.show { left: 24px; }
-        .live-notif-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 15px; font-weight: 700; flex-shrink: 0; }
+        .live-notif-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 15px; font-weight: 700; flex-shrink: 0; background: var(--main); }
         .live-notif-info p { font-size: 13px; color: #f1f5f9; }
         .live-notif-info span { font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 4px; }
 
+        /* WIDGET H-BOT CHAT */
         .hbot-widget-container { position: fixed; bottom: 24px; right: 24px; z-index: 999999; }
-        .hbot-badge { width: 60px; height: 60px; border-radius: 20px; background: #030712; border: 2px solid rgba(0, 255, 136, 0.4); cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; padding: 0; }
+        .hbot-badge { width: 60px; height: 60px; border-radius: 20px; background: #030712; border: 2px solid var(--main); cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; padding: 0; }
         .hbot-badge-img { width: 100%; height: 100%; border-radius: 18px; object-fit: cover; }
-        .hbot-badge-status-dot { position: absolute; bottom: -2px; right: -2px; width: 10px; height: 10px; background: #00ff88; border-radius: 50%; border: 2px solid #070b19; }
+        .hbot-badge-status-dot { position: absolute; bottom: -2px; right: -2px; width: 10px; height: 10px; background: var(--main); border-radius: 50%; border: 2px solid #070b19; }
         
         .hbot-popup { position: absolute; bottom: 75px; right: 0; width: 360px; height: 520px; background: rgba(7, 11, 24, 0.96); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(30px); border-radius: 28px; display: flex; flex-direction: column; overflow: hidden; opacity: 0; transform: translateY(20px) scale(0.95); pointer-events: none; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .hbot-popup.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
@@ -141,12 +142,11 @@
         .hbot-mini-avatar { width: 26px; height: 26px; border-radius: 8px; object-fit: cover; }
         .hbot-msg { max-width: 82%; padding: 11px 15px; border-radius: 18px; font-size: 13px; line-height: 1.5; }
         .hbot-msg.bot { background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 255, 255, 0.08); color: #e2e8f0; }
-        .hbot-msg.user { background: #00ff88; color: #030712; font-weight: 700; }
+        .hbot-msg.user { background: var(--main); color: #030712; font-weight: 700; }
         
         #hbot-options-area { padding: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
         .hbot-opt-btn { background: rgba(255,255,255,0.02); border: 1px solid rgba(255, 255, 255, 0.08); color: #cbd5e1; padding: 11px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; }
         .hbot-btn-wa { background: #128C7E !important; border: none !important; color: white !important; grid-column: span 2; }
-        .hbot-full-width { grid-column: span 2; }
 
         /* PIX MODAL STYLES */
         .pix-modal-body { text-align: center; padding: 5px; color: #fff; }
@@ -159,7 +159,7 @@
 <body>
 
     <div class="lock-screen" id="lockScreen">
-        <div class="lock-card" id="lockCard">
+        <div class="lock-card">
             <div class="text-3xl mb-4 text-[#00ff88]" id="lockIcon">
                 <i class="fa-solid fa-circle-notch lock-icon-anim"></i>
             </div>
@@ -168,11 +168,9 @@
         </div>
     </div>
 
-    <div class="bg-glow"></div>
+    <div class="bg-glow" id="customGlow"></div>
 
-    <div class="ticker-bar">
-        <i class="fa-solid fa-fire"></i> SISTEMA AUTOMATIZADO ATIVO: ENTREGAS INICIANDO EM ATÉ 5 MINUTOS APÓS CONFIRMAÇÃO
-    </div>
+    <div class="ticker-bar" id="top-bar-text">---</div>
 
     <header>
         <div class="logo">
@@ -183,20 +181,14 @@
 
         <div class="stats-badge-group">
             <div class="stat-badge"><i class="fa-solid fa-bolt" style="color: var(--main)"></i> 1.284 entregas hoje</div>
-            <div class="stat-badge"><span class="pulse-icon"></span> <span id="online">415</span> online</div>
+            <div class="stat-badge"><span class="pulse-icon"></span> <span id="online">413</span> online</div>
         </div>
     </header>
 
     <div class="container">
-        <div class="alert-premium">
-            <i class="fa-solid fa-tags"></i> Descontos já aplicados nas tabelas abaixo.
-        </div>
+        <div class="alert-premium" id="promo-alert-text">---</div>
 
-        <div class="tabs-container">
-            <button class="tab-btn active" onclick="switchCategory('seguidores')"><i class="fa-solid fa-users"></i> Followers</button>
-            <button class="tab-btn" onclick="switchCategory('curtidas')"><i class="fa-solid fa-heart"></i> Curtidas</button>
-            <button class="tab-btn" onclick="switchCategory('views')"><i class="fa-solid fa-circle-play"></i> Views</button>
-        </div>
+        <div class="tabs-container" id="category-tabs-wrapper"></div>
 
         <div class="cards-wrapper" id="plans"></div>
 
@@ -232,7 +224,7 @@
                     <img id="hbot-header-img-element" src="" class="hbot-avatar-img">
                     <div>
                         <h4 id="hbot-title-name">H-BOT</h4>
-                        <p>Assistente Virtual • Online</p>
+                        <p id="hbot-role-text">Assistente Virtual • Online</p>
                     </div>
                 </div>
                 <button style="background:none; border:none; color:#64748b; cursor:pointer;" onclick="toggleHBot()"><i class="fa-solid fa-xmark"></i></button>
@@ -243,11 +235,10 @@
     </div>
 
     <script>
-        // O objeto STORE inicia vazio e lê na mesma estrutura do seu modelo de roupas
-        let STORE = { whatsapp: "", products: {}, pix_static: "" };
-        let currentCategory = 'seguidores';
+        let STORE = { whatsapp: "", categories: [] };
+        let activeCategoryIndex = 0;
         let selectedProduct = null;
-        let hbotImg = "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg"; 
+        let botConfig = {};
 
         function getJsonUrl() {
             const params = new URLSearchParams(window.location.search);
@@ -255,55 +246,78 @@
             return id ? `Clientes/${id.toLowerCase()}.json` : null;
         }
 
-        // LÓGICA DE CAPTURA DO SEU MODELO CORRIGIDO E SEGURO
+        // NOVO ENGINE: LÊ INTEGRALMENTE O SEU FORMATO DE CORES, TEXTOS E ESTRUTURA DE PRODUTOS
         async function loadDynamicStore() {
             const url = getJsonUrl();
 
             if(!url) {
-                showLockError("Acesso Negado", "Nenhum parâmetro de identificação de cliente foi detectado na URL. Adicione ?id=nome_do_cliente");
+                showLockError("Acesso Negado", "Nenhum parâmetro de identificação detectado. Adicione ?id=nome na URL");
                 return;
             }
 
             try {
                 const response = await fetch(url, { cache: "no-store" });
-                
-                if(!response.ok) {
-                    throw new Error("Arquivo JSON ausente.");
-                }
-
+                if(!response.ok) throw new Error("JSON ausente.");
                 const data = await response.json();
-                
-                // Mapeia os dados lendo direto da raiz do JSON igual seu modelo funcional
-                STORE.whatsapp = data.whatsapp || "5511999999999";
-                STORE.pix_static = data.pix_static || "";
-                STORE.products = data.products || { seguidores: [], curtidas: [], views: [] };
 
-                // Customização visual da marca
-                if(data.nome_marca_parte_1 && data.nome_marca_parte_2) {
-                    document.getElementById('brand1').innerText = data.nome_marca_parte_1.toUpperCase();
-                    document.getElementById('brand2').innerText = data.nome_marca_parte_2.toUpperCase();
-                    document.getElementById('page-title').innerText = `${data.nome_marca_parte_1.toUpperCase()} ${data.nome_marca_parte_2.toUpperCase()} | Painel de Engajamento`;
+                // 1. MAPEIA VARIÁVEIS DO SEU JSON
+                STORE.whatsapp = data.Zap_Vendas || "5511999999999";
+                STORE.categories = data.categories || [];
+
+                // 2. INJETA CORES PREMIUM CUSTOMIZADAS DO SEU JSON NO CSS
+                if(data.Cor_Primaria_Neon) document.documentElement.style.setProperty('--main', data.Cor_Primaria_Neon);
+                if(data.Cor_Secundaria_Neon) document.documentElement.style.setProperty('--secondary', data.Cor_Secundaria_Neon);
+                if(data.Cor_do_Fundo_Dark) {
+                    document.documentElement.style.setProperty('--bg-dark', data.Cor_do_Fundo_Dark);
+                    document.getElementById('customGlow').style.background = `radial-gradient(circle at 50% -20%, ${data.Cor_Primaria_Neon}1f 0%, transparent 50%), ${data.Cor_do_Fundo_Dark}`;
                 }
 
-                document.getElementById('hero').innerText = data.titulo_principal || "Crescimento Social Imediato";
-                document.getElementById('subtitle').innerText = data.subtitulo_principal || "Escolha o pacote ideal para os seus objetivos.";
+                // Convertendo cor primária para RGB aproximado para efeitos de sombra glow
+                if (data.Cor_Primaria_Neon.startsWith('#') && data.Cor_Primaria_Neon.length === 7) {
+                    let r = parseInt(data.Cor_Primaria_Neon.slice(1, 3), 16);
+                    let g = parseInt(data.Cor_Primaria_Neon.slice(3, 5), 16);
+                    let b = parseInt(data.Cor_Primaria_Neon.slice(5, 7), 16);
+                    document.documentElement.style.setProperty('--main-rgb', `${r}, ${g}, ${b}`);
+                }
 
-                // Atualização do Bot do seu JSON
-                if(data.avatar_bot_url) hbotImg = data.avatar_bot_url;
-                if(data.nome_bot) document.getElementById('hbot-title-name').innerText = data.nome_bot.toUpperCase();
+                // 3. INJETA TEXTOS INSTITUCIONAIS DO SEU JSON
+                document.getElementById('brand1').innerText = data.Nome_da_Loja_Parte_1 || "LOJA";
+                document.getElementById('brand2').innerText = data.Nome_da_Loja_Parte_2 || "VIP";
+                document.getElementById('page-title').innerText = `${data.Nome_da_Loja_Parte_1} ${data.Nome_da_Loja_Parte_2} | Painel`;
+                document.getElementById('hero').innerText = data.Mensagem_Boas_Vindas_Site || "Crescimento Redes Sociais";
+                document.getElementById('subtitle').innerText = data.Subtitulo_do_Site || "";
+                document.getElementById('top-bar-text').innerHTML = `<i class="fa-solid fa-fire"></i> ${data.Texto_Barra_Notificacao_Topo || 'SISTEMA AUTOMATIZADO ATIVO'}`;
+                document.getElementById('promo-alert-text').innerHTML = `<i class="fa-solid fa-tags"></i> ${data.Texto_Alerta_Promocao || 'Descontos Aplicados.'}`;
+
+                // 4. CONFIGURAÇÃO CUSTOMIZADA DO H-BOT DO SEU JSON
+                botConfig = {
+                    img: data.Banner_Principal_ou_Avatar_Bot || "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg",
+                    name: data.HBot_Nome_do_Assistente || "H-BOT",
+                    role: data.HBot_Cargo_do_Assistente || "Atendente",
+                    welcome: data.HBot_Mensagem_Inicial || "Olá! Como posso te ajudar?",
+                    options: [
+                        { text: data.HBot_Texto_Opcao_1, reply: data.HBot_Resposta_Opcao_1 },
+                        { text: data.HBot_Texto_Opcao_2, reply: data.HBot_Resposta_Opcao_2 },
+                        { text: data.HBot_Texto_Opcao_3, reply: data.HBot_Resposta_Opcao_3 },
+                        { text: data.HBot_Texto_Opcao_4, reply: data.HBot_Resposta_Opcao_4 }
+                    ]
+                };
+
+                document.getElementById('hbot-title-name').innerText = botConfig.name.toUpperCase();
+                document.getElementById('hbot-role-text').innerText = botConfig.role;
+                document.getElementById('hbot-badge-img-element').src = botConfig.img;
+                document.getElementById('hbot-header-img-element').src = botConfig.img;
+
+                // 5. CRIAÇÃO DINÂMICA DAS ABAS BASEADO NO SEU JSON
+                renderTabs();
                 
-                document.getElementById('hbot-badge-img-element').src = hbotImg;
-                document.getElementById('hbot-header-img-element').src = hbotImg;
-
-                // Esconde bloqueio e liga o site
+                // Remove tela de bloqueio e inicia
                 document.getElementById('lockScreen').style.display = 'none';
-                
-                switchCategory('seguidores');
                 setupNotifications();
 
             } catch (error) {
                 console.error(error);
-                showLockError("Vitrine Indisponível", "A loja correspondente a este ID não foi encontrada ou o arquivo JSON está ausente na pasta Clientes.");
+                showLockError("Vitrine Indisponível", "Erro ao carregar o ID selecionado. Verifique o arquivo JSON.");
             }
         }
 
@@ -315,50 +329,71 @@
             document.getElementById('lockText').innerText = text;
         }
 
-        function switchCategory(category) {
-            currentCategory = category;
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if(btn.getAttribute('onclick').includes(category)) btn.classList.add('active');
-            });
-            renderProducts();
+        function renderTabs() {
+            const wrapper = document.getElementById('category-tabs-wrapper');
+            wrapper.innerHTML = STORE.categories.map((cat, idx) => {
+                // Seleciona ícone ideal baseado no nome da aba
+                let icon = 'fa-users';
+                if(cat.name.toLowerCase().includes('curti')) icon = 'fa-heart';
+                if(cat.name.toLowerCase().includes('view') || cat.name.toLowerCase().includes('visuali')) icon = 'fa-circle-play';
+
+                return `<button class="tab-btn ${idx === 0 ? 'active' : ''}" onclick="switchTab(${idx})"><i class="fa-solid ${icon}"></i> ${cat.name}</button>`;
+            }).join('');
+
+            switchTab(0);
         }
 
-        function renderProducts() {
+        function switchTab(index) {
+            activeCategoryIndex = index;
+            document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+                btn.classList.remove('active');
+                if(i === index) btn.classList.add('active');
+            });
+            renderPlans();
+        }
+
+        function renderPlans() {
             const container = document.getElementById('plans');
             container.innerHTML = '';
-            const activeList = STORE.products[currentCategory] || [];
-
-            if(activeList.length === 0) {
-                container.innerHTML = '<p style="text-align:center;color:#64748b;font-size:14px;padding:20px;">Nenhum plano cadastrado aqui.</p>';
+            
+            const currentCat = STORE.categories[activeCategoryIndex];
+            if(!currentCat || !currentCat.plans || currentCat.plans.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#64748b;font-size:14px;padding:20px;">Nenhum plano cadastrado nesta categoria.</p>';
                 return;
             }
 
-            activeList.forEach((prod, index) => {
-                const isSelected = index === 0;
-                if(isSelected) selectedProduct = prod;
+            currentCat.plans.forEach((plan, idx) => {
+                const isSelected = idx === 0;
+                if(isSelected) selectedProduct = plan;
+
+                // Extrai o emblema (ex: "VIP" ou "Mais Comprado") se estiver embutido no texto da descrição
+                let badgeText = "PREMIUM";
+                if(plan.description && plan.description.includes("Emblema:")) {
+                    let parts = plan.description.split("Emblema:");
+                    badgeText = parts[1].trim().replace('.', '');
+                }
 
                 container.innerHTML += `
-                    <div class="product-card ${isSelected ? 'selected' : ''}" onclick="selectProduct(this, '${currentCategory}', ${index})">
+                    <div class="product-card ${isSelected ? 'selected' : ''}" onclick="selectPlan(this, ${idx})">
                         <div class="card-header">
-                            <div class="card-title">${prod.name}</div>
-                            <div class="card-badge">${prod.badge || 'Premium'}</div>
+                            <div class="card-title">${plan.name}</div>
+                            <div class="card-badge">${badgeText}</div>
                         </div>
                         <div class="card-price-row">
                             <span class="price-currency">R$</span>
-                            <span class="price-value">${prod.price}</span>
+                            <span class="price-value">${plan.price}</span>
                         </div>
-                        <div class="card-desc">${prod.desc || ''}</div>
+                        <div class="card-desc">${plan.description ? plan.description.split("Emblema:")[0] : ''}</div>
                     </div>
                 `;
             });
             updateCTA();
         }
 
-        function selectProduct(el, cat, index) {
+        function selectPlan(el, idx) {
             document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
             el.classList.add('selected');
-            selectedProduct = STORE.products[cat][index];
+            selectedProduct = STORE.categories[activeCategoryIndex].plans[idx];
             updateCTA();
         }
 
@@ -376,8 +411,7 @@
             }
             if (!insta.startsWith('@')) insta = '@' + insta;
 
-            // Se tiver um pix_static definido no JSON, usa ele, senão gera o dinâmico aleatório de segurança
-            const finalPix = STORE.pix_static ? STORE.pix_static : "00020101021126580014br.gov.bcb.pix0136603a7d4a-3ba4-41d3-a4f6-5e5898688" + Math.floor(Math.random() * 89999 + 10000) + "5204000053039865405" + selectedProduct.price.replace(',', '.') + "5802BR5924VITRINNI6009SAO%20PAULO62070503***6304D1B2";
+            const finalPix = "00020101021126580014br.gov.bcb.pix0136603a7d4a-3ba4-41d3-a4f6-5e5898688" + Math.floor(Math.random() * 89999 + 10000) + "5204000053039865405" + selectedProduct.price.replace(',', '.') + "5802BR5924VITRINNI6009SAO%20PAULO62070503***6304D1B2";
 
             Swal.fire({
                 title: 'CONTA DE ATIVAÇÃO GERADA',
@@ -397,7 +431,7 @@
                 background: '#0d1326',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const msg = `🚀 *NOVO PEDIDO*\n\n📦 *Plano:* ${selectedProduct.name}\n💰 *Valor:* R$ ${selectedProduct.price}\n📸 *Destino:* ${insta}\n\nOlá, realizei o pagamento do PIX. Solicito o envio!`;
+                    const msg = `🚀 *NOVO PEDIDO*\n\n📦 *Plano:* ${selectedProduct.name}\n💰 *Valor:* R$ ${selectedProduct.price}\n📸 *Destino:* ${insta}\n\nOlá, realizei o pagamento do PIX. Solicito o envio imediato!`;
                     window.open(`https://wa.me/${STORE.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
                 }
             });
@@ -411,7 +445,6 @@
             });
         };
 
-        // NOTIFICAÇÕES E ANIMAÇÃO ORDINÁRIA
         function setupNotifications() {
             let online = document.getElementById('online');
             setInterval(() => {
@@ -419,45 +452,49 @@
                 online.innerText = val + (Math.random() > 0.5 ? 2 : -2);
             }, 4000);
 
-            const names = ["Gustavo", "Larissa", "Rodrigo", "Amanda", "Lucas"];
+            const names = ["Gustavo", "Larissa", "Rodrigo", "Amanda", "Lucas", "Fernanda", "Bruno", "Jessica"];
             setInterval(() => {
-                if(Math.random() > 0.5) {
-                    document.getElementById('notif-text').innerHTML = `<strong>${names[Math.floor(Math.random()*names.length)]}</strong> comprou pacote premium ativo.`;
+                if(Math.random() > 0.4) {
+                    const currentCatName = STORE.categories[activeCategoryIndex]?.name || "Seguidores";
+                    document.getElementById('notif-text').innerHTML = `<strong>${names[Math.floor(Math.random()*names.length)]}</strong> acabou de impulsionar com ${currentCatName}.`;
                     document.getElementById('live-notif').classList.add('show');
                     setTimeout(() => document.getElementById('live-notif').classList.remove('show'), 5000);
                 }
-            }, 20000);
+            }, 16000);
         }
 
-        // CHAT H-BOT FLUXO
         let hbotOpened = false;
         function toggleHBot() {
             const pop = document.getElementById('hbotPopup');
             pop.classList.toggle('open');
             if(!hbotOpened) {
                 hbotOpened = true;
-                document.getElementById('hbot-window').innerHTML = `<div class="hbot-message-row"><img src="${hbotImg}" class="hbot-mini-avatar"><div class="hbot-msg bot">Olá! Como posso te ajudar com o seu perfil hoje?</div></div>`;
+                document.getElementById('hbot-window').innerHTML = `<div class="hbot-message-row"><img src="${botConfig.img}" class="hbot-mini-avatar"><div class="hbot-msg bot">${botConfig.welcome}</div></div>`;
                 renderBotOptions();
             }
         }
 
         function renderBotOptions() {
             const area = document.getElementById('hbot-options-area');
-            area.innerHTML = `
-                <button class="hbot-opt-btn" onclick="botAnswer('Como comprar?', 'Basta escolher seu pacote no site, preencher seu @ do Instagram e efetuar o pagamento seguro via PIX. A liberação ocorre em minutos!')">Como comprar? 💸</button>
-                <button class="hbot-opt-btn" onclick="botAnswer('Qual o prazo?', 'Nossas entregas automatizadas iniciam em até 5 minutos após a confirmação do pagamento.')">Qual o prazo? ⚡</button>
-                <button class="hbot-opt-btn" onclick="botAnswer('É seguro?', 'Totalmente seguro! Não solicitamos senhas ou dados confidenciais do seu perfil.')">É seguro? 🔒</button>
-                <button class="hbot-opt-btn hbot-btn-wa" onclick="window.open('https://wa.me/'+STORE.whatsapp+'?text=Suporte', '_blank')">Suporte Humano 👤</button>
-            `;
+            area.innerHTML = '';
+            
+            botConfig.options.forEach((opt, idx) => {
+                if(opt.text && opt.reply) {
+                    area.innerHTML += `<button class="hbot-opt-btn" onclick="botAnswer(${idx})">${opt.text}</button>`;
+                }
+            });
+
+            area.innerHTML += `<button class="hbot-opt-btn hbot-btn-wa" onclick="window.open('https://wa.me/'+STORE.whatsapp+'?text=Suporte', '_blank')">Suporte Humano 👤</button>`;
         }
 
-        function botAnswer(ask, reply) {
+        function botAnswer(index) {
+            const opt = botConfig.options[index];
             const win = document.getElementById('hbot-window');
-            win.innerHTML += `<div class="hbot-message-row user-row"><div class="hbot-msg user">${ask}</div></div>`;
+            win.innerHTML += `<div class="hbot-message-row user-row"><div class="hbot-msg user">${opt.text}</div></div>`;
             setTimeout(() => {
-                win.innerHTML += `<div class="hbot-message-row"><img src="${hbotImg}" class="hbot-mini-avatar"><div class="hbot-msg bot">${reply}</div></div>`;
+                win.innerHTML += `<div class="hbot-message-row"><img src="${botConfig.img}" class="hbot-mini-avatar"><div class="hbot-msg bot">${opt.reply}</div></div>`;
                 win.scrollTop = win.scrollHeight;
-            }, 500);
+            }, 400);
         }
 
         window.onload = loadDynamicStore;
