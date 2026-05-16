@@ -1,22 +1,22 @@
 {
   "Nome_da_Loja_Parte_1": "LEVEL",
-  "Nome_da_Loja_Parte_2": "UPP",
-  "Zap_Vendas": "5511949946730",
+  "Nome_da_Loja_Parte_2": "UP",
+  "Zap_Vendas": "5511999999999",
   "Banner_Principal_ou_Avatar_Bot": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg",
   "Mensagem_Boas_Vindas_Site": "Crescimento Social Imediato",
   "Subtitulo_do_Site": "Escolha o pacote ideal para os seus objetivos. Alavanque sua autoridade digital e engajamento em poucos cliques.",
   "Cor_Primaria_Neon": "#00ff88",
-  "Cor_Secundaria_Neon": "#ff0000",
+  "Cor_Secundaria_Neon": "#000000",
   "Cor_do_Fundo_Dark": "#070b19",
   "Texto_Alerta_Promocao": "Descontos de até 40% já aplicados nas tabelas abaixo.",
-  "Texto_Barra_Notificacao_Topo": "SISTEMA AUTOMATIZADO ATIVO: ENTREGAS INICIANDO EM ATÉ 5 MINUTOS APÓS CONFIRMAÇÃO",
+  "Texto_Barra_Notificacao_Topo": "SISTEMA AUTOMATIZADO ATIVO: ENTREGAS INICIANDO EM ATÉ 30 MINUTOS APÓS CONFIRMAÇÃO",
   "HBot_Nome_do_Assistente": "H-BOT CORE",
   "HBot_Cargo_do_Assistente": "Assistente Comercial • Online",
   "HBot_Mensagem_Inicial": "Olá! Boas-vindas à central automatizada de atendimento. 🚀 Como posso te ajudar a crescer hoje?",
   "HBot_Texto_Opcao_1": "Como Comprar? 💸",
   "HBot_Resposta_Opcao_1": "Fazer o seu pedido é simples! Escolha o pacote, digite seu @ e pague o PIX. O envio é automático!",
   "HBot_Texto_Opcao_2": "Tempo de Entrega ⚡",
-  "HBot_Resposta_Opcao_2": "O servidor inicia o envio em até 5 minutos de forma gradativa para a segurança do seu perfil.",
+  "HBot_Resposta_Opcao_2": "O servidor inicia o envio em até 30 minutos de forma gradativa para a segurança do seu perfil.",
   "HBot_Texto_Opcao_3": "Cai ou Tem Queda? 📉",
   "HBot_Resposta_Opcao_3": "Trabalhamos com perfis premium. Caso haja oscilação, temos Garantia de Reposição de 30 dias!",
   "HBot_Texto_Opcao_4": "É Seguro? Dá Bloqueio? 🔒",
@@ -80,7 +80,7 @@
           "price": "14,90",
           "description": "Visualizações imediatas para retenção do algoritmo. Emblema: Viral.",
           "foto": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg",
-          "cores": "#070b19",
+          "cores": "#ff0000",
           "tamanhos": "5.000 Views"
         },
         {
@@ -88,7 +88,7 @@
           "price": "39,90",
           "description": "Perfeito para ganhar alcance orgânico extra. Emblema: Alavancagem.",
           "foto": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg",
-          "cores": "#070b19",
+          "cores": "#ff0000",
           "tamanhos": "20.000 Views"
         }
       ]
