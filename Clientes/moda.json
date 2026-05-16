@@ -1,5 +1,5 @@
 {
-  "Nome_da_Loja": "VIRTUAL.LAB | High-End Wear",
+  "Nome_da_Loja": "VIRTUAL.LAB | ",
   "Zap_Vendas": "5511999999999",
   "Banner_Principal": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778774853115.jpg",
   "Mensagem_Boas_Vindas": "Bem-vindo ao Futuro do Streetwear",
@@ -11,7 +11,7 @@
       "plans": [
         {
           "name": "Camiseta 'Glitch' Tech",
-          "price": "179,00",
+          "price": "159,00",
           "description": "Tecido tecnológico com proteção UV e estampa em silk refletivo.",
           "foto": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800",
           "cores": "#000000,#ffffff,#333333",
