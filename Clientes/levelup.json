@@ -1,65 +1,81 @@
 {
-  "configuracao_loja": {
-    "nome_marca_parte_1": "LEVEL",
-    "nome_marca_parte_2": "UP",
-    "whatsapp_suporte": "5511999999999",
-    "avatar_bot_url": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg"
-  },
-  "products": {
-    "seguidores": [
-      {
-        "name": "1.000 Seguidores Premium",
-        "price": "27,90",
-        "followers": "1.000 Seg.",
-        "badge": "Iniciante",
-        "desc": "Perfis estáveis com fotos, entrega natural distribuída e garantia de reposição."
-      },
-      {
-        "name": "3.000 Seguidores VIP",
-        "price": "57,90",
-        "followers": "3.000 Seg.",
-        "badge": "Mais Comprado",
-        "desc": "Alta qualidade, recomendável para contas comerciais que buscam autoridade célere."
-      },
-      {
-        "name": "5.000 Seguidores Elite",
-        "price": "89,90",
-        "followers": "5.000 Seg.",
-        "badge": "Melhor Custo",
-        "desc": "Impulso massivo de alta retenção. Máxima credibilidade imediata garantida."
-      }
-    ],
-    "curtidas": [
-      {
-        "name": "500 Curtidas Reais",
-        "price": "12,90",
-        "followers": "500 Curtidas",
-        "badge": "Ajuste Fino",
-        "desc": "Curtidas instantâneas de perfis reais brasileiros nas últimas postagens."
-      },
-      {
-        "name": "2.000 Curtidas Premium",
-        "price": "29,90",
-        "followers": "2.000 Curtidas",
-        "badge": "Super Engajado",
-        "desc": "Distribuição ultrarrápida. Ajuda a impulsionar posts para o Explorar."
-      }
-    ],
-    "views": [
-      {
-        "name": "5.000 Views Reels",
-        "price": "14,90",
-        "followers": "5.000 Views",
-        "badge": "Viral",
-        "desc": "Visualizações imediatas para retenção de engajamento do algoritmo."
-      },
-      {
-        "name": "20.000 Views Reels",
-        "price": "39,90",
-        "followers": "20.000 Views",
-        "badge": "Alavancagem",
-        "desc": "Perfeito para impulsionar a aba Reels e ganhar alcance orgânico extra."
-      }
-    ]
-  }
+  "Nome_da_Loja": "LEVEL UP | ",
+  "Zap_Vendas": "5511999999999",
+  "Banner_Principal": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg",
+  "Mensagem_Boas_Vindas": "Crescimento Social Imediato",
+  "Cor_Primaria": "#00ff88",
+  "Status_da_Loja": "SISTEMA AUTOMATIZADO ATIVO",
+  "categories": [
+    {
+      "name": "Seguidores",
+      "plans": [
+        {
+          "name": "1.000 Seguidores Premium",
+          "price": "27,90",
+          "description": "Perfis estáveis com fotos, entrega natural distribuída e garantia de reposição de 30 dias.",
+          "foto": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg",
+          "cores": "#00ff88",
+          "tamanhos": "1.000 Seg."
+        },
+        {
+          "name": "3.000 Seguidores VIP",
+          "price": "57,90",
+          "description": "Alta qualidade, recomendável para contas comerciais que buscam autoridade célere. Emblema: Mais Comprado.",
+          "foto": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg",
+          "cores": "#00ff88",
+          "tamanhos": "3.000 Seg."
+        },
+        {
+          "name": "5.000 Seguidores Elite",
+          "price": "89,90",
+          "description": "Impulso massivo de alta retenção. Máxima credibilidade imediata garantida. Emblema: Melhor Custo.",
+          "foto": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg",
+          "cores": "#00ff88",
+          "tamanhos": "5.000 Seg."
+        }
+      ]
+    },
+    {
+      "name": "Curtidas",
+      "plans": [
+        {
+          "name": "500 Curtidas Reais",
+          "price": "12,90",
+          "description": "Curtidas instantâneas de perfis reais brasileiros nas últimas postagens. Emblema: Ajuste Fino.",
+          "foto": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg",
+          "cores": "#00bfff",
+          "tamanhos": "500 Curt."
+        },
+        {
+          "name": "2.000 Curtidas Premium",
+          "price": "29,90",
+          "description": "Distribuição ultrarrápida. Ajuda a impulsionar posts para o Explorar. Emblema: Super Engajado.",
+          "foto": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg",
+          "cores": "#00bfff",
+          "tamanhos": "2.000 Curt."
+        }
+      ]
+    },
+    {
+      "name": "Visualizações",
+      "plans": [
+        {
+          "name": "5.000 Views Reels",
+          "price": "14,90",
+          "description": "Visualizações imediatas para retenção de engajamento do algoritmo. Emblema: Viral.",
+          "foto": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg",
+          "cores": "#070b19",
+          "tamanhos": "5.000 Views"
+        },
+        {
+          "name": "20.000 Views Reels",
+          "price": "39,90",
+          "description": "Perfeito para impulsionar a aba Reels e ganhar alcance orgânico extra. Emblema: Alavancagem.",
+          "foto": "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg",
+          "cores": "#070b19",
+          "tamanhos": "20.000 Views"
+        }
+      ]
+    }
+  ]
 }
