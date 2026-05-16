@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">LEVEL UP | Painel de Engajamento Premium</title>
     
-    <!-- Fontes e Ícones Modernos -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Lucide Icons para o Widget do H-Bot -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- SweetAlert2 Premium -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
@@ -710,7 +707,6 @@
             <i class="fa-solid fa-tags"></i> Descontos de até 40% já aplicados nas tabelas abaixo.
         </div>
 
-        <!-- Abas de Segmentação de Produtos -->
         <div class="tabs-container">
             <button class="tab-btn active" onclick="switchCategory('seguidores')">
                 <i class="fa-solid fa-users"></i> Seguidores
@@ -723,10 +719,8 @@
             </button>
         </div>
 
-        <!-- Grade Dinâmica de Produtos -->
         <div class="cards-wrapper" id="plans"></div>
 
-        <!-- Checkout de Ação Única -->
         <div class="checkout-box">
             <div class="form-header">
                 <i class="fa-solid fa-circle-dot" style="color:var(--main)"></i> Configuração de Destino
@@ -742,7 +736,6 @@
 
     </div>
 
-    <!-- Módulo de Notificação de Prova Social Lenta e Realista -->
     <div class="live-notif" id="live-notif">
         <div class="live-notif-avatar" id="notif-avatar">G</div>
         <div class="live-notif-info">
@@ -751,20 +744,14 @@
         </div>
     </div>
 
-    <!-- ========================================================
-         ESTRUTURA HTML DO WIDGET H-BOT FLUTUANTE
-         ======================================================== -->
     <div class="hbot-widget-container">
-        <!-- Botão Flutuante (Badge Estilizada com Foto) -->
         <button class="hbot-badge" id="hbotBadge" onclick="toggleHBot()">
             <img id="hbot-badge-img-element" src="https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg" class="hbot-badge-img" alt="H-Bot">
             <span class="hbot-badge-status-dot"></span>
             <span class="hbot-pulse-notification"></span>
         </button>
 
-        <!-- Caixa do Chat Pop-up -->
         <div class="hbot-popup" id="hbotPopup">
-            <!-- Header com Perfil e Botão Fechar -->
             <div class="hbot-header">
                 <div class="hbot-profile-info">
                     <div class="hbot-avatar-wrapper">
@@ -781,10 +768,8 @@
                 </button>
             </div>
 
-            <!-- Janela de Conversa -->
             <div id="hbot-window"></div>
             
-            <!-- Indicador de Digitando -->
             <div id="hbot-typing-box" style="display: none;" class="hbot-message-row">
                 <img id="hbot-mini-avatar-element" src="https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg" class="hbot-mini-avatar">
                 <div class="hbot-typing">
@@ -792,7 +777,6 @@
                 </div>
             </div>
 
-            <!-- Área Dinâmica de Botões de Opções -->
             <div id="hbot-options-area"></div>
         </div>
     </div>
@@ -1055,7 +1039,7 @@
                 { texto: "É Seguro? Dá Bloqueio? 🔒", proximo: "seguranca_insta", icone: "shield-check" }
             ],
             como_comprar: {
-                msg: "Fazer o seu pedido é extremamente simples e automatizado! 🚀\n\n1️⃣ Basta fechar esta janela de chat.\n2️⃣ Escolher o pacote ideal para suas metas (Seguidores, Curtidas ou Views).\n3️⃣ Digitar apenas o seu @ do Instagram e clicar no botão de confirmação.\n\nO sistema vai gerar o seu **PIX Copia e Cola** imediatamente. Após o pagamento, o servidor já inicia o envio automático!",
+                msg: "Fazer o seu pedido é extremamente simples and automatizado! 🚀\n\n1️⃣ Basta fechar esta janela de chat.\n2️⃣ Escolher o pacote ideal para suas metas (Seguidores, Curtidas ou Views).\n3️⃣ Digitar apenas o seu @ do Instagram e clicar no botão de confirmação.\n\nO sistema vai gerar o seu **PIX Copia e Cola** imediatamente. Após o pagamento, o servidor já inicia o envio automático!",
                 opcoes: [
                     { texto: "Fechar Chat e Ver Pacotes", proximo: "fechar_chat_action", icone: "eye", class: "hbot-full-width" },
                     { texto: "Voltar ao Menu", proximo: "inicio", icone: "arrow-left", class: "hbot-full-width" }
@@ -1070,7 +1054,7 @@
                 opcoes: [{ texto: "Ótimo! Quero Comprar", proximo: "como_comprar", icone: "shopping-bag" }, { texto: "Voltar", proximo: "inicio", icone: "arrow-left" }]
             },
             seguranca_insta: {
-                msg: "Pode ficar totalmente tranquilo(a), o risco de bloqueio é **ZERO**! 🔒\n\nNws **NUNCA** vamos pedir a sua senha ou dados de acesso. Só precisamos do seu @ (nome de usuário) para direcionar o envio.\n\nSeu perfil continuará 100% seguro e crescendo de forma blindada contra punições.",
+                msg: "Pode ficar totalmente tranquilo(a), o risco de bloqueio é **ZERO**! 🔒\n\nNós **NUNCA** vamos pedir a sua senha ou dados de acesso. Só precisamos do seu @ (nome de usuário) para direcionar o envio.\n\nSeu perfil continuará 100% seguro e crescendo de forma blindada contra punições.",
                 opcoes: [{ texto: "Chamar Suporte no WhatsApp 👤", proximo: "whatsapp", icone: "user", class: "hbot-full-width" }, { texto: "Voltar para o Menu", proximo: "inicio", icone: "arrow-left", class: "hbot-full-width" }]
             },
             fechar_chat_action: {
