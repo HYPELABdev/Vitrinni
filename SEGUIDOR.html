@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Carregando Vitrine...</title>
+    <titlfunctione id="page-title">Carregando Vitrine...</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -557,12 +557,12 @@
         let hbotImg = "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg"; // Avatar fallback
 
         // Descobre qual id foi inserido na URL
-        function getJsonUrl() {
+         function getJsonUrl() {
             const params = new URLSearchParams(window.location.search);
             const id = params.get('id');
-            return id ? `Clientes/${id}.json` : null;
+            // O .toLowerCase() garante que "Levelup", "LEVELUP" ou "LevelUp" virem sempre "levelup"
+            return id ? `Clientes/${id.toLowerCase()}.json` : null;
         }
-
         // Função principal que lê e aplica a pintura do JSON no quadro HTML
         async function loadDynamicConfig() {
             const url = getJsonUrl();
