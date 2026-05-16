@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <titlfunctione id="page-title">Carregando Vitrine...</title>
+    <title id="page-title">Carregando Vitrine...</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -36,420 +36,135 @@
             overflow-x: hidden;
         }
 
-        /* TELA DE BLOQUEIO E VALIDAÇÃO */
+        /* TELA DE BLOQUEIO DO SEU MODELO QUE FUNCIONA */
         .lock-screen {
-            position: fixed;
-            inset: 0;
-            background: #070b19;
-            z-index: 9999999;
-            display: flex; /* Começa visível até validar o JSON */
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .lock-screen-glow {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.08) 0%, transparent 60%);
-            z-index: -1;
+            position: fixed; inset: 0; background: #070b19; z-index: 9999999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; text-align: center;
         }
 
         .lock-card {
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
             border: 1px solid var(--card-border);
-            padding: 40px 30px;
-            border-radius: var(--radius-lg);
-            max-width: 440px;
-            width: 100%;
+            padding: 40px 30px; border-radius: var(--radius-lg);
+            max-width: 440px; width: 100%;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             backdrop-filter: blur(20px);
         }
 
-        .lock-icon {
-            font-size: 48px;
-            color: #ef4444;
-            margin-bottom: 20px;
-        }
-        
-        .lock-icon.loading {
-            color: var(--main);
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
-        .lock-title {
-            font-size: 22px;
-            font-weight: 800;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
-            color: #ffffff;
-        }
-
-        .lock-text {
-            font-size: 14px;
-            color: #94a3b8;
-            line-height: 1.6;
-        }
+        .lock-icon-anim { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* Ambient Background Glows */
         .bg-glow {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
+            position: fixed; inset: 0; z-index: -1;
             background: 
                 radial-gradient(circle at 50% -20%, rgba(0, 255, 136, 0.12) 0%, transparent 50%),
                 radial-gradient(circle at 0% 100%, rgba(0, 191, 255, 0.05) 0%, transparent 40%),
                 #070b19;
         }
 
-        /* Top Notification Bar */
         .ticker-bar {
-            background: linear-gradient(90deg, #00ff88, #00bfff);
-            color: #030712;
-            font-weight: 800;
-            font-size: 11px;
-            text-align: center;
-            padding: 10px 15px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.15);
+            background: linear-gradient(90deg, #00ff88, #00bfff); color: #030712;
+            font-weight: 800; font-size: 11px; text-align: center; padding: 10px 15px;
+            text-transform: uppercase; letter-spacing: 1.5px; display: flex;
+            justify-content: center; align-items: center; gap: 8px;
         }
 
-        /* HEADER */
-        header {
-            text-align: center;
-            padding: 60px 20px 30px;
-        }
-
-        .logo {
-            font-size: 56px;
-            font-weight: 800;
-            letter-spacing: -2px;
-            text-transform: uppercase;
-            display: inline-flex;
-            align-items: center;
-            gap: 2px;
-        }
-
+        header { text-align: center; padding: 60px 20px 30px; }
+        .logo { font-size: 56px; font-weight: 800; letter-spacing: -2px; text-transform: uppercase; display: inline-flex; align-items: center; gap: 2px; }
         .logo .main { color: #ffffff; }
         .logo .highlight { color: var(--main); text-shadow: 0 0 40px rgba(var(--main-rgb), 0.5); }
+        .hero { margin-top: 16px; font-size: 32px; font-weight: 800; letter-spacing: -0.5px; background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .sub { margin-top: 12px; color: #94a3b8; font-size: 16px; max-width: 540px; margin-left: auto; margin-right: auto; line-height: 1.6; }
 
-        .hero {
-            margin-top: 16px;
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .stats-badge-group { display: flex; justify-content: center; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
+        .stat-badge { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); padding: 10px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .stat-badge .pulse-icon { width: 8px; height: 8px; background: #00ff88; border-radius: 50%; display: inline-block; animation: pulse-dot 2s infinite; box-shadow: 0 0 10px var(--main); }
+        @keyframes pulse-dot { 0%, 100% { transform: scale(0.8); opacity: 0.4; } 50% { transform: scale(1.3); opacity: 1; } }
 
-        .sub {
-            margin-top: 12px;
-            color: #94a3b8;
-            font-size: 16px;
-            max-width: 540px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.6;
-        }
-
-        .stats-badge-group {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
-
-        .stat-badge {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--card-border);
-            padding: 10px 20px;
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(8px);
-        }
-
-        .stat-badge .pulse-icon {
-            width: 8px;
-            height: 8px;
-            background: #00ff88;
-            border-radius: 50%;
-            display: inline-block;
-            animation: pulse-dot 2s infinite;
-            box-shadow: 0 0 10px var(--main);
-        }
-
-        @keyframes pulse-dot {
-            0% { transform: scale(0.8); opacity: 0.4; }
-            50% { transform: scale(1.3); opacity: 1; }
-            100% { transform: scale(0.8); opacity: 0.4; }
-        }
-
-        /* CONTAINER PRINCIPAL */
-        .container {
-            max-width: 760px;
-            margin: auto;
-            padding: 20px 20px 120px;
-        }
-
-        .alert-premium {
-            background: rgba(0, 255, 136, 0.03);
-            border: 1px solid rgba(0, 255, 136, 0.15);
-            padding: 16px;
-            border-radius: var(--radius-md);
-            margin-bottom: 25px;
-            color: #bdffde;
-            font-size: 14px;
-            font-weight: 600;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
+        .container { max-width: 760px; margin: auto; padding: 20px 20px 120px; }
+        .alert-premium { background: rgba(0, 255, 136, 0.03); border: 1px solid rgba(0, 255, 136, 0.15); padding: 16px; border-radius: var(--radius-md); margin-bottom: 25px; color: #bdffde; font-size: 14px; font-weight: 600; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
         /* TABS */
-        .tabs-container {
-            display: flex;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 6px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--card-border);
-            margin-bottom: 25px;
-            gap: 6px;
-            backdrop-filter: blur(10px);
-        }
-
-        .tab-btn {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #64748b;
-            padding: 14px;
-            font-size: 14px;
-            font-weight: 700;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
+        .tabs-container { display: flex; background: rgba(255, 255, 255, 0.02); padding: 6px; border-radius: var(--radius-md); border: 1px solid var(--card-border); margin-bottom: 25px; gap: 6px; }
+        .tab-btn { flex: 1; background: transparent; border: none; color: #64748b; padding: 14px; font-size: 14px; font-weight: 700; border-radius: 12px; cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .tab-btn:hover { color: #ffffff; }
-        .tab-btn.active {
-            background: rgba(255, 255, 255, 0.06);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
+        .tab-btn.active { background: rgba(255, 255, 255, 0.06); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.05); }
 
         /* CARDS */
         .cards-wrapper { display: grid; gap: 16px; }
-        
-        .product-card {
-            position: relative;
-            padding: 28px;
-            border-radius: var(--radius-lg);
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
-            border: 1px solid var(--card-border);
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-            overflow: hidden;
-        }
-
-        .product-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255, 255, 255, 0.15);
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
-        }
-
-        .product-card.selected {
-            border-color: var(--main);
-            background: linear-gradient(180deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 255, 136, 0.01) 100%);
-            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.08);
-        }
-
+        .product-card { padding: 28px; border-radius: var(--radius-lg); background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%); border: 1px solid var(--card-border); transition: 0.3s; cursor: pointer; }
+        .product-card:hover { transform: translateY(-3px); border-color: rgba(255, 255, 255, 0.15); }
+        .product-card.selected { border-color: var(--main); background: linear-gradient(180deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 255, 136, 0.01) 100%); }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-        .card-title { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
-        
-        .card-badge {
-            background: rgba(255, 255, 255, 0.05);
-            color: #e2e8f0;
-            padding: 6px 12px;
-            border-radius: 100px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .product-card.selected .card-badge {
-            background: rgba(0, 255, 136, 0.12);
-            color: var(--main);
-            border-color: rgba(0, 255, 136, 0.2);
-        }
-
+        .card-title { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .card-badge { background: rgba(255, 255, 255, 0.05); color: #e2e8f0; padding: 6px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .product-card.selected .card-badge { background: rgba(0, 255, 136, 0.12); color: var(--main); }
         .card-price-row { display: flex; align-items: baseline; gap: 4px; margin: 12px 0; }
         .price-currency { font-size: 18px; font-weight: 700; color: var(--main); }
-        .price-value { font-size: 44px; font-weight: 800; color: var(--main); letter-spacing: -1.5px; }
-        .card-desc { color: #94a3b8; font-size: 14px; line-height: 1.6; }
+        .price-value { font-size: 44px; font-weight: 800; color: var(--main); }
+        .card-desc { color: #94a3b8; font-size: 14px; }
 
         /* CHECKOUT */
-        .checkout-box {
-            margin-top: 35px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-lg);
-            padding: 32px;
-            backdrop-filter: blur(20px);
-        }
-
-        .form-header { font-size: 20px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
+        .checkout-box { margin-top: 35px; background: rgba(255,255,255,0.01); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 32px; }
+        .form-header { font-size: 20px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         .input-wrapper { position: relative; display: flex; align-items: center; }
         .input-wrapper i { position: absolute; left: 18px; color: #475569; font-size: 18px; }
-        
-        input {
-            width: 100%;
-            padding: 18px 18px 18px 52px;
-            border: 1px solid var(--card-border);
-            outline: none;
-            border-radius: var(--radius-md);
-            background: rgba(3, 7, 18, 0.4);
-            color: white;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.25s;
-        }
+        input { width: 100%; padding: 18px 18px 18px 52px; border: 1px solid var(--card-border); outline: none; border-radius: var(--radius-md); background: rgba(3, 7, 18, 0.4); color: white; font-size: 16px; transition: 0.2s; }
+        input:focus { border-color: var(--main); box-shadow: 0 0 20px rgba(0, 255, 136, 0.15); }
+        .btn-submit { width: 100%; padding: 20px; margin-top: 18px; border: none; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--main), var(--secondary)); color: #030712; font-size: 16px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
 
-        input:focus {
-            border-color: var(--main);
-            background: rgba(3, 7, 18, 0.6);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.15);
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 20px;
-            margin-top: 18px;
-            border: none;
-            border-radius: var(--radius-md);
-            background: linear-gradient(135deg, var(--main), var(--secondary));
-            color: #030712;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.2);
-        }
-
-        /* PROVA SOCIAL */
-        .live-notif {
-            position: fixed;
-            bottom: 24px;
-            left: -420px;
-            background: rgba(10, 16, 36, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(16px);
-            padding: 16px 20px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            z-index: 9999;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            max-width: 350px;
-        }
-
+        /* PROVA SOCIAL e H-BOT */
+        .live-notif { position: fixed; bottom: 24px; left: -420px; background: rgba(10, 16, 36, 0.9); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(16px); padding: 16px 20px; border-radius: 20px; display: flex; align-items: center; gap: 14px; z-index: 9999; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); max-width: 350px; }
         .live-notif.show { left: 24px; }
         .live-notif-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 15px; font-weight: 700; flex-shrink: 0; }
-        .live-notif-info p { font-size: 13.5px; color: #f1f5f9; line-height: 1.4; }
-        .live-notif-info span { font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 4px; margin-top: 3px; }
-        .live-notif-info span i { color: var(--main); }
+        .live-notif-info p { font-size: 13px; color: #f1f5f9; }
+        .live-notif-info span { font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 4px; }
 
-        /* PIX MODAL */
-        .pix-modal-body { text-align: center; padding: 5px; }
-        .pix-qr { width: 190px; height: 190px; margin: 20px auto; background: #fff; padding: 12px; border-radius: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .pix-input-group { display: flex; margin-top: 18px; gap: 8px; }
-        .pix-code-static { background: rgba(0, 0, 0, 0.3); padding: 14px; border-radius: 10px; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1; text-align: left; font-family: monospace; }
-        .btn-copy-pix { background: var(--main); border: none; color: #030712; padding: 0 18px; border-radius: 10px; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.2s; }
-
-        /* H-BOT CHAT WIDGET */
         .hbot-widget-container { position: fixed; bottom: 24px; right: 24px; z-index: 999999; }
-        .hbot-badge { width: 60px; height: 60px; border-radius: 20px; background: #030712; border: 2px solid rgba(0, 255, 136, 0.4); cursor: pointer; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; position: relative; padding: 0; }
+        .hbot-badge { width: 60px; height: 60px; border-radius: 20px; background: #030712; border: 2px solid rgba(0, 255, 136, 0.4); cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; padding: 0; }
         .hbot-badge-img { width: 100%; height: 100%; border-radius: 18px; object-fit: cover; }
         .hbot-badge-status-dot { position: absolute; bottom: -2px; right: -2px; width: 10px; height: 10px; background: #00ff88; border-radius: 50%; border: 2px solid #070b19; }
-        .hbot-pulse-notification { position: absolute; top: -4px; right: -4px; width: 12px; height: 12px; background: #ef4444; border-radius: 50%; border: 2px solid #070b19; }
         
-        .hbot-popup { position: absolute; bottom: 75px; right: 0; width: 360px; height: 520px; background: rgba(7, 11, 24, 0.96); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(30px); border-radius: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); display: flex; flex-direction: column; overflow: hidden; opacity: 0; transform: translateY(20px) scale(0.95); pointer-events: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .hbot-popup { position: absolute; bottom: 75px; right: 0; width: 360px; height: 520px; background: rgba(7, 11, 24, 0.96); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(30px); border-radius: 28px; display: flex; flex-direction: column; overflow: hidden; opacity: 0; transform: translateY(20px) scale(0.95); pointer-events: none; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .hbot-popup.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
         .hbot-header { background: rgba(255, 255, 255, 0.02); padding: 14px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-between; align-items: center; }
         .hbot-profile-info { display: flex; align-items: center; gap: 12px; }
-        .hbot-avatar-wrapper { position: relative; width: 40px; height: 40px; }
-        .hbot-avatar-img { width: 100%; height: 100%; border-radius: 14px; object-fit: cover; }
-        .hbot-status-dot { position: absolute; bottom: -2px; right: -2px; width: 8px; height: 8px; background: #00ff88; border-radius: 50%; border: 2px solid #070b14; }
-        .hbot-header h4 { font-size: 13px; font-weight: 700; color: #fff; margin: 0; }
-        .hbot-header p { font-size: 11px; color: #64748b; margin: 0; }
-        .hbot-close-btn { background: transparent; border: none; color: #64748b; cursor: pointer; }
+        .hbot-avatar-img { width: 40px; height: 40px; border-radius: 14px; object-fit: cover; }
+        .hbot-header h4 { font-size: 13px; font-weight: 700; color: #fff; }
+        .hbot-header p { font-size: 11px; color: #64748b; }
         
         #hbot-window { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; flex-grow: 1; }
         .hbot-message-row { display: flex; gap: 10px; align-items: flex-end; }
         .hbot-message-row.user-row { justify-content: flex-end; }
         .hbot-mini-avatar { width: 26px; height: 26px; border-radius: 8px; object-fit: cover; }
         .hbot-msg { max-width: 82%; padding: 11px 15px; border-radius: 18px; font-size: 13px; line-height: 1.5; }
-        .hbot-msg.bot { background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-bottom-left-radius: 4px; color: #e2e8f0; }
-        .hbot-msg.user { background: #00ff88; color: #030712; font-weight: 700; border-bottom-right-radius: 4px; }
-        .hbot-time-stamp { display: block; font-size: 8px; opacity: 0.35; margin-top: 4px; }
-        
-        .hbot-typing { display: flex; gap: 4px; padding: 10px 14px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; border-bottom-left-radius: 4px; }
-        .hbot-dot-anim { width: 5px; height: 5px; background: #00ff88; border-radius: 50%; animation: hbot-bounce 1.4s infinite; }
-        @keyframes hbot-bounce { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-5px); } }
+        .hbot-msg.bot { background: rgba(255,255,255,0.03); border: 1px solid rgba(255, 255, 255, 0.08); color: #e2e8f0; }
+        .hbot-msg.user { background: #00ff88; color: #030712; font-weight: 700; }
         
         #hbot-options-area { padding: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
-        .hbot-opt-btn { background: rgba(255,255,255,0.02); border: 1px solid rgba(255, 255, 255, 0.08); color: #cbd5e1; padding: 11px 8px; border-radius: 12px; font-size: 10.5px; font-transform: uppercase; font-weight: 700; cursor: pointer; text-align: center; }
+        .hbot-opt-btn { background: rgba(255,255,255,0.02); border: 1px solid rgba(255, 255, 255, 0.08); color: #cbd5e1; padding: 11px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; }
         .hbot-btn-wa { background: #128C7E !important; border: none !important; color: white !important; grid-column: span 2; }
         .hbot-full-width { grid-column: span 2; }
 
-        @media(max-width: 700px) {
-            .logo { font-size: 42px; }
-            .hero { font-size: 24px; }
-            header { padding: 40px 20px 20px; }
-        }
+        /* PIX MODAL STYLES */
+        .pix-modal-body { text-align: center; padding: 5px; color: #fff; }
+        .pix-qr { width: 190px; height: 190px; margin: 20px auto; background: #fff; padding: 12px; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+        .pix-input-group { display: flex; margin-top: 18px; gap: 8px; }
+        .pix-code-static { background: rgba(0, 0, 0, 0.3); padding: 14px; border-radius: 10px; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1; text-align: left; font-family: monospace; }
+        .btn-copy-pix { background: var(--main); border: none; color: #030712; padding: 0 18px; border-radius: 10px; cursor: pointer; font-weight: 800; font-size: 13px; }
     </style>
 </head>
 <body>
 
     <div class="lock-screen" id="lockScreen">
-        <div class="lock-screen-glow"></div>
         <div class="lock-card" id="lockCard">
-            <div class="lock-icon loading" id="lockIcon">
-                <i class="fa-solid fa-circle-notch"></i>
+            <div class="text-3xl mb-4 text-[#00ff88]" id="lockIcon">
+                <i class="fa-solid fa-circle-notch lock-icon-anim"></i>
             </div>
-            <div class="lock-title" id="lockTitle">Validando Acesso</div>
-            <div class="lock-text" id="lockText">Aguarde enquanto carregamos as configurações seguras da vitrine...</div>
+            <div class="font-tech text-lg font-black tracking-tight mb-2 uppercase" id="lockTitle">Sincronizando Link</div>
+            <div class="text-xs text-zinc-500 leading-relaxed" id="lockText">Buscando banco de dados e arquivos de customização da vitrine no servidor...</div>
         </div>
     </div>
 
@@ -464,47 +179,35 @@
             <span class="main" id="brand1">---</span><span class="highlight" id="brand2">---</span>
         </div>
         <div class="hero" id="hero">Carregando...</div>
-        <div class="sub" id="subtitle">Aguardando sincronização com o banco de dados do cliente...</div>
+        <div class="sub" id="subtitle">Aguardando sincronização com o banco de dados...</div>
 
         <div class="stats-badge-group">
-            <div class="stat-badge">
-                <i class="fa-solid fa-bolt" style="color: var(--main)"></i> <span id="sales">1.284</span> entregas enviadas hoje
-            </div>
-            <div class="stat-badge">
-                <span class="pulse-icon"></span> <span id="online">415</span> usuários na plataforma
-            </div>
+            <div class="stat-badge"><i class="fa-solid fa-bolt" style="color: var(--main)"></i> 1.284 entregas hoje</div>
+            <div class="stat-badge"><span class="pulse-icon"></span> <span id="online">415</span> online</div>
         </div>
     </header>
 
     <div class="container">
         <div class="alert-premium">
-            <i class="fa-solid fa-tags"></i> Descontos de até 40% já aplicados nas tabelas abaixo.
+            <i class="fa-solid fa-tags"></i> Descontos já aplicados nas tabelas abaixo.
         </div>
 
         <div class="tabs-container">
-            <button class="tab-btn active" onclick="switchCategory('seguidores')">
-                <i class="fa-solid fa-users"></i> Followers
-            </button>
-            <button class="tab-btn" onclick="switchCategory('curtidas')">
-                <i class="fa-solid fa-heart"></i> Curtidas
-            </button>
-            <button class="tab-btn" onclick="switchCategory('views')">
-                <i class="fa-solid fa-circle-play"></i> Visualizações
-            </button>
+            <button class="tab-btn active" onclick="switchCategory('seguidores')"><i class="fa-solid fa-users"></i> Followers</button>
+            <button class="tab-btn" onclick="switchCategory('curtidas')"><i class="fa-solid fa-heart"></i> Curtidas</button>
+            <button class="tab-btn" onclick="switchCategory('views')"><i class="fa-solid fa-circle-play"></i> Views</button>
         </div>
 
         <div class="cards-wrapper" id="plans"></div>
 
         <div class="checkout-box">
-            <div class="form-header">
-                <i class="fa-solid fa-circle-dot" style="color:var(--main)"></i> Configuração de Destino
-            </div>
+            <div class="form-header"><i class="fa-solid fa-circle-dot" style="color:var(--main)"></i> Destino do Envio</div>
             <div class="input-wrapper">
                 <i class="fa-brands fa-instagram"></i>
                 <input type="text" id="instagram" placeholder="Digite seu @ do Instagram">
             </div>
             <button onclick="processOrderCheckout()" class="btn-submit" id="cta">
-                <i class="fa-solid fa-arrow-right"></i> Solicitar Plano
+                <i class="fa-solid fa-arrow-right"></i> Selecione um Plano
             </button>
         </div>
     </div>
@@ -512,8 +215,8 @@
     <div class="live-notif" id="live-notif">
         <div class="live-notif-avatar" id="notif-avatar">G</div>
         <div class="live-notif-info">
-            <p id="notif-text"><strong>Guilherme Santos</strong> comprou 3.000 Seguidores VIP</p>
-            <span><i class="fa-solid fa-circle-check"></i> Pedido processado há 1 min</span>
+            <p id="notif-text"><strong>Guilherme</strong> comprou 3.000 Seguidores</p>
+            <span><i class="fa-solid fa-circle-check"></i> Processado agora</span>
         </div>
     </div>
 
@@ -521,140 +224,97 @@
         <button class="hbot-badge" id="hbotBadge" onclick="toggleHBot()">
             <img id="hbot-badge-img-element" src="" class="hbot-badge-img" alt="H-Bot">
             <span class="hbot-badge-status-dot"></span>
-            <span class="hbot-pulse-notification"></span>
         </button>
 
         <div class="hbot-popup" id="hbotPopup">
             <div class="hbot-header">
                 <div class="hbot-profile-info">
-                    <div class="hbot-avatar-wrapper">
-                        <img id="hbot-header-img-element" src="" class="hbot-avatar-img">
-                        <div class="hbot-status-dot"></div>
-                    </div>
+                    <img id="hbot-header-img-element" src="" class="hbot-avatar-img">
                     <div>
-                        <h4 id="hbot-title-name">H-BOT CORE</h4>
-                        <p>Assistente Comercial • Online</p>
+                        <h4 id="hbot-title-name">H-BOT</h4>
+                        <p>Assistente Virtual • Online</p>
                     </div>
                 </div>
-                <button class="hbot-close-btn" onclick="toggleHBot()"><i data-lucide="x"></i></button>
+                <button style="background:none; border:none; color:#64748b; cursor:pointer;" onclick="toggleHBot()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div id="hbot-window"></div>
-            <div id="hbot-typing-box" style="display: none;" class="hbot-message-row">
-                <img id="hbot-mini-avatar-element" src="" class="hbot-mini-avatar">
-                <div class="hbot-typing">
-                    <div class="hbot-dot-anim"></div><div class="hbot-dot-anim"></div><div class="hbot-dot-anim"></div>
-                </div>
-            </div>
             <div id="hbot-options-area"></div>
         </div>
     </div>
 
     <script>
-        // Objeto global que guardará a pintura (dados vindos do JSON)
-        let CONFIG = { whatsapp: "", products: {} };
+        // O objeto STORE inicia vazio e lê na mesma estrutura do seu modelo de roupas
+        let STORE = { whatsapp: "", products: {}, pix_static: "" };
         let currentCategory = 'seguidores';
         let selectedProduct = null;
-        let hbotImg = "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg"; // Avatar fallback
+        let hbotImg = "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860662726.jpg"; 
 
-        // Descobre qual id foi inserido na URL
-         function getJsonUrl() {
+        function getJsonUrl() {
             const params = new URLSearchParams(window.location.search);
             const id = params.get('id');
-            // O .toLowerCase() garante que "Levelup", "LEVELUP" ou "LevelUp" virem sempre "levelup"
             return id ? `Clientes/${id.toLowerCase()}.json` : null;
         }
-        // Função principal que lê e aplica a pintura do JSON no quadro HTML
-        async function loadDynamicConfig() {
+
+        // LÓGICA DE CAPTURA DO SEU MODELO CORRIGIDO E SEGURO
+        async function loadDynamicStore() {
             const url = getJsonUrl();
-            
-            // 1. Se o id não estiver na URL, exibe o bloqueio bonito
-            if (!url) {
-                showLockScreenError("Acesso Não Autorizado", "Esta vitrine requer uma identificação de cliente ativa na URL para ser aberta. Certifique-se de usar o link parametrizado correto.");
+
+            if(!url) {
+                showLockError("Acesso Negado", "Nenhum parâmetro de identificação de cliente foi detectado na URL. Adicione ?id=nome_do_cliente");
                 return;
             }
 
             try {
-                // Realiza a requisição ao JSON sem cache para atualizações instantâneas
                 const response = await fetch(url, { cache: "no-store" });
                 
-                // 2. Se o arquivo JSON não existir na pasta Clientes (404), vai direto pro catch
-                if (!response.ok) {
-                    throw new Error("Arquivo correspondente ao ID não existe.");
+                if(!response.ok) {
+                    throw new Error("Arquivo JSON ausente.");
                 }
-                
+
                 const data = await response.json();
                 
-                // Aceita tanto a chave "configuracao_loja" quanto "configuracao_geral"
-                const config = data.configuracao_loja || data.configuracao_geral;
+                // Mapeia os dados lendo direto da raiz do JSON igual seu modelo funcional
+                STORE.whatsapp = data.whatsapp || "5511999999999";
+                STORE.pix_static = data.pix_static || "";
+                STORE.products = data.products || { seguidores: [], curtidas: [], views: [] };
+
+                // Customização visual da marca
+                if(data.nome_marca_parte_1 && data.nome_marca_parte_2) {
+                    document.getElementById('brand1').innerText = data.nome_marca_parte_1.toUpperCase();
+                    document.getElementById('brand2').innerText = data.nome_marca_parte_2.toUpperCase();
+                    document.getElementById('page-title').innerText = `${data.nome_marca_parte_1.toUpperCase()} ${data.nome_marca_parte_2.toUpperCase()} | Painel de Engajamento`;
+                }
+
+                document.getElementById('hero').innerText = data.titulo_principal || "Crescimento Social Imediato";
+                document.getElementById('subtitle').innerText = data.subtitulo_principal || "Escolha o pacote ideal para os seus objetivos.";
+
+                // Atualização do Bot do seu JSON
+                if(data.avatar_bot_url) hbotImg = data.avatar_bot_url;
+                if(data.nome_bot) document.getElementById('hbot-title-name').innerText = data.nome_bot.toUpperCase();
                 
-                if (!config) {
-                    throw new Error("Estrutura interna do JSON inválida.");
-                }
-
-                // --- APLICANDO A PINTURA NO QUADRO (HTML DINÂMICO) ---
-                
-                // Injeta Nome da Marca e Título da Aba
-                if (config.nome_marca_parte_1 && config.nome_marca_parte_2) {
-                    document.getElementById('brand1').innerText = config.nome_marca_parte_1.toUpperCase();
-                    document.getElementById('brand2').innerText = config.nome_marca_parte_2.toUpperCase();
-                    document.getElementById('page-title').innerText = `${config.nome_marca_parte_1.toUpperCase()} ${config.nome_marca_parte_2.toUpperCase()} | Painel de Engajamento`;
-                }
-
-                // Injeta Textos Principais Customizados se existirem no JSON (ou aplica fallback)
-                document.getElementById('hero').innerText = config.titulo_principal || "Crescimento Social Imediato";
-                document.getElementById('subtitle').innerText = config.subtitulo_principal || "Escolha o pacote ideal para os seus objetivos. Alavanque sua autoridade digital.";
-
-                // Vincula o WhatsApp de Suporte do arquivo
-                CONFIG.whatsapp = config.whatsapp_suporte || "5511999999999";
-
-                // Atualiza Avatares do Chat H-Bot
-                if (config.avatar_bot_url) {
-                    hbotImg = config.avatar_bot_url;
-                }
                 document.getElementById('hbot-badge-img-element').src = hbotImg;
                 document.getElementById('hbot-header-img-element').src = hbotImg;
-                document.getElementById('hbot-mini-avatar-element').src = hbotImg;
-                if(config.nome_bot) document.getElementById('hbot-title-name').innerText = config.nome_bot.toUpperCase();
 
-                // Associa a lista de produtos vinda diretamente do JSON
-                if (config.products) {
-                    CONFIG.products = config.products;
-                } else {
-                    // Estrutura fallback caso o JSON do cliente não tenha os produtos especificados
-                    CONFIG.products = { seguidores: [], curtidas: [], views: [] };
-                }
-
-                // Libera a tela ocultando o painel de loading/bloqueio
+                // Esconde bloqueio e liga o site
                 document.getElementById('lockScreen').style.display = 'none';
-
-                // Inicializa as dependências do site agora preenchido
+                
                 switchCategory('seguidores');
-                setupSlowRealNotification();
-                setupOrganicCounter();
-                if(window.lucide) window.lucide.createIcons();
+                setupNotifications();
 
-            } catch (e) {
-                console.error("Erro na leitura do JSON:", e);
-                // 3. Se colocar ID errado, invalida e mostra a mensagem bonita
-                showLockScreenError("Vitrine Não Encontrada", "O identificador de cliente fornecido não foi localizado em nossa base de dados ou a assinatura expirou. Verifique o link e tente novamente.");
+            } catch (error) {
+                console.error(error);
+                showLockError("Vitrine Indisponível", "A loja correspondente a este ID não foi encontrada ou o arquivo JSON está ausente na pasta Clientes.");
             }
         }
 
-        // Transforma o loading na mensagem bonita de erro
-        function showLockScreenError(title, text) {
+        function showLockError(title, text) {
             document.getElementById('lockScreen').style.display = 'flex';
-            document.getElementById('lockIcon').className = "lock-icon";
+            document.getElementById('lockIcon').className = "text-3xl mb-4 text-red-500";
             document.getElementById('lockIcon').innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
             document.getElementById('lockTitle').innerText = title;
             document.getElementById('lockText').innerText = text;
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            loadDynamicConfig();
-            setTimeout(() => { if (!hbotHasStarted) toggleHBot(); }, 12000);
-        });
-
-        // Gerenciamento e Renderização Dinâmica dos Cards de Produtos
         function switchCategory(category) {
             currentCategory = category;
             document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -665,22 +325,21 @@
         }
 
         function renderProducts() {
-            const listContainer = document.getElementById('plans');
-            listContainer.innerHTML = '';
-            
-            const activeProducts = CONFIG.products[currentCategory] || [];
+            const container = document.getElementById('plans');
+            container.innerHTML = '';
+            const activeList = STORE.products[currentCategory] || [];
 
-            if(activeProducts.length === 0) {
-                listContainer.innerHTML = '<p style="text-align:center;color:#64748b;font-size:14px;padding:20px;">Nenhum plano cadastrado nesta categoria.</p>';
+            if(activeList.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#64748b;font-size:14px;padding:20px;">Nenhum plano cadastrado aqui.</p>';
                 return;
             }
 
-            activeProducts.forEach((prod, index) => {
-                const isSelected = index === 0; 
+            activeList.forEach((prod, index) => {
+                const isSelected = index === 0;
                 if(isSelected) selectedProduct = prod;
 
-                listContainer.innerHTML += `
-                    <div class="product-card ${isSelected ? 'selected' : ''}" onclick="selectProductElement(this, '${currentCategory}', ${index})">
+                container.innerHTML += `
+                    <div class="product-card ${isSelected ? 'selected' : ''}" onclick="selectProduct(this, '${currentCategory}', ${index})">
                         <div class="card-header">
                             <div class="card-title">${prod.name}</div>
                             <div class="card-badge">${prod.badge || 'Premium'}</div>
@@ -696,68 +355,38 @@
             updateCTA();
         }
 
-        function selectProductElement(element, cat, index) {
+        function selectProduct(el, cat, index) {
             document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedProduct = CONFIG.products[cat][index];
+            el.classList.add('selected');
+            selectedProduct = STORE.products[cat][index];
             updateCTA();
         }
 
         function updateCTA() {
             if(selectedProduct) {
-                document.getElementById('cta').innerHTML = `<i class="fa-solid fa-bolt"></i> Adquirir ${selectedProduct.followers || 'Plano'}`;
+                document.getElementById('cta').innerHTML = `<i class="fa-solid fa-bolt"></i> Adquirir ${selectedProduct.name}`;
             }
-        }
-
-        function setupOrganicCounter() {
-            let onlineElement = document.getElementById('online');
-            window.addEventListener('scroll', () => {
-                let currentOnline = parseInt(onlineElement.innerText);
-                if(Math.random() > 0.92 && currentOnline) {
-                    onlineElement.innerText = currentOnline + (Math.random() > 0.5 ? 2 : -2);
-                }
-            }, { passive: true });
-        }
-
-        function setupSlowRealNotification() {
-            const buyers = [
-                {name: "Gustavo Rocha", pack: "3.000 VIP", time: "há 2 min", grad: "linear-gradient(135deg, #ff6b6b, #ff8e53)"},
-                {name: "Larissa Melo", pack: "5.000 Elite", time: "há 4 min", grad: "linear-gradient(135deg, #4facfe, #00f2fe)"},
-                {name: "Rodrigo Alencar", pack: "Carga Premium", time: "há 1 min", grad: "linear-gradient(135deg, #b1f91a, #00ff88)"}
-            ];
-            const notif = document.getElementById('live-notif');
-            const notifAvatar = document.getElementById('notif-avatar');
-            const notifText = document.getElementById('notif-text');
-
-            setInterval(() => {
-                const buyer = buyers[Math.floor(Math.random() * buyers.length)];
-                if(!notifAvatar) return;
-                notifAvatar.style.background = buyer.grad;
-                notifAvatar.innerText = buyer.name.charAt(0);
-                notifText.innerHTML = `<strong>${buyer.name}</strong> realizou um pedido de <span>${buyer.pack}</span>.`;
-                notif.classList.add('show');
-                setTimeout(() => { notif.classList.remove('show'); }, 5500);
-            }, 26000); 
         }
 
         function processOrderCheckout() {
-            let instagramInput = document.getElementById('instagram').value.trim();
-            if (instagramInput === '') {
-                Swal.fire({ icon: 'error', title: 'Opa!', text: 'Insira o seu @ do Instagram.', confirmButtonColor: '#00bfff' });
+            let insta = document.getElementById('instagram').value.trim();
+            if (!insta) {
+                Swal.fire({ icon: 'error', title: 'Opa!', text: 'Insira o seu @ do Instagram.' });
                 return;
             }
-            if (!instagramInput.startsWith('@')) instagramInput = '@' + instagramInput;
+            if (!insta.startsWith('@')) insta = '@' + insta;
 
-            const fakePixCode = "00020101021126580014br.gov.bcb.pix0136603a7d4a-3ba4-41d3-a4f6-5e5898688" + Math.floor(Math.random() * 89999 + 10000) + "5204000053039865405" + selectedProduct.price.replace(',', '.') + "5802BR5924VITRINNI%20AUTOMATICA6009SAO%20PAULO62070503***6304D1B2";
+            // Se tiver um pix_static definido no JSON, usa ele, senão gera o dinâmico aleatório de segurança
+            const finalPix = STORE.pix_static ? STORE.pix_static : "00020101021126580014br.gov.bcb.pix0136603a7d4a-3ba4-41d3-a4f6-5e5898688" + Math.floor(Math.random() * 89999 + 10000) + "5204000053039865405" + selectedProduct.price.replace(',', '.') + "5802BR5924VITRINNI6009SAO%20PAULO62070503***6304D1B2";
 
             Swal.fire({
                 title: 'CONTA DE ATIVAÇÃO GERADA',
                 html: `
-                    <div class="pix-modal-body" style="color:#fff;">
-                        <p style="font-size:14px;color:#94a3b8;">Pague o Pix Copia e Cola para liberar a entrega na conta <strong>${instagramInput}</strong>.</p>
-                        <div class="pix-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=165x165&data=${encodeURIComponent(fakePixCode)}"></div>
+                    <div class="pix-modal-body">
+                        <p style="font-size:14px;color:#94a3b8;">Pague o Pix para liberar a entrega na conta <strong>${insta}</strong>.</p>
+                        <div class="pix-qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=165x165&data=${encodeURIComponent(finalPix)}"></div>
                         <div class="pix-input-group">
-                            <div class="pix-code-static" id="pixCodeText">${fakePixCode}</div>
+                            <div class="pix-code-static" id="pixCodeText">${finalPix}</div>
                             <button class="btn-copy-pix" onclick="copyPixCode()">Copiar</button>
                         </div>
                     </div>`,
@@ -768,111 +397,70 @@
                 background: '#0d1326',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const whatsappMsg = `🚀 *NOVO PEDIDO*\n\n📦 *Plano:* ${selectedProduct.name}\n💰 *Valor:* R$ ${selectedProduct.price}\n📸 *Destino:* ${instagramInput}\n\nOlá, realizei o pagamento do PIX. Solicito o envio!`;
-                    window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(whatsappMsg)}`, '_blank');
+                    const msg = `🚀 *NOVO PEDIDO*\n\n📦 *Plano:* ${selectedProduct.name}\n💰 *Valor:* R$ ${selectedProduct.price}\n📸 *Destino:* ${insta}\n\nOlá, realizei o pagamento do PIX. Solicito o envio!`;
+                    window.open(`https://wa.me/${STORE.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
                 }
             });
         }
 
         window.copyPixCode = function() {
-            const codeText = document.getElementById('pixCodeText').innerText;
-            navigator.clipboard.writeText(codeText).then(() => {
-                const copyBtn = document.querySelector('.btn-copy-pix');
-                copyBtn.innerText = 'Copiado!';
-                setTimeout(() => { copyBtn.innerText = 'Copiar'; }, 2000);
+            const txt = document.getElementById('pixCodeText').innerText;
+            navigator.clipboard.writeText(txt).then(() => {
+                document.querySelector('.btn-copy-pix').innerText = 'Copiado!';
+                setTimeout(() => { document.querySelector('.btn-copy-pix').innerText = 'Copiar'; }, 2000);
             });
         };
 
-        // LÓGICA DO WIDGET H-BOT CHAT
-        const hbotWindow = document.getElementById('hbot-window');
-        const hbotOptionsArea = document.getElementById('hbot-options-area');
-        const hbotTypingBox = document.getElementById('hbot-typing-box');
-        let hbotHasStarted = false;
+        // NOTIFICAÇÕES E ANIMAÇÃO ORDINÁRIA
+        function setupNotifications() {
+            let online = document.getElementById('online');
+            setInterval(() => {
+                let val = parseInt(online.innerText);
+                online.innerText = val + (Math.random() > 0.5 ? 2 : -2);
+            }, 4000);
 
-        const hbotFluxos = {
-            inicio: [
-                { texto: "Como Comprar? 💸", proximo: "como_comprar" },
-                { texto: "Tempo de Entrega ⚡", proximo: "prazos_entrega" },
-                { texto: "Cai ou Tem Queda? 📉", proximo: "quedas" },
-                { texto: "É Seguro? 🔒", proximo: "seguranca_insta" }
-            ],
-            como_comprar: {
-                msg: "Fazer o seu pedido é extremamente simples! 🚀\n\n1️⃣ Escolha o pacote ideal (Seguidores, Curtidas ou Views).\n2️⃣ Digite o seu @ do Instagram e clique em Avançar.\n\nO sistema gera o PIX na hora e a liberação é imediata!",
-                opcoes: [{ texto: "Voltar ao Menu", proximo: "inicio", class: "hbot-full-width" }]
-            },
-            prazos_entrega: {
-                msg: "Iniciamos o envio em até **5 minutos** após o Pix ser computado.\n\nA entrega ocorre de forma gradativa para assegurar total naturalidade.",
-                opcoes: [{ texto: "Entendi!", proximo: "inicio", class: "hbot-full-width" }]
-            },
-            quedas: {
-                msg: "Quedas são raras, mas todos os pacotes contam com **Garantia de Reposição Automática de 30 dias** sem custos extras! ⚡",
-                opcoes: [{ texto: "Voltar", proximo: "inicio", class: "hbot-full-width" }]
-            },
-            seguranca_insta: {
-                msg: "Risco ZERO! Jamais pediremos sua senha. Só precisamos do seu @ para injetar as interações com segurança.",
-                opcoes: [{ texto: "Suporte no WhatsApp 👤", proximo: "whatsapp", class: "hbot-full-width" }]
-            },
-            whatsapp: {
-                msg: "Clique no botão abaixo para abrir o suporte direto via WhatsApp:",
-                opcoes: [{ texto: "Chamar no WhatsApp", link: "dinamico", class: "hbot-btn-wa" }, { texto: "Voltar", proximo: "inicio", class: "hbot-full-width" }]
-            }
-        };
+            const names = ["Gustavo", "Larissa", "Rodrigo", "Amanda", "Lucas"];
+            setInterval(() => {
+                if(Math.random() > 0.5) {
+                    document.getElementById('notif-text').innerHTML = `<strong>${names[Math.floor(Math.random()*names.length)]}</strong> comprou pacote premium ativo.`;
+                    document.getElementById('live-notif').classList.add('show');
+                    setTimeout(() => document.getElementById('live-notif').classList.remove('show'), 5000);
+                }
+            }, 20000);
+        }
 
+        // CHAT H-BOT FLUXO
+        let hbotOpened = false;
         function toggleHBot() {
-            const popup = document.getElementById('hbotPopup');
-            const badge = document.getElementById('hbotBadge');
-            const isOpening = !popup.classList.contains('open');
-            popup.classList.toggle('open');
-            if (badge.querySelector('.hbot-pulse-notification')) badge.querySelector('.hbot-pulse-notification').style.display = 'none';
-
-            if (isOpening && !hbotHasStarted) {
-                hbotHasStarted = true;
-                addHBotMessage("Olá! Como posso te ajudar a expandir o seu perfil hoje?");
-                renderHBotOptions('inicio');
+            const pop = document.getElementById('hbotPopup');
+            pop.classList.toggle('open');
+            if(!hbotOpened) {
+                hbotOpened = true;
+                document.getElementById('hbot-window').innerHTML = `<div class="hbot-message-row"><img src="${hbotImg}" class="hbot-mini-avatar"><div class="hbot-msg bot">Olá! Como posso te ajudar com o seu perfil hoje?</div></div>`;
+                renderBotOptions();
             }
         }
 
-        function addHBotMessage(text) {
-            hbotTypingBox.style.display = 'flex';
+        function renderBotOptions() {
+            const area = document.getElementById('hbot-options-area');
+            area.innerHTML = `
+                <button class="hbot-opt-btn" onclick="botAnswer('Como comprar?', 'Basta escolher seu pacote no site, preencher seu @ do Instagram e efetuar o pagamento seguro via PIX. A liberação ocorre em minutos!')">Como comprar? 💸</button>
+                <button class="hbot-opt-btn" onclick="botAnswer('Qual o prazo?', 'Nossas entregas automatizadas iniciam em até 5 minutos após a confirmação do pagamento.')">Qual o prazo? ⚡</button>
+                <button class="hbot-opt-btn" onclick="botAnswer('É seguro?', 'Totalmente seguro! Não solicitamos senhas ou dados confidenciais do seu perfil.')">É seguro? 🔒</button>
+                <button class="hbot-opt-btn hbot-btn-wa" onclick="window.open('https://wa.me/'+STORE.whatsapp+'?text=Suporte', '_blank')">Suporte Humano 👤</button>
+            `;
+        }
+
+        function botAnswer(ask, reply) {
+            const win = document.getElementById('hbot-window');
+            win.innerHTML += `<div class="hbot-message-row user-row"><div class="hbot-msg user">${ask}</div></div>`;
             setTimeout(() => {
-                hbotTypingBox.style.display = 'none';
-                const row = document.createElement('div');
-                row.className = 'hbot-message-row';
-                row.innerHTML = `<img src="${hbotImg}" class="hbot-mini-avatar"><div class="hbot-msg bot">${text.replace(/\n/g, '<br>')}</div>`;
-                hbotWindow.appendChild(row);
-                hbotWindow.scrollTop = hbotWindow.scrollHeight;
-            }, 750);
+                win.innerHTML += `<div class="hbot-message-row"><img src="${hbotImg}" class="hbot-mini-avatar"><div class="hbot-msg bot">${reply}</div></div>`;
+                win.scrollTop = win.scrollHeight;
+            }, 500);
         }
 
-        function addHBotUserMessage(text) {
-            const row = document.createElement('div');
-            row.className = 'hbot-message-row user-row';
-            row.innerHTML = `<div class="hbot-msg user">${text}</div>`;
-            hbotWindow.appendChild(row);
-            hbotWindow.scrollTop = hbotWindow.scrollHeight;
-        }
-
-        function renderHBotOptions(key) {
-            hbotOptionsArea.innerHTML = '';
-            const data = key === 'inicio' ? hbotFluxos.inicio : (hbotFluxos[key].opcoes || []);
-            
-            data.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = `hbot-opt-btn ${opt.class || ''}`;
-                btn.innerText = opt.texto;
-                btn.onclick = () => {
-                    if(opt.link === "dinamico") {
-                        window.open(`https://wa.me/${CONFIG.whatsapp}?text=Suporte`, '_blank');
-                        return;
-                    }
-                    addHBotUserMessage(opt.texto);
-                    addHBotMessage(hbotFluxos[opt.proximo].msg);
-                    renderHBotOptions(opt.proximo);
-                };
-                hbotOptionsArea.appendChild(btn);
-            });
-            if(window.lucide) window.lucide.createIcons();
-        }
+        window.onload = loadDynamicStore;
     </script>
 </body>
 </html>
