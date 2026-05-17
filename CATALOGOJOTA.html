@@ -1,174 +1,495 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNIKA PRIVATE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root { --primary: #ff003c; --bg: #050505; --card: #111; --text: #fff; --muted: #aaa; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HYPELAB Catalog PRO MAX</title>
 
-        /* HERO */
-        .hero { padding: 90px 6%; text-align: center; background: radial-gradient(circle at top, rgba(255,0,60,.18), transparent 60%); }
-        .brand { font-size: 52px; font-weight: 900; text-transform: uppercase; }
-        .brand span { color: var(--primary); }
-        .subtitle { color: var(--muted); margin-top: 10px; font-size: 15px; }
-        .promo { margin-top: 15px; display: inline-block; padding: 10px 18px; border-radius: 50px; background: rgba(255,0,60,.12); border: 1px solid rgba(255,0,60,.3); font-size: 13px; font-weight: 600; }
-        
-        .stats { margin-top: 25px; display: flex; justify-content: center; gap: 15px; }
-        .stat { background: #111; padding: 14px 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,.05); min-width: 120px; }
-        .stat h2 { color: var(--primary); font-size: 24px; font-weight: 800; }
-        .stat p { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;600;700;800&display=swap" rel="stylesheet">
 
-        /* PRODUTOS */
-        .section { padding: 60px 6%; }
-        .category-title { font-size: 28px; margin-bottom: 30px; display: flex; gap: 12px; align-items: center; font-weight: 700; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 50px; }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter;}
 
-        /* CARD */
-        .card { background: var(--card); border-radius: 22px; padding: 20px; border: 1px solid rgba(255,255,255,.05); transition: .3s; position: relative; display: flex; flex-direction: column; }
-        .card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(255,0,60,0.1); }
-        .badge { position: absolute; top: 15px; right: 15px; background: var(--primary); padding: 5px 12px; font-size: 10px; border-radius: 50px; font-weight: 800; text-transform: uppercase; z-index: 2; }
-        
-        .card-img { width: 100%; h-48; border-radius: 15px; object-fit: cover; margin-bottom: 15px; background: #000; }
-        .card h3 { font-size: 19px; margin-bottom: 8px; font-weight: 700; }
-        .price { font-size: 28px; color: var(--primary); font-weight: 800; margin-bottom: 8px; }
-        .desc { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 15px; flex-grow: 1; }
-        
-        .info { font-size: 12px; color: #bbb; margin-bottom: 20px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 12px; }
-        .info-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-        .info-item:before { content: '✓'; color: var(--primary); font-weight: bold; }
+:root{
+--primary:#ff003c;
+--bg:#050505;
+--card:rgba(20,20,20,0.55);
+--border:rgba(255,255,255,0.1);
+--text:#fff;
+}
 
-        .btn { width: 100%; padding: 15px; border: none; border-radius: 16px; background: var(--primary); color: #fff; font-weight: 700; cursor: pointer; transition: .3s; text-transform: uppercase; letter-spacing: 1px; }
-        .btn:hover { opacity: .85; transform: scale(1.02); }
+body{
+background:var(--bg);
+color:var(--text);
+overflow-x:hidden;
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+}
 
-        /* SOBRE */
-        .about { padding: 60px 6%; }
-        .about-box { background: #0b0b0b; padding: 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,.05); display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
-        .about-img { width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        .about-content h2 { font-size: 38px; margin-bottom: 20px; font-weight: 800; line-height: 1.2; }
-        .about-content p { color: var(--muted); line-height: 1.8; font-size: 15px; margin-bottom: 15px; }
+/* HEADER */
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px 20px;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(15px);
+position:sticky;
+top:0;
+z-index:10;
+}
 
-        footer { padding: 50px; text-align: center; color: #555; border-top: 1px solid rgba(255,255,255,.05); font-size: 13px; font-weight: 500; }
+#brandContainer {
+display: flex;
+align-items: center;
+gap: 10px;
+}
 
-        @media (max-width: 768px) {
-            .about-box { grid-template-columns: 1fr; text-align: center; padding: 30px 20px; }
-            .brand { font-size: 40px; }
-            .about-content h2 { font-size: 28px; }
-        }
-    </style>
+#brandLogo {
+height: 35px;
+width: auto;
+object-fit: contain;
+display: none;
+}
+
+#brandName{
+font-weight:800;
+animation:float 4s ease-in-out infinite;
+}
+
+@keyframes float{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-3px);}
+}
+
+.btn{
+padding:10px 12px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+background:#222;
+color:#fff;
+}
+
+.btn.primary{background:var(--primary);}
+
+/* GRID */
+.catalog{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:16px;
+padding:20px;
+}
+
+.card{
+background:var(--card);
+backdrop-filter:blur(16px);
+border:1px solid var(--border);
+border-radius:16px;
+overflow:hidden;
+transition:.3s;
+}
+
+.card:hover{transform:scale(1.03);}
+
+.card img{
+width:100%;
+height:200px;
+object-fit:cover;
+}
+
+.card-content{padding:12px;}
+
+.price{color:#00ff9d;font-weight:700;margin:6px 0;}
+
+.actions{
+display:flex;
+gap:8px;
+}
+
+.buy{
+flex:1;
+padding:8px;
+border:none;
+border-radius:8px;
+background:var(--primary);
+color:#fff;
+cursor:pointer;
+}
+
+.cartBtn{
+flex:1;
+padding:8px;
+border:none;
+border-radius:8px;
+background:#111;
+color:#fff;
+cursor:pointer;
+border:1px solid var(--border);
+}
+
+/* PANEL */
+.panel{
+position:fixed;
+right:-420px;
+top:0;
+width:380px;
+height:100vh;
+background:rgba(10,10,10,0.95);
+backdrop-filter:blur(20px);
+padding:16px;
+overflow-y:auto;
+transition:.3s;
+z-index:999;
+border-left: 1px solid var(--border);
+}
+
+.panel.active{right:0;}
+
+.section-title{
+font-size:12px;
+opacity:.6;
+margin:12px 0;
+font-weight: bold;
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+
+/* CART */
+.cart{
+position:fixed;
+bottom:20px;
+right:20px;
+width:300px;
+background:rgba(0,0,0,0.8);
+backdrop-filter:blur(15px);
+border:1px solid var(--border);
+border-radius:14px;
+padding:12px;
+z-index:999;
+}
+
+.cart h4{margin-bottom:10px;}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+font-size:13px;
+margin:6px 0;
+}
+
+.total{
+margin-top:10px;
+font-weight:800;
+color:#00ff9d;
+}
+
+/* INPUTS */
+input,textarea, select{
+width:100%;
+padding:10px;
+margin:6px 0;
+border-radius:8px;
+border:1px solid var(--border);
+background:#111;
+color:#fff;
+}
+
+input[type="color"] {
+height: 40px;
+padding: 2px;
+cursor: pointer;
+}
+
+/* LISTA DE PRODUTOS NO EDITOR */
+.editor-product-list {
+margin-top: 10px;
+max-height: 200px;
+overflow-y: auto;
+}
+.editor-product-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: rgba(255,255,255,0.05);
+padding: 8px;
+margin: 4px 0;
+border-radius: 6px;
+font-size: 13px;
+}
+.delete-prod-btn {
+background: #ff003c;
+color: white;
+border: none;
+padding: 2px 8px;
+border-radius: 4px;
+cursor: pointer;
+}
+.close-panel-btn {
+float: right;
+background: none;
+border: none;
+color: #fff;
+font-size: 20px;
+cursor: pointer;
+}
+</style>
 </head>
+
 <body>
 
-    <section class="hero">
-        <div class="brand" id="brand">Cargando...</div>
-        <div class="subtitle" id="subtitle"></div>
-        <div class="promo" id="promo"></div>
-        <div class="stats">
-            <div class="stat">
-                <h2 id="sales">0</h2>
-                <p>Vendas</p>
-            </div>
-            <div class="stat">
-                <h2 id="online">0</h2>
-                <p>Online</p>
-            </div>
-        </div>
-    </section>
+<header>
+<div id="brandContainer">
+<img id="brandLogo" src="" alt="Logo">
+<h3 id="brandName">HYPELAB STORE</h3>
+</div>
+<div>
+<button class="btn" onclick="openEditor()">Editor</button>
+<button class="btn primary" onclick="checkout()">🛒 Comprar</button>
+</div>
+</header>
 
-    <section class="section" id="categories-container"></section>
+<div class="catalog" id="catalog"></div>
 
-    <section class="about">
-        <div class="about-box">
-            <img id="aboutImg" src="" class="about-img">
-            <div class="about-content">
-                <h2 id="aboutTitle"></h2>
-                <div id="aboutText"></div>
-            </div>
-        </div>
-    </section>
+<!-- CART -->
+<div class="cart">
+<h4>Carrinho</h4>
+<div id="cartItems"></div>
+<div class="total" id="total">Total: R$ 0,00</div>
+</div>
 
-    <footer id="footer"></footer>
+<!-- PANEL -->
+<div class="panel" id="panel">
+<button class="close-panel-btn" onclick="document.getElementById('panel').classList.remove('active')">×</button>
+<h3>Editor de Catálogo</h3>
 
-    <script>
-        // 1. PEGAR ID DA URL
-        const params = new URLSearchParams(window.location.search);
-        const storeID = params.get('id') || 'unika'; // Padrão é unika se não tiver ID
+<div class="section-title">Textos e Identidade</div>
+<label style="font-size:11px;">Nome da Marca:</label>
+<input id="brandInput" placeholder="Marca">
 
-        async function init() {
-            try {
-                // 2. BUSCAR JSON NO GITHUB
-                const response = await fetch(`https://hypelabdev.github.io/Vitrinni/Clientes/${storeID}.json?v=${Date.now()}`);
-                if (!response.ok) throw new Error("Loja não encontrada");
-                const DATA = await response.json();
+<label style="font-size:11px;">Link ou URL do Logotipo:</label>
+<input id="logoInput" placeholder="URL da Imagem do Logo">
 
-                // 3. APLICAR TEMA E CORES
-                document.documentElement.style.setProperty('--primary', DATA.color);
-                document.title = `${DATA.brand} ${DATA.brandHighlight}`;
+<label style="font-size:11px;">WhatsApp (Apenas números com DDD):</label>
+<input id="whatsInput" placeholder="Ex: 5511999999999">
 
-                // 4. PREENCHER HERO
-                document.getElementById("brand").innerHTML = `${DATA.brand} <span>${DATA.brandHighlight}</span>`;
-                document.getElementById("subtitle").innerText = DATA.subtitle;
-                document.getElementById("promo").innerText = DATA.promo;
-                document.getElementById("sales").innerText = DATA.stats.sales;
-                document.getElementById("online").innerText = DATA.stats.online;
+<div class="section-title">Visual e Cores</div>
+<label style="font-size:11px;">Cor Principal do Tema:</label>
+<input type="color" id="colorInput">
 
-                // 5. RENDERIZAR CATEGORIAS E PRODUTOS
-                const container = document.getElementById("categories-container");
-                DATA.categories.forEach(cat => {
-                    let html = `
-                        <h2 class="category-title">${cat.icon || '✨'} ${cat.name}</h2>
-                        <div class="grid">
-                    `;
+<label style="font-size:11px;">URL da Foto de Fundo:</label>
+<input id="bgInput" placeholder="URL da Imagem de Fundo">
 
-                    cat.plans.forEach(plan => {
-                        html += `
-                            <div class="card">
-                                ${plan.badge ? `<div class="badge">${plan.badge}</div>` : ''}
-                                ${plan.foto ? `<img src="${plan.foto}" class="card-img">` : ''}
-                                <h3>${plan.name}</h3>
-                                <div class="price">${plan.price}</div>
-                                <div class="desc">${plan.description}</div>
-                                <div class="info">
-                                    <div class="info-item">${plan.info_1 || 'Qualidade Premium'}</div>
-                                    <div class="info-item">${plan.info_2 || 'Envio Imediato'}</div>
-                                    <div class="info-item">${plan.info_3 || 'Suporte VIP'}</div>
-                                </div>
-                                <button class="btn" onclick="buy('${plan.name}','${plan.price}','${DATA.whatsapp}')">Comprar Agora</button>
-                            </div>
-                        `;
-                    });
+<button class="btn primary" style="width:100%; margin-top:10px;" onclick="saveConfig()">Salvar Configurações</button>
 
-                    html += `</div>`;
-                    container.innerHTML += html;
-                });
+<hr style="margin:20px 0; border-color:var(--border);">
 
-                // 6. SEÇÃO SOBRE
-                document.getElementById("aboutImg").src = DATA.about_section.about_image;
-                document.getElementById("aboutTitle").innerText = DATA.about_section.about_title;
-                document.getElementById("aboutText").innerHTML = `
-                    <p>${DATA.about_section.about_p1}</p>
-                    <p>${DATA.about_section.about_p2}</p>
-                    <p>${DATA.about_section.about_p3}</p>
-                `;
+<div class="section-title">Gerenciar Produtos</div>
 
-                // 7. RODAPÉ
-                document.getElementById("footer").innerText = DATA.footer_text;
+<label style="font-size:11px;">Nome do Produto:</label>
+<input id="pName" placeholder="Ex: Camiseta Hype">
+<label style="font-size:11px;">Preço (Use ponto para centavos):</label>
+<input id="pPrice" placeholder="Ex: 89.90">
+<label style="font-size:11px;">URL da Foto do Produto:</label>
+<input id="pImg" placeholder="URL da Imagem">
+<label style="font-size:11px;">Descrição Breve:</label>
+<textarea id="pDesc" placeholder="Detalhes do produto..."></textarea>
 
-            } catch (err) {
-                console.error(err);
-                document.body.innerHTML = `<div style="color:white; text-align:center; margin-top:100px;"><h1>404</h1><p>Loja não encontrada ou ID inválido.</p></div>`;
-            }
-        }
+<button class="btn primary" style="width:100%; margin-bottom:15px;" onclick="addProduct()">Adicionar Produto</button>
 
-        function buy(item, price, phone) {
-            const msg = encodeURIComponent(`Olá! Gostaria de comprar:\n🎁 *${item}*\n💰 Valor: *${price}*\n\nPodemos prosseguir?`);
-            window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
-        }
+<label style="font-size:11px; font-weight:bold;">Produtos Cadastrados:</label>
+<div class="editor-product-list" id="editorProductList"></div>
 
-        init();
-    </script>
+</div>
+
+<script>
+
+const PASSWORD="KALLI420"
+
+let config=JSON.parse(localStorage.getItem("config"))||{
+brand:"HYPELAB",
+logo:"",
+whats:"5511999999999",
+color:"#ff003c",
+bg:""
+}
+
+let products=JSON.parse(localStorage.getItem("products"))||[]
+let cart=JSON.parse(localStorage.getItem("cart"))||[]
+
+function saveAll(){
+localStorage.setItem("config",JSON.stringify(config))
+localStorage.setItem("products",JSON.stringify(products))
+localStorage.setItem("cart",JSON.stringify(cart))
+}
+
+/* RENDER */
+function render(){
+// Aplicar Textos e Logo
+document.getElementById("brandName").innerText=config.brand
+if(config.logo && config.logo.trim() !== "") {
+document.getElementById("brandLogo").src = config.logo
+document.getElementById("brandLogo").style.display = "block"
+} else {
+document.getElementById("brandLogo").style.display = "none"
+}
+
+// Aplicar Cores Visuais e Fundo
+document.documentElement.style.setProperty('--primary',config.color)
+document.body.style.backgroundImage=config.bg?`url(${config.bg})`:"none"
+
+/* PRODUTOS NO CATÁLOGO */
+document.getElementById("catalog").innerHTML=
+products.map((p,i)=>`
+<div class="card">
+<img src="${p.img || 'https://via.placeholder.com/240x200?text=Sem+Foto'}">
+<div class="card-content">
+<h4>${p.name}</h4>
+<p style="font-size:13px;color:#aaa">${p.desc}</p>
+<div class="price">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</div>
+
+<div class="actions">
+<button class="cartBtn" onclick="addCart(${i})">Carrinho</button>
+<button class="buy" onclick="buy('${p.name}','${p.price}')">Comprar</button>
+</div>
+
+</div>
+</div>
+`).join('')
+
+renderCart()
+renderEditorProductList()
+}
+
+/* CART */
+function addCart(i){
+cart.push(products[i])
+saveAll()
+renderCart()
+}
+
+function removeCart(i){
+cart.splice(i,1)
+saveAll()
+renderCart()
+}
+
+function renderCart(){
+let total=0
+
+document.getElementById("cartItems").innerHTML=
+cart.map((c,i)=>{
+// Correção do NaN: Converte e limpa o formato caso venha com vírgula
+let cleanPrice = String(c.price).replace(',', '.');
+let parsedPrice = parseFloat(cleanPrice);
+if(!isNaN(parsedPrice)){
+total += parsedPrice;
+}
+
+return `
+<div class="cart-item">
+<span>${c.name}</span>
+<span onclick="removeCart(${i})" style="cursor:pointer">❌</span>
+</div>
+`
+}).join('')
+
+document.getElementById("total").innerText="Total: R$ "+total.toFixed(2).replace('.', ',')
+}
+
+/* BUY DIRECT */
+function buy(n,p){
+let cleanPrice = parseFloat(String(p).replace(',', '.')).toFixed(2).replace('.', ',');
+window.open(`https://wa.me/${config.whats}?text=${encodeURIComponent("Quero o produto: "+n+" - Valor: R$ "+cleanPrice)}`)
+}
+
+/* CHECKOUT CART */
+function checkout(){
+let msg="*Novo Pedido:*\n\n"
+let total=0
+cart.forEach(c=>{
+let cleanPrice = parseFloat(String(c.price).replace(',', '.'));
+msg+=`- ${c.name}: R$ ${cleanPrice.toFixed(2).replace('.', ',')}\n`
+total += cleanPrice
+})
+msg+=`\n*Total:* R$ ${total.toFixed(2).replace('.', ',')}`
+window.open(`https://wa.me/${config.whats}?text=${encodeURIComponent(msg)}`)
+}
+
+/* ADD PRODUCT */
+function addProduct(){
+if(!pName.value || !pPrice.value) return alert("Preencha o nome e preço do produto!");
+
+// Forçar o preço a salvar usando ponto como separador decimal interno
+let formattedPrice = pPrice.value.replace(',', '.');
+
+products.push({
+name:pName.value,
+price:formattedPrice,
+img:pImg.value,
+desc:pDesc.value
+})
+saveAll()
+render()
+
+// Limpar inputs de cadastro
+pName.value = ""
+pPrice.value = ""
+pImg.value = ""
+pDesc.value = ""
+}
+
+/* DELETE PRODUCT FROM EDITOR */
+function deleteProduct(i){
+if(confirm("Tem certeza que deseja excluir este produto?")){
+products.splice(i,1)
+saveAll()
+render()
+}
+}
+
+/* LIST PRODUCTS IN PANEL */
+function renderEditorProductList(){
+document.getElementById("editorProductList").innerHTML = 
+products.map((p,i)=>`
+<div class="editor-product-item">
+<span>${p.name}</span>
+<button class="delete-prod-btn" onclick="deleteProduct(${i})">Excluir</button>
+</div>
+`).join('')
+}
+
+/* CONFIG */
+function saveConfig(){
+config.brand=brandInput.value
+config.logo=logoInput.value
+config.whats=whatsInput.value
+config.color=colorInput.value
+config.bg=bgInput.value
+saveAll()
+render()
+document.getElementById("panel").classList.remove("active")
+}
+
+function openEditor(){
+let pass=prompt("Senha")
+if(pass!==PASSWORD)return alert("Negado")
+
+// Preenche os inputs do painel com as configs atuais ao abrir
+brandInput.value = config.brand
+logoInput.value = config.logo || ""
+whatsInput.value = config.whats
+colorInput.value = config.color
+bgInput.value = config.bg || ""
+
+document.getElementById("panel").classList.add("active")
+}
+
+// Inicialização
+render()
+
+</script>
+
 </body>
 </html>
