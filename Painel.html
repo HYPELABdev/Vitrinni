@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HypeLab - Painel de Controle</title>
+    <!-- Tailwind CSS v4 via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
+    <style>
+        body { background:#040705; color:#e2e8f0; font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'Fira Code', monospace; }
+        .ide-panel { background:#090d0a; border:1px solid #142217; }
+        .ide-input { width:100%; background:#050806; border:1px solid #142217; padding:12px; border-radius:8px; color:#f8fafc; outline:none; transition: all 0.3s; }
+        .ide-input:focus { border-color:#10b981; box-shadow: 0 0 10px rgba(16,185,129,0.15); }
+        .tab-btn { padding:10px 18px; border-radius:8px; font-weight:700; font-size:12px; white-space: nowrap; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+        .tab-active { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+        .tab-inactive { background:transparent; color:#475569; border: 1px solid transparent; }
+        .tab-inactive:hover { color: #94a3b8; background: #0c130e; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col overflow-hidden">
+
+<!-- TELA DE LOGIN -->
+<div id="login-screen" class="fixed inset-0 flex items-center justify-center bg-[#040705] z-50">
+    <div class="ide-panel p-8 w-full max-w-md rounded-2xl space-y-6 shadow-2xl relative border-t-4 border-t-emerald-500">
+        <div class="text-center">
+            <div class="inline-block bg-emerald-500/10 text-emerald-400 p-2 rounded-xl mb-3 border border-emerald-500/20 font-mono text-xs">SISTEMA OPERACIONAL v2.0</div>
+            <h1 class="text-4xl font-black italic uppercase tracking-tighter">HYPE<span class="text-emerald-500">LAB</span></h1>
+            <p class="text-slate-500 text-[9px] mt-1 uppercase tracking-[6px]">Painel do Lojista</p>
+        </div>
+        <div class="space-y-4">
+            <input id="user" type="text" placeholder="ID DA SUA LOJA" class="ide-input uppercase font-bold text-center tracking-widest placeholder-emerald-900/40 border-emerald-950">
+            <input id="pass" type="password" placeholder="SENHA DE ACESSO" class="ide-input text-center placeholder-emerald-900/40 border-emerald-950">
+            <button onclick="conectar()" id="btn-login" class="w-full bg-emerald-600 hover:bg-emerald-500 text-[#040705] py-4 rounded-xl font-black transition-all active:scale-[0.98] tracking-widest shadow-[0_0_20px_rgba(16,185,129,0.2)] cursor-pointer">ENTRAR NO WORKSPACE</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DE PROGRESSO DO DEPLOY -->
+<div id="deploy-modal" class="fixed inset-0 bg-[#040705]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+    <div class="ide-panel p-8 w-full max-w-md rounded-2xl text-center space-y-6 shadow-2xl border border-emerald-500/20 relative overflow-hidden">
+        <div class="flex flex-col items-center justify-center">
+            <div class="w-12 h-12 rounded-full border-2 border-emerald-500/20 border-t-emerald-500 animate-spin mb-4"></div>
+            <h3 class="text-lg font-black uppercase tracking-wide text-emerald-400">Publicando sua Vitrine</h3>
+            <p id="deploy-status" class="text-xs text-slate-400 mt-1 h-4">Processando modificações do catálogo...</p>
+        </div>
+        
+        <div class="space-y-2">
+            <div class="w-full bg-[#050806] h-2 rounded-full border border-emerald-950 overflow-hidden">
+                <div id="deploy-bar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full w-0 rounded-full transition-all duration-300"></div>
+            </div>
+            <span id="deploy-percent" class="text-3xl font-black text-emerald-400 font-mono">0%</span>
+        </div>
+    </div>
+</div>
+
+<!-- INTERFACE DO PAINEL PRINCIPAL -->
+<div id="painel" class="hidden h-screen flex flex-col overflow-hidden">
+    
+    <!-- CABEÇALHO FIXO -->
+    <header class="h-16 ide-panel border-t-0 border-x-0 flex justify-between items-center px-6 bg-[#090d0a]/80 backdrop-blur-md shrink-0 z-10">
+        <div class="flex items-center gap-4">
+            <span class="text-xs text-slate-500 font-mono">LOJA ATIVA //</span>
+            <span id="cliente-logado" class="font-mono text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 uppercase">---</span>
+        </div>
+        <button onclick="salvar()" id="btn-save" class="bg-emerald-500 hover:bg-emerald-400 text-[#040705] px-6 py-2.5 rounded-lg font-black transition-all text-xs tracking-wider active:scale-95 cursor-pointer shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+            SALVAR ALTERAÇÕES
+        </button>
+    </header>
+
+    <!-- ÁREA DE CONTEÚDO DIVIDIDO (SPLIT VIEW) -->
+    <div class="flex-1 flex overflow-hidden">
+        
+        <!-- COLUNA DE EDIÇÃO (ESQUERDA) -->
+        <div class="w-full lg:w-7/12 flex flex-col h-full overflow-hidden">
+            <!-- Abas fixas no topo -->
+            <div id="tabs-container" class="flex gap-1 p-3 bg-[#060a07] border-b border-b-emerald-950/30 overflow-x-auto shrink-0 no-scrollbar"></div>
+            
+            <!-- CONTAINER DE EDIÇÃO COM ROLAGEM DESTRAVADA -->
+            <div id="editor-content" class="flex-1 p-6 overflow-y-auto max-h-[calc(100vh-10rem)] space-y-6 bg-[#040705]"></div>
+        </div>
+
+        <!-- VISUALIZADOR DO BANCO JSON EM TEMPO REAL (DIREITA) -->
+        <div class="hidden lg:w-5/12 bg-[#060a07] p-6 lg:flex flex-col justify-between h-full overflow-hidden shrink-0">
+            <div class="flex flex-col flex-1 min-h-0">
+                <div class="flex items-center justify-between mb-3 text-xs font-mono text-slate-500 border-b border-emerald-950/40 pb-2">
+                    <span>ARQUIVO_DE_PRODUTOS.JSON</span>
+                    <span class="text-emerald-500/60 animate-pulse">● SINCRONIZADO</span>
+                </div>
+                <!-- Área do JSON com rolagem interna -->
+                <div class="flex-1 min-h-0 bg-[#030504] border border-emerald-950/40 rounded-xl p-4 font-mono text-xs text-emerald-400 overflow-y-auto no-scrollbar shadow-inner">
+                    <pre id="json-preview"></pre>
+                </div>
+            </div>
+            <div class="mt-4 p-4 ide-panel rounded-xl bg-emerald-950/5 flex items-center gap-3 shrink-0">
+                <div class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
+                <p class="text-[10px] font-mono text-slate-500 uppercase tracking-wider">Monitorando alterações nos campos em tempo real...</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+let dadosAtuais = null;
+let shaAtual = "";
+let arquivoCaminho = "";
+let abaAtivaGlobal = 'geral';
+
+async function conectar() {
+    const user = document.getElementById("user").value.trim().toLowerCase();
+    const pass = document.getElementById("pass").value.trim();
+    const btn = document.getElementById("btn-login");
+
+    if (!user || !pass) return alert("Preencha todos os campos.");
+    if (pass !== "Rogerio123" && pass !== "Hype" + user) return alert("Senha incorreta.");
+
+    btn.innerText = "VERIFICANDO...";
+    arquivoCaminho = `Clientes/${user}.json`;
+
+    try {
+        // Agora faz a requisição passando pela Serverless Function da Vercel
+        const res = await fetch(`/api/github?caminho=${encodeURIComponent(arquivoCaminho)}&metodo=GET`);
+        if (!res.ok) throw new Error("ID de loja inválido.");
+
+        const info = await res.json();
+        shaAtual = info.sha;
+        dadosAtuais = JSON.parse(decodeURIComponent(escape(atob(info.content))));
+
+        document.getElementById("login-screen").classList.add("hidden");
+        document.getElementById("painel").classList.remove("hidden");
+        document.getElementById("cliente-logado").innerText = user + ".json";
+
+        renderizarAbas();
+        abrirAba('geral');
+        atualizarLiveJson();
+    } catch (e) {
+        alert("Erro: " + e.message);
+    }
+    btn.innerText = "ENTRAR NO WORKSPACE";
+}
+
+function renderizarAbas() {
+    const tabs = document.getElementById("tabs-container");
+    tabs.innerHTML = `<button onclick="abrirAba('geral')" id="tab-geral" class="tab-btn tab-active">⚙️ Configurações Gerais</button>`;
+    dadosAtuais.categories.forEach((cat, index) => {
+        tabs.innerHTML += `<button onclick="abrirAba(${index})" id="tab-${index}" class="tab-btn tab-inactive">📦 ${cat.name}</button>`;
+    });
+}
+
+function abrirAba(index) {
+    abaAtivaGlobal = index;
+    document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.replace("tab-active", "tab-inactive"));
+    const id = index === 'geral' ? 'tab-geral' : `tab-${index}`;
+    const target = document.getElementById(id);
+    if(target) target.classList.replace("tab-inactive", "tab-active");
+    
+    const container = document.getElementById("editor-content");
+    index === "geral" ? renderGeral(container) : renderProdutos(container, index);
+}
+
+function atualizarLiveJson() {
+    const preview = document.getElementById("json-preview");
+    if(preview && dadosAtuais) {
+        preview.textContent = JSON.stringify(dadosAtuais, null, 3);
+    }
+}
+
+function renderGeral(container) {
+    let html = `<div class="ide-panel p-6 space-y-6 rounded-xl">`;
+    for (let chave in dadosAtuais) {
+        if (chave === "categories") continue;
+        if (typeof dadosAtuais[chave] === "string") {
+            const isCor = dadosAtuais[chave].startsWith("#");
+            const isImg = chave.toLowerCase().match(/foto|img|logo|banner/);
+            
+            html += `<div class="space-y-2">
+                <div class="flex justify-between items-center">
+                    <label class="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-wider">${chave.replace(/_/g, ' ')}</label>
+                    ${isCor ? `<div id="indicator-${chave}" class="w-5 h-5 rounded-full border border-white/10 transition-all" style="background:${dadosAtuais[chave]}"></div>` : ''}
+                </div>
+                <div class="flex gap-4 items-center">
+                    ${isImg ? `<img src="${dadosAtuais[chave]}" id="img-${chave}" class="w-14 h-14 rounded-lg border border-emerald-950 object-cover bg-black shrink-0">` : ''}
+                    <input type="${isCor ? 'color' : 'text'}" class="${isCor ? 'h-11 w-24 bg-[#050806] border border-emerald-950 rounded-lg p-1 cursor-pointer' : 'ide-input font-medium text-sm'}" value="${dadosAtuais[chave]}" 
+                    oninput="dadosAtuais['${chave}']=this.value; atualizarLiveJson(); if('${isImg}' && document.getElementById('img-${chave}')) document.getElementById('img-${chave}').src=this.value; if('${isCor}') document.getElementById('indicator-${chave}').style.background=this.value;">
+                </div>
+            </div>`;
+        }
+    }
+    html += `</div>`;
+    container.innerHTML = html;
+}
+
+function renderProdutos(container, catIndex) {
+    const cat = dadosAtuais.categories[catIndex];
+    let html = `<div class="flex justify-between items-center mb-4 shrink-0">
+                    <h2 class="text-sm font-mono text-emerald-500 uppercase tracking-widest">// Catálogo: ${cat.name}</h2>
+                    <button onclick="addProduto(${catIndex})" class="bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-lg text-xs font-bold transition-all tracking-wider cursor-pointer">+ NOVO PRODUTO</button>
+                </div>`;
+    
+    cat.plans.forEach((plano, pIndex) => {
+        html += `<div class="ide-panel p-6 rounded-xl relative border-l-4 border-emerald-500/60 bg-[#090d0a]/40 backdrop-blur-sm mb-6">
+            <button onclick="removerProduto(${catIndex}, ${pIndex})" class="absolute top-4 right-4 text-rose-500/60 hover:text-rose-400 font-mono text-[10px] font-bold tracking-wider cursor-pointer">[ EXCLUIR ]</button>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Nome do Produto</label>
+                        <input class="ide-input text-sm font-medium mt-1" value="${plano.name}" oninput="dadosAtuais.categories[${catIndex}].plans[${pIndex}].name=this.value; atualizarLiveJson();">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Preço (R$)</label>
+                            <input class="ide-input text-sm text-emerald-400 font-bold mt-1" value="${plano.price}" oninput="dadosAtuais.categories[${catIndex}].plans[${pIndex}].price=this.value; atualizarLiveJson();">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Tamanhos (P,M,G)</label>
+                            <input class="ide-input text-sm mt-1" value="${plano.tamanhos || ''}" placeholder="P,M,G" oninput="dadosAtuais.categories[${catIndex}].plans[${pIndex}].tamanhos=this.value; atualizarLiveJson();">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="text-[10px] text-slate-500 uppercase font-bold tracking-wider block mb-2">Cores Disponíveis do Produto</label>
+                        <div class="flex flex-wrap items-center gap-2 bg-[#050806] border border-emerald-950 p-3 rounded-lg min-h-12">
+                            <div id="colors-list-${catIndex}-${pIndex}" class="flex flex-wrap gap-2"></div>
+                            
+                            <div class="relative flex items-center justify-center w-7 h-7 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold text-sm cursor-pointer transition-all">
+                                +
+                                <input type="color" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" onchange="adicionarCorDisparador(${catIndex}, ${pIndex}, this.value)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-2 flex flex-col justify-between">
+                    <div>
+                        <label class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Link da Imagem do Produto</label>
+                        <input class="ide-input text-xs mt-1" value="${plano.foto || plano.img}" oninput="dadosAtuais.categories[${catIndex}].plans[${pIndex}].foto=this.value; document.getElementById('img-p-${catIndex}-${pIndex}').src=this.value; atualizarLiveJson();">
+                    </div>
+                    <img src="${plano.foto || plano.img}" id="img-p-${catIndex}-${pIndex}" class="w-full h-44 object-cover rounded-lg border border-emerald-950 bg-black mt-2">
+                </div>
+            </div>
+        </div>`;
+    });
+    container.innerHTML = html;
+
+    cat.plans.forEach((plano, pIndex) => {
+        renderizarListaDeCores(catIndex, pIndex);
+    });
+}
+
+function renderizarListaDeCores(catIndex, pIndex) {
+    const container = document.getElementById(`colors-list-${catIndex}-${pIndex}`);
+    if(!container) return;
+    container.innerHTML = "";
+    
+    let plano = dadosAtuais.categories[catIndex].plans[pIndex];
+    let stringCores = plano.cores || "";
+    
+    if(!stringCores.trim()) return;
+    
+    let arrayCores = stringCores.split(",").map(c => c.trim()).filter(c => c.startsWith("#"));
+    
+    arrayCores.forEach((cor, idx) => {
+        container.innerHTML += `
+            <div class="group relative w-6 h-6 rounded-full border border-white/20 shadow-md transition-all flex items-center justify-center" style="background:${cor}">
+                <button onclick="removerCorEspecifica(${catIndex}, ${pIndex}, ${idx})" class="absolute -top-1 -right-1 bg-rose-600 text-white text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">✕</button>
+            </div>
+        `;
+    });
+}
+
+function adicionarCorDisparador(catIndex, pIndex, novaCorHex) {
+    let plano = dadosAtuais.categories[catIndex].plans[pIndex];
+    let coresAtuais = plano.cores ? plano.cores.split(",").map(c => c.trim()).filter(c => c) : [];
+    
+    coresAtuais.push(novaCorHex);
+    plano.cores = coresAtuais.join(",");
+    
+    atualizarLiveJson();
+    renderizarListaDeCores(catIndex, pIndex);
+}
+
+function removerCorEspecifica(catIndex, pIndex, idxCor) {
+    let plano = dadosAtuais.categories[catIndex].plans[pIndex];
+    let coresAtuais = plano.cores.split(",").map(c => c.trim());
+    
+    coresAtuais.splice(idxCor, 1);
+    plano.cores = coresAtuais.join(",");
+    
+    atualizarLiveJson();
+    renderizarListaDeCores(catIndex, pIndex);
+}
+
+function addProduto(catIndex) {
+    dadosAtuais.categories[catIndex].plans.unshift({ 
+        name: "Novo Produto Criado", 
+        description: "Descrição premium do produto", 
+        price: "0,00", 
+        foto: "", 
+        cores: "#000000", 
+        tamanhos: "P,M,G" 
+    });
+    renderProdutos(document.getElementById("editor-content"), catIndex);
+    atualizarLiveJson();
+}
+
+function removerProduto(catIndex, pIndex) {
+    if(confirm("Deseja realmente remover permanentemente este produto do catálogo?")) {
+        dadosAtuais.categories[catIndex].plans.splice(pIndex, 1);
+        renderProdutos(document.getElementById("editor-content"), catIndex);
+        atualizarLiveJson();
+    }
+}
+
+async function salvar() {
+    const btn = document.getElementById("btn-save");
+    btn.innerText = "COMPILANDO SITE...";
+    btn.disabled = true;
+
+    try {
+        const conteudo = JSON.stringify(dadosAtuais, null, 2);
+        const base64 = btoa(unescape(encodeURIComponent(conteudo)));
+
+        // Prepara o pacote de envio seguro para a nossa API intermediária
+        const pacoteMudarArquivo = {
+            caminho: arquivoCaminho,
+            metodo: "PUT",
+            corpo: {
+                message: `Atualização de catálogo via HypeLab IDE por: ${document.getElementById("cliente-logado").innerText}`,
+                content: base64,
+                sha: shaAtual
+            }
+        };
+
+        // Envia os dados para a API interna da Vercel em vez do GitHub direto
+        const res = await fetch(`/api/github`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(pacoteMudarArquivo)
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.message || "O GitHub recusou o pacote de atualização.");
+        
+        shaAtual = data.content.sha;
+
+        const modal = document.getElementById("deploy-modal");
+        const bar = document.getElementById("deploy-bar");
+        const percentText = document.getElementById("deploy-percent");
+        const statusText = document.getElementById("deploy-status");
+
+        modal.classList.remove("hidden");
+        
+        let progresso = 0;
+        const timer = setInterval(() => {
+            progresso++;
+            bar.style.width = progresso + "%";
+            percentText.innerText = progresso + "%";
+
+            if (progresso === 15) statusText.innerText = "Reescrevendo arquivos HTML estáticos...";
+            if (progresso === 45) statusText.innerText = "Injetando paleta Hype Dark Green...";
+            if (progresso === 75) statusText.innerText = "Otimizando layouts das vitrines integradas...";
+            if (progresso === 95) statusText.innerText = "Limpando caches globais dos servidores...";
+
+            if (progresso >= 100) {
+                clearInterval(timer);
+                modal.classList.add("hidden");
+                bar.style.width = "0%";
+                
+                alert("✨ PUBLICAÇÃO CONCLUÍDA!\nSua vitrine estática foi recompilada e já está no ar.");
+                abrirAba(abaAtivaGlobal);
+            }
+        }, 350);
+
+    } catch (e) {
+        alert("ERRO CRÍTICO NA OPERAÇÃO: " + e.message);
+    } finally {
+        btn.innerText = "SALVAR ALTERAÇÕES";
+        btn.disabled = false;
+    }
+}
+</script>
+</body>
+</html>
