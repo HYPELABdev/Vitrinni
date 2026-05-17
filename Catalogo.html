@@ -314,9 +314,17 @@ color: var(--primary);
 <script>
 const PASSWORD = "KALLI420";
 
-// Detecta qual loja carregar com base na URL (?loja=nomedaloja)
+// NOVA LÓGICA DE DETECÇÃO: Captura o nome da loja via ?loja= ou direto pela rota limpa da barra /nomedaloja
 const urlParams = new URLSearchParams(window.location.search);
-const nomeDaLoja = urlParams.get('loja');
+let nomeDaLoja = urlParams.get('loja');
+
+if (!nomeDaLoja) {
+    const pathParts = window.location.pathname.split('/');
+    const lastPart = pathParts[pathParts.length - 1];
+    if (lastPart && lastPart !== "" && !lastPart.includes('.html')) {
+        nomeDaLoja = lastPart;
+    }
+}
 
 let config = {
 brand: "HYPELAB",
@@ -375,7 +383,7 @@ async function salvarDadosNoServidor() {
 
         if (!response.ok) throw new Error("Erro ao salvar dados no repositório.");
         
-        alert("✨ Catálogo atualizado com sucesso na nuvem da HypeLab!");
+        alert("✨ Catálogo updated com sucesso na nuvem da HypeLab!");
     } catch (erro) {
         alert("❌ Erro ao sincronizar: " + erro.message);
     } finally {
