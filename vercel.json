@@ -1,5 +1,7 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/Painel.html" }
+    { "source": "/api/:path*", "destination": "/api/:path*" },
+    { "source": "/painel", "destination": "/painel.html" },
+    { "source": "/:loja", "destination": "/Catalogo.html?loja=:loja" }
   ]
 }
