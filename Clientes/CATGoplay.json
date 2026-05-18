@@ -3,16 +3,16 @@
     "brand": "GO PLAY - A LOJA QUE VESTE A QUEBRADA",
     "logo": "",
     "whats": "5511999999999",
-    "color": "#ff003c",
+    "color": "#0000ff",
     "bg": ""
   },
   "products": [
     {
-      "name": "CAMISA ALGODÃO",
+      "name": "CAMISA ALGODÃO",
       "price": "89.99",
       "category": "Camisas",
       "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9JhUh0ikkiLW5_G9o_egaKpLWk6SXN37typHQcuHaGKl_tQj4iHsL7IA&s=10",
-      "desc": "Tamanhos disponíveis \n\nP - M - G"
+      "desc": "Tamanhos disponÃ­veis \n\nP - M - G"
     }
   ]
 }
