@@ -1,10 +1,12 @@
 {
-  "cleanUrls": true,
   "rewrites": [
-    { "source": "/api/github", "destination": "/api/github" },
-    { "source": "/api/:path*", "destination": "/api/:path*" },
-    { "source": "/painel", "destination": "/painel.html" },
-    { "source": "/jotastore", "destination": "/Catalogo.html?loja=jotastore" },
-    { "source": "/teste", "destination": "/Catalogo.html?loja=teste" }
+    {
+      "source": "/painel",
+      "destination": "/painel.html"
+    },
+    {
+      "source": "/:loja((?!api|painel|Catalogo\\.html|Clientes|favicon\\.ico).*)",
+      "destination": "/Catalogo.html?loja=:loja"
+    }
   ]
 }
