@@ -826,7 +826,6 @@ function showSkeletons(n=6) {
 }
 
 // ── API ───────────────────────────────────────────────────────────────────────
-// ── API ───────────────────────────────────────────────────────────────────────
 async function carregarDadosDoServidor() {
   if (!nomeDaLoja) {
     document.getElementById("loadingStatus").innerHTML =
@@ -837,7 +836,7 @@ async function carregarDadosDoServidor() {
   showSkeletons();
 
   try {
-    // 🔍 CORREÇÃO: Removido o "&metodo=GET" da URL para não bugar a API e não criar o arquivo 'undefined'
+    // 🔍 Removido o "&metodo=GET" da URL para não bugar a API e não criar o arquivo 'undefined'
     const response = await fetch(`/api/github?caminho=Clientes/CAT${nomeDaLoja}.json`, {
       method: "GET"
     });
@@ -851,7 +850,8 @@ async function carregarDadosDoServidor() {
     config   = conteudo.config   || config;
     products = conteudo.products || [];
 
-    document.getElementById('catalog').style.style.display = 'grid';
+    // ── ARRUMADO: Agora está correto apenas .style.display
+    document.getElementById('catalog').style.display = 'grid';
     render();
 
   } catch (erro) {
