@@ -13,6 +13,13 @@
       "category": "Camisas",
       "img": "https://catalogo.hypelabofc.site/Goplay",
       "desc": "Consulte os tamanhos"
+    },
+    {
+      "name": "Teste",
+      "price": "10",
+      "category": "",
+      "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAgYY6OO-9lwR1fABB7w6hqEKte4_AXF1IDHdHrtbuFMdvl2aT5fcVEeE&s=10",
+      "desc": ""
     }
   ]
 }
