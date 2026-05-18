@@ -6,13 +6,5 @@
     "color": "#0000ff",
     "bg": ""
   },
-  "products": [
-    {
-      "name": "Camisa Street",
-      "price": "89.90",
-      "category": "Camisas",
-      "img": "https://catalogo.hypelabofc.site/Goplay",
-      "desc": "Consulte os tamanhos disponÃ­veis"
-    }
-  ]
+  "products": []
 }
