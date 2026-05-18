@@ -8,13 +8,6 @@
   },
   "products": [
     {
-      "name": "TABACO",
-      "price": "30.95",
-      "category": "",
-      "img": "https://media.tenor.com/QdHLmdb5shkAAAAM/bruce-willis-smoking.gif",
-      "desc": "15G"
-    },
-    {
       "name": "Teste",
       "price": "50.00",
       "category": "",
