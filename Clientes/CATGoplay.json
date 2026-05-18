@@ -6,5 +6,13 @@
     "color": "#0000ff",
     "bg": ""
   },
-  "products": []
+  "products": [
+    {
+      "name": "CAMISA STREET",
+      "price": "89.99",
+      "category": "Camiseta",
+      "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9JhUh0ikkiLW5_G9o_egaKpLWk6SXN37typHQcuHaGKl_tQj4iHsL7IA&s=10",
+      "desc": "TAMANHO DISPONÍVEIS \n• P \n• M \n• G"
+    }
+  ]
 }
