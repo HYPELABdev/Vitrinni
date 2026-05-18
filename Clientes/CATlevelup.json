@@ -13,6 +13,13 @@
       "category": "",
       "img": "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUydG9uNWRvMWl2emN2MmdmN3phaWUzb29rZWJkYWs1ZTdtdTQ4YmRobSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KDb535rtR4s0YYmVKN/giphy.gif",
       "desc": "1g"
+    },
+    {
+      "name": "Teste",
+      "price": "130",
+      "category": "Flor",
+      "img": "https://cdn.dribbble.com/userupload/42230680/file/original-0f2e000d0f3becda94fcfc8bc548845c.gif",
+      "desc": "Xdfcfv"
     }
   ]
 }
