@@ -13,6 +13,13 @@
       "category": "Camisas",
       "img": "https://catalogo.hypelabofc.site/Goplay",
       "desc": "Consulte os tamanhos disponíveis"
+    },
+    {
+      "name": "CALÇA JOGGER",
+      "price": "70.90",
+      "category": "Calça",
+      "img": "",
+      "desc": "Teste"
     }
   ]
 }
