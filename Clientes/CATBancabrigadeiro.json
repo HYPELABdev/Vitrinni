@@ -6,5 +6,13 @@
     "color": "#ffff00",
     "bg": ""
   },
-  "products": []
+  "products": [
+    {
+      "name": "NOSSOS PRODUTOS",
+      "price": "100.00",
+      "category": "Produtos",
+      "img": "https://i.ibb.co/QFPVMD5s/IMG-20260518-WA0003.jpg",
+      "desc": ""
+    }
+  ]
 }
