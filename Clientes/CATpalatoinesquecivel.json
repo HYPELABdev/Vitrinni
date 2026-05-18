@@ -6,5 +6,13 @@
     "color": "#0000ff",
     "bg": ""
   },
-  "products": []
+  "products": [
+    {
+      "name": "TOALHA PREMIUM",
+      "price": "150.00",
+      "category": "Toalhas",
+      "img": "https://blog.taqi.com.br/wp-content/uploads/2021/10/checklist-enxoval-CRED-iStock_DamianLugowski.jpg",
+      "desc": "TAMANHOS E CORES A CONSULTAR"
+    }
+  ]
 }
