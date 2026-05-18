@@ -826,6 +826,7 @@ function showSkeletons(n=6) {
 }
 
 // ── API ───────────────────────────────────────────────────────────────────────
+// ── API ───────────────────────────────────────────────────────────────────────
 async function carregarDadosDoServidor() {
   if (!nomeDaLoja) {
     document.getElementById("loadingStatus").innerHTML =
@@ -836,7 +837,11 @@ async function carregarDadosDoServidor() {
   showSkeletons();
 
   try {
-    const response = await fetch(`/api/github?caminho=Clientes/CAT${nomeDaLoja}.json&metodo=GET`);
+    // 🔍 CORREÇÃO: Removido o "&metodo=GET" da URL para não bugar a API e não criar o arquivo 'undefined'
+    const response = await fetch(`/api/github?caminho=Clientes/CAT${nomeDaLoja}.json`, {
+      method: "GET"
+    });
+    
     if (!response.ok) throw new Error("Não encontrado");
 
     const dadosGit = await response.json();
@@ -846,15 +851,27 @@ async function carregarDadosDoServidor() {
     config   = conteudo.config   || config;
     products = conteudo.products || [];
 
-    document.getElementById('catalog').style.display = 'grid';
+    document.getElementById('catalog').style.style.display = 'grid';
     render();
 
   } catch (erro) {
     document.getElementById('catalog').innerHTML = '';
     document.getElementById('catalog').style.display = 'none';
     document.getElementById("loadingStatus").style.display = 'block';
-    document.getElementById("loadingStatus").innerHTML =
-      "Catálogo novo. Abra o editor para começar! ✨";
+    
+    // 💡 GUIA DO CLIENTE: Mensagem explicativa se o link for digitado errado ou se for uma loja nova
+    document.getElementById("loadingStatus").innerHTML = `
+      <div style="padding: 20px; line-height: 1.6;">
+        <h3 style="color: var(--primary); margin-bottom: 8px;">Link Incorreto ou Catálogo Novo 🧐</h3>
+        <p style="font-size: 14px; max-width: 400px; margin: 0 auto 16px; color: var(--text);">
+          Verifique se digitou o nome da loja corretamente na barra de endereços.
+        </p>
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 12px; border-radius: 8px; display: inline-block;">
+          <small style="color: var(--muted); display: block;">Se você é o administrador e deseja criar este catálogo:</small>
+          <small style="color: var(--green); font-weight: 600;">Clique no botão ⚙️ Editor acima e insira sua senha.</small>
+        </div>
+      </div>
+    `;
     render();
   }
 }
