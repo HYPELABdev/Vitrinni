@@ -6,12 +6,5 @@
     "color": "#ff003c",
     "bg": ""
   },
-  "products": [
-    {
-      "name": "Ice",
-      "price": "120.00",
-      "img": "",
-      "desc": "1G"
-    }
-  ]
+  "products": []
 }
