@@ -1,0 +1,18 @@
+{
+  "config": {
+    "brand": "HYPELAB",
+    "logo": "",
+    "whats": "5511999999999",
+    "color": "#ff003c",
+    "bg": ""
+  },
+  "products": [
+    {
+      "name": "Kallidade",
+      "price": "1.000",
+      "category": "",
+      "img": "",
+      "desc": "1G"
+    }
+  ]
+}
