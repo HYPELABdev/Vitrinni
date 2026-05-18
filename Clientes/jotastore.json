@@ -1,1 +1,17 @@
-{}
+{
+  "config": {
+    "brand": "HYPELAB",
+    "logo": "",
+    "whats": "5511999999999",
+    "color": "#ff003c",
+    "bg": ""
+  },
+  "products": [
+    {
+      "name": "Ice",
+      "price": "120.00",
+      "img": "",
+      "desc": "1G"
+    }
+  ]
+}
