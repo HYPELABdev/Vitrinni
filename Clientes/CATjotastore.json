@@ -6,20 +6,5 @@
     "color": "#ff0000",
     "bg": ""
   },
-  "products": [
-    {
-      "name": "DRY MARROQUINO",
-      "price": "80.00",
-      "category": "Strain",
-      "img": "https://catalogo.hypelabofc.site/jotastore",
-      "desc": "1G"
-    },
-    {
-      "name": "FLOR POTE",
-      "price": "30",
-      "category": "weed",
-      "img": "https://catalogo.hypelabofc.site/jotastore",
-      "desc": "1G"
-    }
-  ]
+  "products": []
 }
