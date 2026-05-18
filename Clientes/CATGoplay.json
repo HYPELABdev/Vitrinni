@@ -6,5 +6,13 @@
     "color": "#ff003c",
     "bg": ""
   },
-  "products": []
+  "products": [
+    {
+      "name": "CAMISA ALGODÃO",
+      "price": "89.99",
+      "category": "Camisas",
+      "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9JhUh0ikkiLW5_G9o_egaKpLWk6SXN37typHQcuHaGKl_tQj4iHsL7IA&s=10",
+      "desc": "Tamanhos disponíveis \n\nP - M - G"
+    }
+  ]
 }
