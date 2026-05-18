@@ -1,1 +1,18 @@
-{}
+{
+  "config": {
+    "brand": "HYPELAB",
+    "logo": "",
+    "whats": "5511999999999",
+    "color": "#ff003c",
+    "bg": ""
+  },
+  "products": [
+    {
+      "name": "TABACO",
+      "price": "30.95",
+      "category": "",
+      "img": "https://media.tenor.com/QdHLmdb5shkAAAAM/bruce-willis-smoking.gif",
+      "desc": "15G"
+    }
+  ]
+}
