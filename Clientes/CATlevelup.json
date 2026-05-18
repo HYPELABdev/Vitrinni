@@ -13,6 +13,13 @@
       "category": "",
       "img": "https://media.tenor.com/QdHLmdb5shkAAAAM/bruce-willis-smoking.gif",
       "desc": "15G"
+    },
+    {
+      "name": "Teste",
+      "price": "50.00",
+      "category": "",
+      "img": "https://cdn.dribbble.com/userupload/42230680/file/original-0f2e000d0f3becda94fcfc8bc548845c.gif",
+      "desc": ""
     }
   ]
 }
