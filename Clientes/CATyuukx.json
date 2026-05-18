@@ -13,6 +13,13 @@
       "category": "",
       "img": "",
       "desc": "1G"
+    },
+    {
+      "name": "Teste",
+      "price": "1.000.00",
+      "category": "Teste",
+      "img": "https://cdn.dribbble.com/userupload/42232076/file/original-b614df41ac4adcaa2a92d1f83c6a325c.gif",
+      "desc": "Ksks"
     }
   ]
 }
