@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>HYPELAB Catalog PRO MAX</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter;}
@@ -314,7 +314,7 @@ color: var(--primary);
 <script>
 const PASSWORD = "KALLI420";
 
-// NOVA LÓGICA DE DETECÇÃO: Captura o nome da loja via ?loja= ou direto pela rota limpa da barra /nomedaloja
+// Captura o nome da loja via ?loja= ou direto pela rota limpa /nomedaloja
 const urlParams = new URLSearchParams(window.location.search);
 let nomeDaLoja = urlParams.get('loja');
 
@@ -327,221 +327,256 @@ if (!nomeDaLoja) {
 }
 
 let config = {
-brand: "HYPELAB",
-logo: "",
-whats: "5511999999999",
-color: "#ff003c",
-bg: ""
+    brand: "HYPELAB",
+    logo: "",
+    whats: "5511999999999",
+    color: "#ff003c",
+    bg: ""
 };
 
 let products = [];
 let cart = [];
 
-// FUNÇÃO PARA BUSCAR OS DADOS NO GITHUB VIA VERCEL
+// ─── CARREGAR DADOS DO SERVIDOR ────────────────────────────────────────────────
+// Busca o arquivo JSON do GitHub via API e armazena o SHA para salvar depois.
+// O conteúdo retornado pela API do GitHub vem em Base64 — precisa decodificar.
 async function carregarDadosDoServidor() {
     if (!nomeDaLoja) {
-        document.getElementById("loadingStatus").innerHTML = "❌ Erro: Link inválido. Adicione <code>?loja=NOME</code> no final da URL.";
+        document.getElementById("loadingStatus").innerHTML =
+            "❌ Erro: Link inválido. Adicione <code>?loja=NOME</code> no final da URL.";
         return;
     }
 
     try {
-        const response = await fetch(`/api/github?caminho=Clientes/${nomeDaLoja}.json`);
+        const response = await fetch(`/api/github?caminho=Clientes/${nomeDaLoja}.json&metodo=GET`);
+
         if (!response.ok) throw new Error("Catálogo não encontrado.");
-        
-        const dados = await response.json();
-        config = dados.config || config;
-        products = dados.products || [];
-        
+
+        const dadosGit = await response.json();
+
+        // Guarda o SHA globalmente — obrigatório para sobrescrever o arquivo depois
+        window.shaAtual = dadosGit.sha;
+
+        // O conteúdo vem em Base64 pela API do GitHub — decodifica antes de usar
+        const conteudo = JSON.parse(atob(dadosGit.content));
+        config   = conteudo.config   || config;
+        products = conteudo.products || [];
+
         document.getElementById("loadingStatus").style.display = "none";
         document.getElementById("catalog").style.display = "grid";
         render();
+
     } catch (erro) {
-        document.getElementById("loadingStatus").innerHTML = "❌ Catálogo novo ou não iniciado. Abra o editor para salvar pela primeira vez.";
+        document.getElementById("loadingStatus").innerHTML =
+            "❌ Catálogo novo ou não iniciado. Abra o editor para salvar pela primeira vez.";
         document.getElementById("catalog").style.display = "grid";
         render();
     }
 }
 
-// FUNÇÃO PARA SALVAR OS DADOS DIRETO NO GITHUB EM TEMPO REAL
+// ─── SALVAR DADOS NO SERVIDOR ──────────────────────────────────────────────────
+// Envia os dados em Base64 para a API do GitHub via PUT.
+// O SHA atual é obrigatório para sobrescrever — sem ele o GitHub retorna erro 422.
+// Na primeira vez (arquivo ainda não existe), sha fica undefined e o GitHub cria o arquivo.
 async function salvarDadosNoServidor() {
     if (!nomeDaLoja) return alert("Erro: ID da loja não identificado na URL.");
-    
-    // Altera o texto dos botões para mostrar o progresso
+
     const btnConfig = document.getElementById("btnSaveConfig");
-    const btnProd = document.getElementById("btnAddProduct");
+    const btnProd   = document.getElementById("btnAddProduct");
     btnConfig.innerText = "Salvando na Nuvem... ⏳";
-    btnProd.innerText = "Salvando na Nuvem... ⏳";
+    btnProd.innerText   = "Salvando na Nuvem... ⏳";
 
     const dadosParaSalvar = { config, products };
+
+    // Converte para Base64 com suporte a caracteres especiais (acentos, etc.)
+    const conteudoBase64 = btoa(unescape(encodeURIComponent(
+        JSON.stringify(dadosParaSalvar, null, 2)
+    )));
 
     try {
         const response = await fetch(`/api/github?caminho=Clientes/${nomeDaLoja}.json`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(dadosParaSalvar)
+            body: JSON.stringify({
+                metodo: "PUT",
+                corpo: {
+                    message: `Atualiza catálogo: ${nomeDaLoja}`,
+                    content: conteudoBase64,
+                    sha: window.shaAtual || undefined  // undefined = criação, string = atualização
+                }
+            })
         });
 
-        if (!response.ok) throw new Error("Erro ao salvar dados no repositório.");
-        
-        alert("✨ Catálogo updated com sucesso na nuvem da HypeLab!");
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.message || "Erro desconhecido");
+        }
+
+        const resultado = await response.json();
+
+        // Atualiza o SHA com o novo valor retornado — necessário para o próximo save
+        window.shaAtual = resultado.content?.sha;
+
+        alert("✨ Catálogo salvo com sucesso na nuvem da HypeLab!");
+
     } catch (erro) {
         alert("❌ Erro ao sincronizar: " + erro.message);
     } finally {
         btnConfig.innerText = "Salvar Configurações";
-        btnProd.innerText = "Adicionar Produto";
+        btnProd.innerText   = "Adicionar Produto";
     }
 }
 
 /* RENDER */
 function render(){
-document.getElementById("brandName").innerText=config.brand
-if(config.logo && config.logo.trim() !== "") {
-document.getElementById("brandLogo").src = config.logo
-document.getElementById("brandLogo").style.display = "block"
-} else {
-document.getElementById("brandLogo").style.display = "none"
-}
+    document.getElementById("brandName").innerText = config.brand;
 
-document.documentElement.style.setProperty('--primary',config.color)
-document.body.style.backgroundImage=config.bg?`url(${config.bg})`:"none"
+    if (config.logo && config.logo.trim() !== "") {
+        document.getElementById("brandLogo").src = config.logo;
+        document.getElementById("brandLogo").style.display = "block";
+    } else {
+        document.getElementById("brandLogo").style.display = "none";
+    }
 
-/* PRODUTOS NO CATÁLOGO */
-document.getElementById("catalog").innerHTML=
-products.map((p,i)=>`
-<div class="card">
-<img src="${p.img || 'https://via.placeholder.com/240x200?text=Sem+Foto'}">
-<div class="card-content">
-<h4>${p.name}</h4>
-<p style="font-size:13px;color:#aaa">${p.desc}</p>
-<div class="price">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</div>
+    document.documentElement.style.setProperty('--primary', config.color);
+    document.body.style.backgroundImage = config.bg ? `url(${config.bg})` : "none";
 
-<div class="actions">
-<button class="cartBtn" onclick="addCart(${i})">Carrinho</button>
-<button class="buy" onclick="buy('${p.name}','${p.price}')">Comprar</button>
-</div>
-</div>
-</div>
-`).join('')
+    /* PRODUTOS NO CATÁLOGO */
+    document.getElementById("catalog").innerHTML =
+        products.map((p, i) => `
+            <div class="card">
+                <img src="${p.img || 'https://via.placeholder.com/240x200?text=Sem+Foto'}">
+                <div class="card-content">
+                    <h4>${p.name}</h4>
+                    <p style="font-size:13px;color:#aaa">${p.desc}</p>
+                    <div class="price">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</div>
+                    <div class="actions">
+                        <button class="cartBtn" onclick="addCart(${i})">Carrinho</button>
+                        <button class="buy" onclick="buy('${p.name}','${p.price}')">Comprar</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
 
-renderCart()
-renderEditorProductList()
+    renderCart();
+    renderEditorProductList();
 }
 
 /* CART */
 function addCart(i){
-cart.push(products[i])
-renderCart()
+    cart.push(products[i]);
+    renderCart();
 }
 
 function removeCart(i){
-cart.splice(i,1)
-renderCart()
+    cart.splice(i, 1);
+    renderCart();
 }
 
 function renderCart(){
-let total=0
-document.getElementById("cartItems").innerHTML=
-cart.map((c,i)=>{
-let cleanPrice = String(c.price).replace(',', '.');
-let parsedPrice = parseFloat(cleanPrice);
-if(!isNaN(parsedPrice)){ total += parsedPrice; }
-return `
-<div class="cart-item">
-<span>${c.name}</span>
-<span onclick="removeCart(${i})" style="cursor:pointer">❌</span>
-</div>
-`
-}).join('')
+    let total = 0;
+    document.getElementById("cartItems").innerHTML =
+        cart.map((c, i) => {
+            let cleanPrice = String(c.price).replace(',', '.');
+            let parsedPrice = parseFloat(cleanPrice);
+            if (!isNaN(parsedPrice)) { total += parsedPrice; }
+            return `
+                <div class="cart-item">
+                    <span>${c.name}</span>
+                    <span onclick="removeCart(${i})" style="cursor:pointer">❌</span>
+                </div>
+            `;
+        }).join('');
 
-document.getElementById("total").innerText="Total: R$ "+total.toFixed(2).replace('.', ',')
+    document.getElementById("total").innerText = "Total: R$ " + total.toFixed(2).replace('.', ',');
 }
 
 /* BUY DIRECT */
-function buy(n,p){
-let cleanPrice = parseFloat(String(p).replace(',', '.')).toFixed(2).replace('.', ',');
-window.open(`https://wa.me/${config.whats}?text=${encodeURIComponent("Quero o produto: "+n+" - Valor: R$ "+cleanPrice)}`)
+function buy(n, p){
+    let cleanPrice = parseFloat(String(p).replace(',', '.')).toFixed(2).replace('.', ',');
+    window.open(`https://wa.me/${config.whats}?text=${encodeURIComponent("Quero o produto: " + n + " - Valor: R$ " + cleanPrice)}`);
 }
 
 /* CHECKOUT CART */
 function checkout(){
-let msg="*Novo Pedido:*\n\n"
-let total=0
-cart.forEach(c=>{
-let cleanPrice = parseFloat(String(c.price).replace(',', '.'));
-msg+=`- ${c.name}: R$ ${cleanPrice.toFixed(2).replace('.', ',')}\n`
-total += cleanPrice
-})
-msg+=`\n*Total:* R$ ${total.toFixed(2).replace('.', ',')}`
-window.open(`https://wa.me/${config.whats}?text=${encodeURIComponent(msg)}`)
+    let msg = "*Novo Pedido:*\n\n";
+    let total = 0;
+    cart.forEach(c => {
+        let cleanPrice = parseFloat(String(c.price).replace(',', '.'));
+        msg += `- ${c.name}: R$ ${cleanPrice.toFixed(2).replace('.', ',')}\n`;
+        total += cleanPrice;
+    });
+    msg += `\n*Total:* R$ ${total.toFixed(2).replace('.', ',')}`;
+    window.open(`https://wa.me/${config.whats}?text=${encodeURIComponent(msg)}`);
 }
 
 /* ADD PRODUCT */
 function addProduct(){
-if(!pName.value || !pPrice.value) return alert("Preencha o nome e preço do produto!");
-let formattedPrice = pPrice.value.replace(',', '.');
+    if (!pName.value || !pPrice.value) return alert("Preencha o nome e preço do produto!");
+    let formattedPrice = pPrice.value.replace(',', '.');
 
-products.push({
-name:pName.value,
-price:formattedPrice,
-img:pImg.value,
-desc:pDesc.value
-})
+    products.push({
+        name:  pName.value,
+        price: formattedPrice,
+        img:   pImg.value,
+        desc:  pDesc.value
+    });
 
-render()
-salvarDadosNoServidor() // Envia pro GitHub automaticamente ao adicionar
+    render();
+    salvarDadosNoServidor(); // Envia pro GitHub automaticamente ao adicionar
 
-pName.value = ""
-pPrice.value = ""
-pImg.value = ""
-pDesc.value = ""
+    pName.value  = "";
+    pPrice.value = "";
+    pImg.value   = "";
+    pDesc.value  = "";
 }
 
 /* DELETE PRODUCT FROM EDITOR */
 function deleteProduct(i){
-if(confirm("Tem certeza que deseja excluir este produto?")){
-products.splice(i,1)
-render()
-salvarDadosNoServidor() // Atualiza o GitHub após a exclusão
-}
+    if (confirm("Tem certeza que deseja excluir este produto?")) {
+        products.splice(i, 1);
+        render();
+        salvarDadosNoServidor(); // Atualiza o GitHub após a exclusão
+    }
 }
 
 /* LIST PRODUCTS IN PANEL */
 function renderEditorProductList(){
-document.getElementById("editorProductList").innerHTML = 
-products.map((p,i)=>`
-<div class="editor-product-item">
-<span>${p.name}</span>
-<button class="delete-prod-btn" onclick="deleteProduct(${i})">Excluir</button>
-</div>
-`).join('')
+    document.getElementById("editorProductList").innerHTML =
+        products.map((p, i) => `
+            <div class="editor-product-item">
+                <span>${p.name}</span>
+                <button class="delete-prod-btn" onclick="deleteProduct(${i})">Excluir</button>
+            </div>
+        `).join('');
 }
 
 /* CONFIG */
 function saveConfig(){
-config.brand=brandInput.value
-config.logo=logoInput.value
-config.whats=whatsInput.value
-config.color=colorInput.value
-config.bg=bgInput.value
-render()
-document.getElementById("panel").classList.remove("active")
-salvarDadosNoServidor() // Envia pro GitHub as customizações visuais
+    config.brand = brandInput.value;
+    config.logo  = logoInput.value;
+    config.whats = whatsInput.value;
+    config.color = colorInput.value;
+    config.bg    = bgInput.value;
+    render();
+    document.getElementById("panel").classList.remove("active");
+    salvarDadosNoServidor(); // Envia pro GitHub as customizações visuais
 }
 
 function openEditor(){
-let pass=prompt("Senha")
-if(pass!==PASSWORD)return alert("Negado")
+    let pass = prompt("Senha");
+    if (pass !== PASSWORD) return alert("Negado");
 
-brandInput.value = config.brand
-logoInput.value = config.logo || ""
-whatsInput.value = config.whats
-colorInput.value = config.color
-bgInput.value = config.bg || ""
+    brandInput.value = config.brand;
+    logoInput.value  = config.logo  || "";
+    whatsInput.value = config.whats;
+    colorInput.value = config.color;
+    bgInput.value    = config.bg    || "";
 
-document.getElementById("panel").classList.add("active")
+    document.getElementById("panel").classList.add("active");
 }
 
-// Inicialização trazendo dados dinâmicos da Nuvem
+// Inicialização — carrega dados da nuvem ao abrir a página
 carregarDadosDoServidor();
 </script>
 
