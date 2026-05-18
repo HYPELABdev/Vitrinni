@@ -6,5 +6,13 @@
     "color": "#ff003c",
     "bg": "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUydG9uNWRvMWl2emN2MmdmN3phaWUzb29rZWJkYWs1ZTdtdTQ4YmRobSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KDb535rtR4s0YYmVKN/giphy.gif"
   },
-  "products": []
+  "products": [
+    {
+      "name": "Aa",
+      "price": "10",
+      "category": "",
+      "img": "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUydG9uNWRvMWl2emN2MmdmN3phaWUzb29rZWJkYWs1ZTdtdTQ4YmRobSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KDb535rtR4s0YYmVKN/giphy.gif",
+      "desc": "1g"
+    }
+  ]
 }
