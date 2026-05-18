@@ -6,20 +6,5 @@
     "color": "#ff003c",
     "bg": "https://cdn.dribbble.com/userupload/42230680/file/original-0f2e000d0f3becda94fcfc8bc548845c.gif"
   },
-  "products": [
-    {
-      "name": "Teste",
-      "price": "50.00",
-      "category": "",
-      "img": "https://cdn.dribbble.com/userupload/42230680/file/original-0f2e000d0f3becda94fcfc8bc548845c.gif",
-      "desc": ""
-    },
-    {
-      "name": "FLOR",
-      "price": "30",
-      "category": "",
-      "img": "https://gcp-na-images.contentstack.com/v3/assets/bltea6093859af6183b/blt2651ae19e5aaf8c4/698763f6a988ca3f846aa2c4/nugshotz-hawgs-breath.gif?branch=production",
-      "desc": "1G"
-    }
-  ]
+  "products": []
 }
