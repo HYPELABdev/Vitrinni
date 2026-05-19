@@ -8,13 +8,6 @@
   },
   "products": [
     {
-      "name": "Controle Wireless PRO",
-      "price": "259.90",
-      "category": "Controles",
-      "img": "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=900&q=80",
-      "desc": "Controle gamer sem fio premium"
-    },
-    {
       "name": "Notebook Gamer Nitro",
       "price": "4599.90",
       "category": "Notebooks",
