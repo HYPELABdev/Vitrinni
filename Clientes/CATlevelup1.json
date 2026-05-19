@@ -1,137 +1,152 @@
+JSON
 {
   "config": {
     "brand": "Levelup STORE",
-    "logo": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=1200&auto=format&fit=crop",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1024px-React-icon.svg.png",
     "whats": "5511949946730",
-    "color": "#00ff88",
-    "bg": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1600&auto=format&fit=crop"
+    "color": "#8b5cf6",
+    "bg": "#050505"
   },
   "products": [
     {
-      "name": "Oversized Black Void",
-      "price": "89.90",
-      "category": "Camiseta",
-      "img": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Camiseta oversized premium preta."
-    },
-    {
-      "name": "Chaos Club Tee",
-      "price": "99.90",
-      "category": "Camiseta",
-      "img": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Streetwear dark estampada."
-    },
-    {
-      "name": "Hoodie Midnight",
-      "price": "189.90",
-      "category": "Moletom",
-      "img": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Moletom grosso oversized."
-    },
-    {
-      "name": "Cyber Skull Hoodie",
-      "price": "219.90",
-      "category": "Moletom",
-      "img": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Estilo underground cyber."
-    },
-    {
-      "name": "Cargo Shadow",
-      "price": "169.90",
-      "category": "Calça",
-      "img": "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Calça cargo preta premium."
-    },
-    {
-      "name": "Cargo Utility X",
-      "price": "179.90",
-      "category": "Calça",
-      "img": "https://images.unsplash.com/photo-1514996937319-344454492b37?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Cargo urbana bolsos utilitários."
-    },
-    {
-      "name": "Dark Denim Destroyed",
-      "price": "159.90",
-      "category": "Jeans",
-      "img": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Jeans destroyed slim."
-    },
-    {
-      "name": "Beanie Black Label",
-      "price": "49.90",
-      "category": "Acessório",
-      "img": "https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Touca street preta."
-    },
-    {
-      "name": "Chain Silver Urban",
-      "price": "69.90",
-      "category": "Acessório",
-      "img": "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Corrente estilo underground."
-    },
-    {
-      "name": "Crossbody Night",
+      "name": "Oversized Hellstar Black",
       "price": "119.90",
-      "category": "Bag",
-      "img": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Shoulder bag streetwear."
+      "category": "Oversized",
+      "img": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=900&q=80",
+      "desc": "Camiseta oversized premium underground"
     },
     {
-      "name": "Levelup Cap",
-      "price": "79.90",
-      "category": "Boné",
-      "img": "https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Boné aba curva premium."
-    },
-    {
-      "name": "Reflective Jacket",
-      "price": "289.90",
-      "category": "Jaqueta",
-      "img": "https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Jaqueta refletiva hype."
-    },
-    {
-      "name": "Urban Windbreaker",
-      "price": "249.90",
-      "category": "Jaqueta",
-      "img": "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Corta vento street."
-    },
-    {
-      "name": "Acid Wash Tee",
+      "name": "Techwear Shadow Tee",
       "price": "109.90",
-      "category": "Camiseta",
-      "img": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Lavagem acid premium."
+      "category": "Streetwear",
+      "img": "https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=900&q=80",
+      "desc": "Visual dark techwear futurista"
     },
     {
-      "name": "Heavy Oversized Grey",
+      "name": "Cargo Chaos Black",
+      "price": "189.90",
+      "category": "Cargo",
+      "img": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&q=80",
+      "desc": "Calça cargo reta estética underground"
+    },
+    {
+      "name": "Moletom District 420",
+      "price": "239.90",
+      "category": "Moletom",
+      "img": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=900&q=80",
+      "desc": "Moletom pesado premium street"
+    },
+    {
+      "name": "Oversized Purple Rage",
+      "price": "124.90",
+      "category": "Oversized",
+      "img": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=900&q=80",
+      "desc": "Peça premium vibe trap underground"
+    },
+    {
+      "name": "Tech Jacket Void",
+      "price": "279.90",
+      "category": "Jaqueta",
+      "img": "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=900&q=80",
+      "desc": "Jaqueta dark urban"
+    },
+    {
+      "name": "Baggy Destroyed Black",
+      "price": "199.90",
+      "category": "Baggy",
+      "img": "https://images.unsplash.com/photo-1506629905607-d9e7d0b8b9d7?w=900&q=80",
+      "desc": "Calça baggy estética underground"
+    },
+    {
+      "name": "Underground Club Tee",
+      "price": "114.90",
+      "category": "Streetwear",
+      "img": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&q=80",
+      "desc": "Oversized streetwear premium"
+    },
+    {
+      "name": "Hoodie Midnight Skull",
+      "price": "249.90",
+      "category": "Moletom",
+      "img": "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=900&q=80",
+      "desc": "Moletom darkwear premium"
+    },
+    {
+      "name": "Cargo Tactical Grey",
+      "price": "184.90",
+      "category": "Cargo",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=900&q=80",
+      "desc": "Cargo utilitária street"
+    },
+    {
+      "name": "Oversized Lost Society",
+      "price": "129.90",
+      "category": "Oversized",
+      "img": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=900&q=80",
+      "desc": "Visual hype underground"
+    },
+    {
+      "name": "Techwear Vision Tee",
+      "price": "104.90",
+      "category": "Streetwear",
+      "img": "https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=900&q=80",
+      "desc": "Streetwear dark premium"
+    },
+    {
+      "name": "Black District Hoodie",
+      "price": "229.90",
+      "category": "Moletom",
+      "img": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=900&q=80",
+      "desc": "Moletom oversized premium"
+    },
+    {
+      "name": "Baggy Urban Noise",
+      "price": "194.90",
+      "category": "Baggy",
+      "img": "https://images.unsplash.com/photo-1506629905607-d9e7d0b8b9d7?w=900&q=80",
+      "desc": "Baggy jeans underground"
+    },
+    {
+      "name": "Street Cap Levelup",
+      "price": "79.90",
+      "category": "Acessórios",
+      "img": "https://images.unsplash.com/photo-1521369909029-2afed882baee?w=900&q=80",
+      "desc": "Boné premium bordado"
+    },
+    {
+      "name": "Oversized Chaos Society",
       "price": "119.90",
-      "category": "Camiseta",
-      "img": "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Oversized tecido pesado."
+      "category": "Oversized",
+      "img": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&q=80",
+      "desc": "Streetwear dark edition"
     },
     {
-      "name": "Skull Socks",
-      "price": "29.90",
-      "category": "Acessório",
-      "img": "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Meia hype estampada."
+      "name": "Windbreaker Blackout",
+      "price": "269.90",
+      "category": "Jaqueta",
+      "img": "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=900&q=80",
+      "desc": "Windbreaker techwear premium"
     },
     {
-      "name": "Leather Belt Dark",
-      "price": "59.90",
-      "category": "Acessório",
-      "img": "https://images.unsplash.com/photo-1624222247344-550fb60583dc?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Cinto dark minimal."
+      "name": "Destroyed Cargo Pants",
+      "price": "209.90",
+      "category": "Cargo",
+      "img": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&q=80",
+      "desc": "Cargo destroyed underground"
     },
     {
-      "name": "Levelup Starter Pack",
-      "price": "349.90",
-      "category": "Combo",
-      "img": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1000&auto=format&fit=crop",
-      "desc": "Combo camiseta + cargo + acessório."
+      "name": "Street Tee No Future",
+      "price": "99.90",
+      "category": "Streetwear",
+      "img": "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=900&q=80",
+      "desc": "Visual dark trapwear"
+    },
+    {
+      "name": "Heavy Hoodie Purple Night",
+      "price": "259.90",
+      "category": "Moletom",
+      "img": "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=900&q=80",
+      "desc": "Moletom premium pesado"
     }
   ]
 }
