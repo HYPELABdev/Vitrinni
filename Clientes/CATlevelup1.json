@@ -8,13 +8,6 @@
   },
   "products": [
     {
-      "name": "Notebook Gamer Nitro",
-      "price": "4599.90",
-      "category": "Notebooks",
-      "img": "https://images.unsplash.com/photo-1517336714739-489689fd1ca8?w=900&q=80",
-      "desc": "Notebook gamer RTX performance"
-    },
-    {
       "name": "Speaker RGB Bass",
       "price": "169.90",
       "category": "Som",
