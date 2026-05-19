@@ -8,20 +8,6 @@
   },
   "products": [
     {
-      "name": "Mousepad Speed XXL",
-      "price": "79.90",
-      "category": "AcessÃ³rios",
-      "img": "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=900&q=80",
-      "desc": "Mousepad extra grande anti-slip"
-    },
-    {
-      "name": "Monitor Curvo 27 Gaming",
-      "price": "1299.90",
-      "category": "Monitores",
-      "img": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=900&q=80",
-      "desc": "Monitor 165hz full HD curvo"
-    },
-    {
       "name": "Cadeira Gamer Dark",
       "price": "899.90",
       "category": "Cadeiras",
