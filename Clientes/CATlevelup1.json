@@ -8,20 +8,6 @@
   },
   "products": [
     {
-      "name": "Webcam Stream HD",
-      "price": "219.90",
-      "category": "Streaming",
-      "img": "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=900&q=80",
-      "desc": "Webcam full HD para lives"
-    },
-    {
-      "name": "Microfone Studio USB",
-      "price": "299.90",
-      "category": "Ãudio",
-      "img": "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=900&q=80",
-      "desc": "Microfone condensador RGB"
-    },
-    {
       "name": "Controle Wireless PRO",
       "price": "259.90",
       "category": "Controles",
