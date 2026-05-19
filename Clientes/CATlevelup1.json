@@ -8,20 +8,6 @@
   },
   "products": [
     {
-      "name": "Cadeira Gamer Dark",
-      "price": "899.90",
-      "category": "Cadeiras",
-      "img": "https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=900&q=80",
-      "desc": "Cadeira ergonÃ´mica premium"
-    },
-    {
-      "name": "Kit Setup RGB",
-      "price": "349.90",
-      "category": "Setup",
-      "img": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80",
-      "desc": "Kit iluminaÃ§Ã£o gamer RGB"
-    },
-    {
       "name": "Webcam Stream HD",
       "price": "219.90",
       "category": "Streaming",
