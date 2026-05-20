@@ -1,15 +1,25 @@
 {
   "config": {
-    "brand": "STORE",
-    "bio": "",
+    "brand": "HYPELAB OUTLET",
+    "bio": "A cultura streetwear no seu mais alto nível de excelência.",
     "whats": "5511999999999",
-    "instagram": "",
-    "delivery": "",
+    "instagram": "@sua_loja",
+    "delivery": "Entregas expressas via MotoBoy",
     "color": "#ff003c",
-    "bg": "",
-    "layout": "grid",
-    "logoAnim": "none",
+    "bg": "#060608",
+    "layout": "carousel",
+    "logoAnim": "glow",
     "banners": []
   },
-  "products": []
+  "products": [
+    {
+      "name": "Moletom Over Size Heavyweight",
+      "price": "289.90",
+      "category": "Camisetas",
+      "sizes": "P, M, G, GG",
+      "colors": "#000, #fff, #5a189a",
+      "img": "",
+      "desc": "Algodão de 400g/m², caimento box industrial americano, bordado em alta definição."
+    }
+  ]
 }
