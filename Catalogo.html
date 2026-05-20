@@ -1,1052 +1,944 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>VITRINNI — HYPELAB CORE</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VITRINNI PRO - Fashion Engine</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-:root{
-    --primary:#22c55e;
-    --primary-glow:rgba(34,197,94,.15);
-    --bg:#050505;
-    --card-bg:rgba(12,12,12,.6);
-    --border:rgba(255,255,255,.05);
-    --border-hover:rgba(34,197,94,.3);
-    --text-muted:#8e8e93;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif;-webkit-font-smoothing:antialiased;}
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+:root{
+  --primary:#ff003c;
+  --primary-glow:rgba(255,0,60,0.15);
+  --bg:#060608;
+  --surface:rgba(15,15,22,0.6);
+  --surface2:rgba(25,25,38,0.8);
+  --border:rgba(255,255,255,0.06);
+  --border-hover:rgba(255,255,255,0.12);
+  --text:#ffffff;
+  --muted:#8e8e93;
+  --green:#00e87a;
+  --font-display:'Bebas Neue',sans-serif;
+  --radius:22px;
+  --transition:0.35s cubic-bezier(0.16,1,0.3,1);
 }
 
 body{
-    background:var(--bg);
-    color:#fff;
-    font-family:'Plus Jakarta Sans',sans-serif;
-    overflow-x:hidden;
-    min-height:100vh;
-    position:relative;
-    padding-bottom: 180px; 
+  background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh;
+  background-size:cover;background-position:center;background-attachment:fixed;
+}
+body::before {
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
 }
 
-body::before{
-    content:'';
-    position:fixed;
-    inset:0;
-    background:radial-gradient(circle at 50% -20%, #16351f 0%, #050505 70%);
-    z-index:-1;
-}
-
-/* NAV */
-.nav-container{
-    max-width:1200px;
-    margin:0 auto;
-    padding:30px 20px 0;
-}
-
-.back-btn{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    color:var(--text-muted);
-    text-decoration:none;
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:2px;
-    padding:12px 22px;
-    border-radius:100px;
-    background:rgba(255,255,255,.03);
-    border:1px solid var(--border);
-    transition:.3s ease;
-    text-transform:uppercase;
-}
-
-.back-btn::before{
-    content:'←';
-    font-size:14px;
-}
-
-.back-btn:hover{
-    color:#fff;
-    border-color:var(--primary);
-    background:var(--primary-glow);
-    transform:translateX(-4px);
-}
-
-/* HEADER */
+/* APP NAVBAR WITH ANIMATION ENGINE */
 header{
-    padding:40px 20px 30px;
-    text-align:center;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 24px;background:rgba(6,6,8,0.75);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);
+}
+#brandContainer{display:flex;align-items:center;gap:14px;}
+
+#brandLogo{
+  height:48px;width:48px;object-fit:cover;border-radius:14px;
+  border:1px solid var(--border);display:none;
+}
+/* Keyframes de Animação do Logo */
+.anim-float{animation:logoFloat 3s ease-in-out infinite;}
+.anim-pulse{animation:logoPulse 2s ease-in-out infinite;}
+.anim-glow{animation:logoGlow 2.5s ease-in-out infinite; border-color:var(--primary) !important;}
+
+@keyframes logoFloat{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-5px);} }
+@keyframes logoPulse{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.06);} }
+@keyframes logoGlow{ 0%,100%{box-shadow:0 0 4px var(--primary-glow);} 50%{box-shadow:0 0 16px var(--primary);} }
+
+.meta-store-info{display:flex;flex-direction:column;}
+#brandName{
+  font-family:var(--font-display);font-size:32px;letter-spacing:1px;line-height:1;
+  background:linear-gradient(135deg,#ffffff 50%,var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+#brandBio{font-size:11px;color:var(--muted);margin-top:4px;font-weight:500;max-width:280px;display:none;}
+.header-actions{display:flex;align-items:center;gap:12px;}
+
+/* BADGES DE INFRA COM INSTAGRAM OFICIAL */
+.badges-delivery-row{max-width:1350px;margin:16px auto 0 auto;padding:0 24px;display:flex;gap:10px;flex-wrap:wrap;}
+.info-badge{
+  background:rgba(255,255,255,0.03);border:1px solid var(--border);padding:8px 14px;
+  border-radius:99px;font-size:11px;font-weight:600;display:none;align-items:center;gap:8px;color:var(--muted);
+}
+.info-badge svg{width:14px;height:14px;fill:currentColor;}
+
+/* BUTTONS */
+.btn{
+  padding:12px 20px;border:1px solid var(--border);border-radius:14px;
+  cursor:pointer;background:var(--surface2);color:var(--text);
+  font-size:13px;font-weight:700;transition:var(--transition);
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn:hover{border-color:var(--border-hover);background:#1e1e2a;transform:translateY(-1px);}
+.btn.primary{background:var(--primary);border-color:transparent;box-shadow:0 8px 20px var(--primary-glow);}
+.btn.primary:hover{background:#e0002f;box-shadow:0 10px 25px rgba(255,0,60,0.35);}
+
+#cartToggleBtn{position:relative;}
+#cartBadge{
+  position:absolute;top:-6px;right:-6px;background:var(--primary);color:#fff;
+  font-size:10px;font-weight:800;width:20px;height:20px;border-radius:50%;
+  display:none;align-items:center;justify-content:center;border:2px solid var(--bg);
 }
 
-.logo-label{
-    font-family:'JetBrains Mono',monospace;
-    color:var(--primary);
-    font-size:11px;
-    letter-spacing:6px;
-    text-transform:uppercase;
-    margin-bottom:16px;
-    display:block;
-    font-weight:700;
+/* BANNERS */
+.banner-section{max-width:1350px;margin:20px auto 0 auto;padding:0 24px;display:none;}
+.banner-wrapper{width:100%;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:20px;}
+.banner-wrapper::-webkit-scrollbar{display:none;}
+.banner-item{min-width:100%;scroll-snap-align:start;height:240px;border-radius:20px;overflow:hidden;border:1px solid var(--border);background:#0a0a0f;}
+.banner-item img{width:100%;height:100%;object-fit:cover;}
+
+/* BUSCADOR */
+.search-container{max-width:1350px;margin:24px auto 0 auto;padding:0 24px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;}
+#searchInput{width:100%;padding:14px 18px;border-radius:14px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:14px;outline:none;transition:var(--transition);}
+#searchInput:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow);}
+.filter-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:4px 0;}
+.filter-tabs::-webkit-scrollbar{display:none;}
+.filter-tab{padding:10px 18px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:var(--transition);text-transform:uppercase;}
+.filter-tab.active{background:var(--text);color:#000;border-color:var(--text);font-weight:800;}
+
+/* ENGINE DE CONFIGURAÇÃO DE LAYOUT REATIVO (CORREÇÃO CARROSSEL) */
+.catalog{max-width:1350px;margin:0 auto;padding:32px 24px;position:relative;z-index:1;}
+
+/* MODELO 1: GRADE MODERNA */
+.catalog.mode-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:24px;}
+.catalog.mode-grid .card{width:100%;}
+
+/* MODELO 2: ROLETA MOBILE (CARROSSEL HORIZONTAL CORRIGIDO) */
+.catalog.mode-carousel{
+  display:flex !important;flex-direction:row !important;flex-wrap:nowrap !important;
+  overflow-x:auto !important;gap:20px !important;scroll-snap-type:x mandatory;
+  padding-bottom:24px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.catalog.mode-carousel::-webkit-scrollbar{display:none;}
+.catalog.mode-carousel .card{
+  flex:0 0 285px !important;min-width:285px !important;max-width:285px !important;
+  scroll-snap-align:start;
 }
 
-h1{
-    font-size:clamp(34px,6vw,58px);
-    font-weight:800;
-    letter-spacing:-2px;
-    background:linear-gradient(to bottom,#fff 40%,#919191 100%);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+/* MODELO 3: LISTA MINIMALISTA (NOVO MODELO SOLICITADO) */
+.catalog.mode-list{display:flex;flex-direction:column;gap:14px;}
+.catalog.mode-list .card{flex-direction:row;height:130px;align-items:center;}
+.catalog.mode-list .card-img-wrap{width:120px;height:100%;flex-shrink:0;border-radius:var(--radius) 0 0 var(--radius);}
+.catalog.mode-list .card-content{padding:14px 20px;flex-direction:row;align-items:center;justify-content:between;width:100%;}
+.catalog.mode-list .price{margin:0 24px 0 auto;}
+.catalog.mode-list .actions{width:auto;}
+
+/* PREMIUM APPLICATION CARDS */
+.card{
+  background:var(--surface);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;
+  transition:var(--transition);display:flex;flex-direction:column;cursor:pointer;
 }
+.card:hover{transform:translateY(-5px);border-color:rgba(255,255,255,0.15);box-shadow:0 20px 40px rgba(0,0,0,0.5);}
+.card-img-wrap{position:relative;height:260px;overflow:hidden;background:#0c0c12;}
+.card img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1);}
+.card:hover img{transform:scale(1.04);}
 
-.subtitle{
-    max-width:700px;
-    margin:20px auto 0;
-    color:var(--text-muted);
-    line-height:1.7;
-    font-size:15px;
+.card-content{padding:20px;display:flex;flex-direction:column;flex-grow:1;}
+.card-category{align-self:flex-start;font-size:10px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--primary);margin-bottom:6px;}
+.card-name{font-weight:700;font-size:17px;margin-bottom:6px;line-height:1.3;}
+.card-desc{font-size:12px;color:var(--muted);margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.price{font-family:var(--font-display);font-size:28px;color:var(--green);margin-top:auto;letter-spacing:0.5px;}
+.actions{margin-top:14px;}
+.actions .cartBtn{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--surface2);color:var(--text);cursor:pointer;font-weight:700;font-size:13px;transition:var(--transition);}
+.actions .cartBtn:hover{background:var(--primary);border-color:transparent;box-shadow:0 5px 15px var(--primary-glow);}
+
+/* FASHION QUICK VIEW MODAL (DETALHES NUVEMSHOP STYLE) */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(4,4,6,0.85);backdrop-filter:blur(20px);
+  z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;
+  animation:fadeIn 0.25s ease;
 }
-
-/* TABS SYSTEM */
-.tabs-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin: 20px auto 40px;
-    max-width: 800px;
-    padding: 0 20px;
+.modal-card{
+  background:#0c0c12;border:1px solid var(--border);border-radius:28px;
+  width:100%;max-width:760px;display:grid;grid-template-columns:1fr 1.1fr;
+  overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.8);animation:scaleIn 0.35s cubic-bezier(0.16,1,0.3,1);
 }
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.95) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
 
-.tab-btn {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    padding: 14px 20px;
-    border-radius: 14px;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(.15,.85,.45,1);
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    flex: 1;
-    position: relative;
+.modal-img-container{width:100%;height:100%;min-height:400px;background:#050508;overflow:hidden;position:relative;}
+.modal-img-container img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease;}
+.modal-img-container img:hover{transform:scale(1.15);} /* Zoom Inteligente solicitado */
+
+.modal-info-pane{padding:32px;display:flex;flex-direction:column;position:relative;}
+.modal-close-btn{position:absolute;top:20px;right:24px;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;transition:var(--transition);}
+.modal-close-btn:hover{color:#fff;}
+
+/* VARIANTES VISUAIS NUVEMSHOP */
+.variant-section{margin-top:20px;}
+.variant-title{font-size:10px;font-weight:800;text-transform:uppercase;color:var(--muted);letter-spacing:1px;margin-bottom:8px;}
+.variant-container{display:flex;flex-wrap:wrap;gap:8px;}
+
+/* Bolinhas de Cor */
+.color-pill{
+  width:28px;height:28px;border-radius:50%;border:2px solid var(--border);
+  cursor:pointer;transition:var(--transition);position:relative;
 }
-
-.tab-btn span {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    opacity: 0.5;
-    font-weight: 400;
-    text-align: center;
+.color-pill.selected{border-color:#fff;transform:scale(1.1);box-shadow:0 0 12px rgba(255,255,255,0.2);}
+/* Pílulas de Tamanho */
+.size-pill{
+  padding:8px 14px;border:1px solid var(--border);background:rgba(255,255,255,0.02);
+  font-size:12px;font-weight:700;border-radius:10px;cursor:pointer;transition:var(--transition);
 }
+.size-pill.selected{background:#fff;color:#000;border-color:#fff;}
 
-.tab-btn .tab-badge-new {
-    position: absolute;
-    top: -8px;
-    right: 10px;
-    background: var(--primary);
-    color: #000;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    font-weight: 800;
-    padding: 2px 6px;
-    border-radius: 4px;
-    box-shadow: 0 0 10px var(--primary);
-    animation: dotPulse 1s infinite;
-}
+/* DASHBOARD PANEL ADMIN DESIGN */
+.panel{position:fixed;right:-480px;top:0;width:450px;height:100vh;background:rgba(10,10,14,0.94);backdrop-filter:blur(35px);-webkit-backdrop-filter:blur(35px);z-index:500;border-left:1px solid var(--border);display:flex;flex-direction:column;transition:right 0.4s cubic-bezier(0.16,1,0.3,1);box-shadow:-20px 0 50px rgba(0,0,0,0.8);}
+.panel.active{right:0;}
+.panel-header{padding:24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.panel-title{font-family:var(--font-display);font-size:26px;letter-spacing:1px;background:linear-gradient(90deg,#fff,var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.panel-tabs{display:flex;padding:6px;background:rgba(0,0,0,0.3);margin:0 24px;border-radius:14px;border:1px solid var(--border);}
+.panel-tab{flex:1;padding:10px;background:none;border:none;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;transition:var(--transition);border-radius:10px;}
+.panel-tab.active{color:#fff;background:rgba(255,255,255,0.06);box-shadow:0 2px 8px rgba(0,0,0,0.4);}
+.panel-body{flex:1;overflow-y:auto;padding:24px 24px 120px 24px;}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
 
-.tab-btn:hover {
-    color: #fff;
-    border-color: rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.05);
-}
+.field{margin-bottom:20px;background:rgba(255,255,255,0.01);border:1px solid var(--border);padding:14px;border-radius:16px;transition:var(--transition);}
+.field:focus-within{border-color:var(--primary);background:rgba(255,0,60,0.01);box-shadow:0 0 15px rgba(255,0,60,0.05);}
+.field label{display:block;font-size:10px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--primary);margin-bottom:8px;}
+.field input[type="text"],.field textarea,.field select{width:100%;padding:4px 0 0 0;border:none;background:transparent;color:#fff;font-size:14px;font-weight:500;outline:none;}
+.field select option{background:#101015;color:#fff;}
+.field input::placeholder, .field textarea::placeholder{color:rgba(255,255,255,0.25);}
 
-.tab-btn.active {
-    color: #fff;
-    background: var(--primary-glow);
-    border-color: var(--primary);
-    box-shadow: 0 0 20px rgba(34,197,94,0.1);
-}
+.layout-selector-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 18px 0;}
+.layout-card{border:1px solid var(--border);border-radius:14px;padding:12px 6px;background:rgba(255,255,255,0.02);cursor:pointer;transition:var(--transition);text-align:center;}
+.layout-card:hover{border-color:var(--border-hover);background:rgba(255,255,255,0.04);}
+.layout-card.active{border-color:var(--primary);background:var(--primary-glow);}
+.layout-card .icon{font-size:18px;margin-bottom:4px;display:block;}
+.layout-card span{font-size:11px;font-weight:700;color:#fff;}
 
-/* CARDS GRID */
-.grid-models{
-    display:none;
-    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
-    gap:30px;
-    max-width:1200px;
-    margin:0 auto;
-    padding:0 20px 80px;
-}
+.upload-box{border:2px dashed var(--border);border-radius:14px;padding:18px;text-align:center;background:rgba(255,255,255,0.01);cursor:pointer;transition:var(--transition);position:relative;margin-top:6px;}
+.upload-box:hover{border-color:var(--primary);background:rgba(255,0,60,0.01);}
+.upload-box span{font-size:12px;color:var(--muted);font-weight:600;}
+.upload-box input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.upload-preview-mini{height:44px;width:auto;object-fit:contain;margin-top:10px;border-radius:8px;display:none;border:1px solid var(--border);}
+.panel-footer-sticky{position:absolute;bottom:0;left:0;right:0;padding:20px 24px;background:rgba(10,10,14,0.85);backdrop-filter:blur(10px);border-top:1px solid var(--border);z-index:10;}
+.panel-save-btn{width:100%;background:var(--primary);color:#fff;border:none;padding:14px;font-weight:800;font-size:14px;border-radius:12px;cursor:pointer;transition:var(--transition);box-shadow:0 8px 20px var(--primary-glow);}
+.panel-save-btn:hover{background:#e0002f;transform:translateY(-1px);}
 
-.grid-models.active-grid {
-    display: grid;
-}
+.editor-product-list,.banner-manager-list{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+.editor-product-item,.banner-manager-item{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.02);border:1px solid var(--border);padding:12px 16px;border-radius:12px;font-size:13px;}
+.banner-manager-item img{height:40px;width:70px;object-fit:cover;border-radius:6px;}
+.delete-prod-btn{background:rgba(255,0,60,0.1);color:var(--primary);border:1px solid rgba(255,0,60,0.15);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:700;transition:var(--transition);}
+.delete-prod-btn:hover{background:var(--primary);color:#fff;}
 
-.model-card{
-    background:var(--card-bg);
-    border:1px solid var(--border);
-    border-radius:24px;
-    padding:20px;
-    transition:.45s cubic-bezier(.15,.85,.45,1);
-    backdrop-filter:blur(20px);
-    overflow:hidden;
-    position:relative;
-    display: flex;
-    flex-direction: column;
-}
+/* SACONA / CART */
+.cart-panel{position:fixed;bottom:24px;right:24px;width:360px;background:rgba(10,10,15,0.88);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border:1px solid var(--border);border-radius:24px;z-index:200;transform:translateY(calc(100% + 40px));opacity:0;transition:var(--transition);box-shadow:0 30px 60px rgba(0,0,0,0.7);}
+.cart-panel.open{transform:translateY(0);opacity:1;}
+.cart-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--border);}
+.cart-title{font-family:var(--font-display);font-size:24px;letter-spacing:1px;}
+.cart-close{background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;}
+.cart-items{padding:12px 24px;max-height:240px;overflow-y:auto;}
+.cart-item{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:12px 0;border-bottom:1px solid var(--border);}
+.cart-footer{padding:20px 24px;border-top:1px solid var(--border);}
+.cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.cart-total-value{font-family:var(--font-display);font-size:26px;color:var(--green);}
 
-.model-card::before{
-    content:'';
-    position:absolute;
-    inset:0;
-    background:linear-gradient(145deg, rgba(255,255,255,.03), transparent 40%);
-    pointer-events:none;
-}
+.toast-container{position:fixed;top:90px;right:24px;z-index:2000;display:flex;flex-direction:column;gap:8px;}
+.toast{background:#101018;border:1px solid var(--border);border-radius:14px;padding:14px 20px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:10px;box-shadow:0 15px 35px rgba(0,0,0,0.4);animation:toastIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both;}
+.toast.success{border-color:rgba(0,232,122,0.3);color:var(--green);}
+.toast.error{border-color:rgba(255,0,60,0.3);color:var(--primary);}
+@keyframes toastIn{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:translateX(0);}}
 
-.model-card:hover{
-    border-color:var(--border-hover);
-    transform:translateY(-8px) scale(1.01);
-    box-shadow: 0 30px 60px rgba(0,0,0,.6), 0 0 40px rgba(34,197,94,.03);
-}
+#loadingStatus{text-align:center;padding:100px 20px;font-size:14px;color:var(--muted);font-weight:700;letter-spacing:0.5px;}
+#noResults{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;display:none;}
+#backToTop{position:fixed;bottom:24px;left:24px;width:48px;height:48px;border-radius:14px;background:var(--surface2);border:1px solid var(--border);color:#fff;font-size:18px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:150;}
 
-.badge-hot {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: linear-gradient(135deg, #ea580c, #f97316);
-    color: #fff;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    padding: 6px 14px;
-    border-radius: 50px;
-    letter-spacing: 1px;
-    z-index: 10;
-    box-shadow: 0 0 15px rgba(249, 115, 22, 0.4);
-    border: 1px solid rgba(255,255,255,0.2);
-}
+.theme-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:8px 0;}
+.theme-card{border:1px solid var(--border);border-radius:12px;padding:12px;background:rgba(255,255,255,0.02);cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:10px;}
+.theme-color-dots{display:flex;gap:4px;}.theme-dot{width:12px;height:12px;border-radius:50%;}
+.theme-card span{font-size:12px;font-weight:700;}
 
-.badge-upgrade {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: linear-gradient(135deg, #15803d, #22c55e);
-    color: #fff;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    padding: 6px 14px;
-    border-radius: 50px;
-    letter-spacing: 1px;
-    z-index: 10;
-    box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
-.badge-software {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: linear-gradient(135deg, #2563eb, #3b82f6);
-    color: #fff;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    padding: 6px 14px;
-    border-radius: 50px;
-    letter-spacing: 1px;
-    z-index: 10;
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
-/* CADEADO SOFT CURIOSIDADE */
-.model-card.soft-locked {
-    position: relative;
-}
-
-.soft-lock-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(5, 5, 5, 0.15);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    z-index: 20;
-    border-radius: 24px;
-    transition: background 0.3s ease;
-}
-
-.model-card.soft-locked:hover .soft-lock-overlay {
-    background: rgba(5, 5, 5, 0.25);
-}
-
-.soft-lock-badge {
-    background: rgba(0, 0, 0, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 10px 20px;
-    border-radius: 100px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-}
-
-.soft-lock-icon {
-    font-size: 14px;
-    animation: lockPulse 2s infinite ease-in-out;
-}
-
-.soft-lock-text {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: #e2e8f0;
-}
-
-.model-card.locked {
-    opacity: 0.3;
-    cursor: not-allowed;
-    border-style: dashed;
-}
-
-.locked-screen {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(4px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    z-index: 5;
-}
-
-.lock-icon { font-size: 24px; }
-.lock-text { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--text-muted); }
-
-.model-thumb{
-    width:100%;
-    height:220px;
-    border-radius:18px;
-    overflow:hidden;
-    position:relative;
-    margin-bottom:24px;
-    border:1px solid var(--border);
-    background:#090909;
-}
-
-.model-thumb img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center top;
-    transition:1s cubic-bezier(.15,.85,.45,1);
-    opacity:.88;
-}
-
-.model-card:hover .model-thumb img{
-    transform:scale(1.08);
-    opacity:1;
-}
-
-.thumb-overlay{
-    position:absolute;
-    inset:0;
-    background:linear-gradient(to top, rgba(0,0,0,.9), transparent 50%);
-    display:flex;
-    align-items:flex-end;
-    padding:15px;
-}
-
-.thumb-label{
-    font-family:'JetBrains Mono',monospace;
-    font-size:10px;
-    color:var(--primary);
-    letter-spacing:2px;
-    text-transform:uppercase;
-    background:rgba(0,0,0,.75);
-    padding:5px 10px;
-    border-radius:8px;
-    border:1px solid rgba(34,197,94,.2);
-}
-
-.model-info h3{
-    font-size:20px;
-    margin-bottom:12px;
-    font-weight:700;
-    letter-spacing:-.5px;
-}
-
-.model-info p{
-    color:var(--text-muted);
-    line-height:1.7;
-    font-size:14px;
-    margin-bottom:24px;
-}
-
-.btn-preview{
-    width:100%;
-    background:#fff;
-    color:#000;
-    border:none;
-    padding:16px;
-    border-radius:14px;
-    font-weight:800;
-    cursor:pointer;
-    transition:.3s ease;
-    text-transform:uppercase;
-    font-size:12px;
-    letter-spacing:1px;
-    margin-top:auto;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-}
-
-.btn-preview:hover{
-    background:var(--primary);
-    color: #fff;
-    transform:translateY(-2px);
-    box-shadow:0 15px 30px rgba(34,197,94,.25);
-}
-
-/* BOTÃO PREMIUM DO WHATSAPP COM SEGREDO INTERNO */
-.btn-whatsapp-software {
-    background: #22c55e;
-    color: #000;
-}
-
-.btn-whatsapp-software:hover {
-    background: #15803d;
-    color: #fff;
-    box-shadow:0 15px 30px rgba(34,197,94,.4);
-}
-
-.btn-preview.btn-soon {
-    background: rgba(255,255,255,0.05);
-    color: var(--text-muted);
-    border: 1px solid var(--border);
-    cursor: not-allowed;
-}
-
-/* PREVIEW MODAL */
-.preview-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(3,3,3,.85);
-    backdrop-filter:blur(20px);
-    display:none;
-    z-index:10000;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:30px 20px;
-    opacity:0;
-    transition:opacity .4s ease;
-}
-
-.preview-overlay.active{ display:flex; opacity:1; }
-.preview-header{ width:100%; max-width:1200px; display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-.preview-container{ width:100%; max-width:1200px; height:85vh; background:#fff; border-radius:24px; overflow:hidden; position:relative; border:1px solid rgba(255,255,255,.08); box-shadow:0 50px 100px rgba(0,0,0,.9); }
-#previewIframe{ width:100%; height:100%; border:none; opacity:0; transition:.5s ease; }
-#previewIframe.loaded{ opacity:1; }
-.close-preview{ background:#fff; border:none; color:#000; padding:12px 28px; border-radius:100px; font-weight:800; font-size:11px; cursor:pointer; text-transform:uppercase; letter-spacing:1px; transition:.3s ease; }
-.close-preview:hover{ background:var(--primary); color: #fff; }
-
-.loader-bar{ position:absolute; top:0; left:0; width:0%; height:3px; background:var(--primary); z-index:100; transition:width .4s ease; box-shadow:0 0 10px var(--primary); }
-.loader-text{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'JetBrains Mono',monospace; color:#fff; font-size:12px; letter-spacing:3px; opacity:.6; animation:pulse 1.5s infinite ease-in-out; }
-@keyframes pulse{ 0%,100%{opacity:.3} 50%{opacity:.8} }
-
-/* HUD INTELEGENTE DO H-BOT */
-.jarvis-hud-wrapper {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    z-index: 99999;
-    max-width: 540px; 
-    width: calc(100% - 60px);
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.5s cubic-bezier(0.15, 0.85, 0.45, 1);
-    pointer-events: none;
-}
-
-.jarvis-hud-wrapper.active {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-.jarvis-avatar-box {
-    position: relative;
-    width: 75px;
-    height: 75px;
-    flex-shrink: 0;
-}
-
-.jarvis-avatar {
-    width: 100%;
-    height: 100%;
-    background: #090909;
-    background-image: url('https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860621823.jpg');
-    background-size: cover;
-    background-position: center;
-    border: 2px solid var(--primary);
-    border-radius: 50%;
-    box-shadow: 0 0 20px rgba(34,197,94,0.4);
-    z-index: 2;
-    position: relative;
-    animation: jarvisFloat 3s ease-in-out infinite;
-}
-
-/* ANIMAÇÃO ACELERADA PRO GATILHO DA LICENÇA */
-.jarvis-avatar.talking-fast {
-    animation: jarvisFloat 0.8s ease-in-out infinite, jarvisFastPulse 0.4s ease-in-out infinite alternate;
-    border-color: #fff;
-    box-shadow: 0 0 30px #fff;
-}
-
-.jarvis-radar {
-    position: absolute;
-    inset: -4px;
-    border: 2px solid var(--primary);
-    border-radius: 50%;
-    opacity: 0;
-    z-index: 1;
-    animation: jarvisPulse 2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
-}
-
-.jarvis-box {
-    background: rgba(4, 10, 6, 0.93);
-    border: 1px solid rgba(34, 197, 94, 0.3);
-    border-radius: 14px;
-    padding: 16px 20px;
-    flex-grow: 1;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 0 15px rgba(34,197,94,0.05);
-    position: relative;
-}
-
-.jarvis-box.highlight-box {
-    border-color: #fff;
-    box-shadow: 0 20px 50px rgba(255,255,255,0.15);
-}
-
-.jarvis-box::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 8px;
-    height: 8px;
-    border-top: 2px solid var(--primary);
-    border-left: 2px solid var(--primary);
-}
-
-.jarvis-box::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 8px;
-    height: 8px;
-    border-bottom: 2px solid var(--primary);
-    border-right: 2px solid var(--primary);
-}
-
-.jarvis-header {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--primary);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.jarvis-blink-dot {
-    width: 5px;
-    height: 5px;
-    background: var(--primary);
-    border-radius: 50%;
-    animation: dotPulse 1s infinite;
-}
-
-.jarvis-text {
-    font-size: 13px;
-    line-height: 1.6;
-    color: #e2e8f0;
-    font-weight: 500;
-}
-
-@keyframes jarvisFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-@keyframes jarvisPulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.3); opacity: 0; } }
-@keyframes jarvisFastPulse { 0% { box-shadow: 0 0 15px rgba(255,255,255,0.2); } 100% { box-shadow: 0 0 35px var(--primary); } }
-@keyframes dotPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-@keyframes lockPulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.15); opacity: 1; } }
-
-/* MOBILE */
-@media(max-width:768px){
-    .grid-models{ grid-template-columns:1fr; padding-bottom:40px; }
-    
-    /* 🚀 REFINAMENTO MOBILE DO PREVIEW: Ocupa a tela inteira sem esmagar */
-    .preview-overlay {
-        padding: 0 !important;
-    }
-    .preview-header {
-        width: 100% !important;
-        padding: 12px 20px !important;
-        margin-bottom: 0 !important;
-        background: #050505;
-        border-bottom: 1px solid rgba(255,255,255,.05);
-    }
-    .preview-container {
-        width: 100% !important;
-        height: calc(100vh - 55px) !important;
-        border-radius: 0 !important;
-        border: none !important;
-    }
-    
-    .preview-header span{ display:none; }
-    .tabs-container { gap: 10px; flex-wrap: wrap; }
-    .tab-btn { padding: 12px 14px; font-size: 12px; }
-    .jarvis-hud-wrapper { bottom: 15px; right: 15px; width: calc(100% - 30px); gap: 10px; }
-    .jarvis-avatar-box { width: 60px; height: 60px; }
+@media(max-width:700px){
+  .modal-card{grid-template-columns:1fr;max-height:90vh;overflow-y:auto;}
+  .modal-img-container{min-height:260px;}
+  .panel{width:100%;right:-100%;}
+  .cart-panel{width:calc(100vw - 32px);left:16px;bottom:16px;}
+  .catalog{padding:16px;}
+  .search-container{grid-template-columns:1fr;padding:0 16px;}
 }
 </style>
 </head>
-
 <body>
 
-<div class="nav-container">
-    <a href="https://hypelabofc.site" class="back-btn">Voltar ao Núcleo</a>
-</div>
-
 <header>
-    <span class="logo-label">HYPELAB — SOLUTIONS</span>
-    <h1>Ambiente de Modelos</h1>
-    <p class="subtitle">Selecione a categoria de sistema abaixo para visualizar nossas soluções de alta performance.</p>
+  <div id="brandContainer">
+    <img id="brandLogo" src="" alt="Logo">
+    <div class="meta-store-info">
+      <h3 id="brandName">CARREGANDO...</h3>
+      <span id="brandBio"></span>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="btn" onclick="openEditor()">⚙️ Control</button>
+    <button class="btn primary" id="cartToggleBtn" onclick="toggleCart()">
+      🛒 <span id="cartBadge">0</span>
+    </button>
+  </div>
 </header>
 
-<div class="tabs-container">
-    <button class="tab-btn active" onclick="switchTab('vitrinnis')">
-        Vitrinnis
-        <span>Painel Editor Robustificado</span>
-    </button>
-    <button class="tab-btn" onclick="switchTab('catalogos')">
-        Catálogos
-        <span>Menu Lateral de Produtos</span>
-    </button>
-    <button class="tab-btn" onclick="switchTab('softwares')">
-        <div class="tab-badge-new">NOVO</div>
-        Softwares
-        <span>Sistemas e Bots Autônomos</span>
-    </button>
+<div class="badges-delivery-row">
+  <div class="info-badge" id="badgeDelivery">🛵 <span id="badgeDeliveryText"></span></div>
+  <div class="info-badge" id="badgeInsta">
+    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+    <span id="badgeInstaText"></span>
+  </div>
 </div>
 
-<div id="tab-vitrinnis" class="grid-models active-grid">
-    <div class="model-card">
-        <span class="badge-upgrade">🔥 UPGRADE RECOMENDADO</span>
-        <div class="model-thumb">
-            <img src="https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778970422609.jpg" alt="Preview Moda">
-            <div class="thumb-overlay">
-                <span class="thumb-label">MODEL_MODA_V1</span>
-            </div>
-        </div>
-        <div class="model-info">
-            <h3>MODELO VENDAS MODA</h3>
-            <p>Estrutura premium focada em branding, exclusividade visual e experiência sofisticada.</p>
-            <button class="btn-preview" onclick="openPreview('https://hypelabdev.github.io/Vitrinni/MODA.html?id=moda')">Visualizar Demo</button>
-        </div>
-    </div>
-
-    <div class="model-card">
-        <span class="badge-upgrade">🔥 UPGRADE RECOMENDADO</span>
-        <div class="model-thumb">
-            <img src="https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778970422609.jpg" alt="Preview Social">
-            <div class="thumb-overlay">
-                <span class="thumb-label">MODEL_SOCIAL_V1</span>
-            </div>
-        </div>
-        <div class="model-info">
-            <h3>MODELO VENDAS SEGUIDORES</h3>
-            <p>Interface moderna para nichos sociais, engajamento e captação de clientes digitais.</p>
-            <button class="btn-preview" onclick="openPreview('https://hypelabdev.github.io/Vitrinni/SEGUIDOR.html?id=levelup')">Visualizar Demo</button>
-        </div>
-    </div>
-
-    <div class="model-card locked">
-        <div class="locked-screen">
-            <span class="lock-icon">🔒</span>
-            <span class="lock-text">EM DESENVOLVIMENTO</span>
-        </div>
-        <div class="model-thumb">
-            <img src="https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778970422609.jpg" alt="Locked">
-        </div>
-        <div class="model-info">
-            <h3>EM BREVE</h3>
-            <p>Mais um sistema estruturado de alta conversão está sendo acoplado ao ecossistema.</p>
-            <button class="btn-preview" disabled>Bloqueado</button>
-        </div>
-    </div>
+<div class="banner-section" id="bannerSection">
+  <div class="banner-wrapper" id="bannerWrapper"></div>
 </div>
 
-<div id="tab-catalogos" class="grid-models">
-    <div class="model-card">
-        <span class="badge-hot">⚡ MAIS VENDIDO (QUENTE)</span>
-        <div class="model-thumb">
-            <img src="https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778970422609.jpg" alt="Preview Catálogo">
-            <div class="thumb-overlay">
-                <span class="thumb-label">MODEL_CATALOG_V1</span>
-            </div>
-        </div>
-        <div class="model-info">
-            <h3>SISTEMA CATÁLOGO SMART</h3>
-            <p>Sistema ágil e simplificado com menu lateral nativo de produtos. Ideal para automação rápida de pedidos e alta conversão direta.</p>
-            <button class="btn-preview" onclick="openPreview('https://catalogo.hypelabofc.site/levelup1')">Visualizar Demo</button>
-        </div>
-    </div>
-
-    <div class="model-card locked">
-        <div class="locked-screen">
-            <span class="lock-icon">🔒</span>
-            <span class="lock-text">EM DESENVOLVIMENTO</span>
-        </div>
-        <div class="model-thumb">
-            <img src="https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778970422609.jpg" alt="Locked">
-        </div>
-        <div class="model-info">
-            <h3>EM BREVE</h3>
-            <p>Mais um sistema estruturado de alta conversão está sendo acoplado ao ecossistema.</p>
-            <button class="btn-preview" disabled>Bloqueado</button>
-        </div>
-    </div>
+<div class="search-container">
+  <input type="text" id="searchInput" placeholder="🔍 O que você está procurando?" oninput="filterProducts()">
+  <div class="filter-tabs" id="filterTabs"></div>
 </div>
 
-<div id="tab-softwares" class="grid-models">
-    <div class="model-card">
-        <span class="badge-software">🤖 INCORPORÁVEL</span>
-        <div class="model-thumb">
-            <img src="https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778860621823.jpg" alt="H-Bot Software" style="object-fit: contain; background: #0c0c0c; padding: 10px;">
-            <div class="thumb-overlay">
-                <span class="thumb-label">SOFT_HBOT_V4</span>
-            </div>
-        </div>
-        <div class="model-info">
-            <h3>H-BOT ASSISTENTE VIRTUAL EDITÁVEL</h3>
-            <p>Licença do nosso software proprietário de atendimento. Um assistente holográfico inteligente e autônomo em JS/CSS, totalmente customizável para suporte, retenção de leads e gamificação de páginas comerciais.</p>
-            
-            <button class="btn-preview btn-whatsapp-software" onclick="interceptLicencePurchase(event)">Adquirir Licença</button>
-        </div>
-    </div>
+<div id="loadingStatus">⚡ Sincronizando infraestrutura...</div>
+<div class="catalog mode-grid" id="catalog" style="display:none;"></div>
+<div id="noResults">Nenhum item localizado por aqui 😕</div>
 
-    <div class="model-card soft-locked">
-        <div class="soft-lock-overlay">
-            <div class="soft-lock-badge">
-                <span class="soft-lock-icon">🎮</span>
-                <span class="soft-lock-text">COMPILANDO PROTOCOLO...</span>
-            </div>
-        </div>
-        <div class="model-thumb">
-            <img src="https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1778970422609.jpg" alt="Locked Software">
-            <div class="thumb-overlay">
-                <span class="thumb-label">GAME_ADV_V1</span>
-            </div>
-        </div>
-        <div class="model-info">
-            <h3>SISTEMAS GAMIFICADOS (ADVERGAMES)</h3>
-            <p>Minigames interativos de altíssima fidelidade desenvolvidos sob medida em código nativo, projetados especificamente para prender a atenção psicológica do usuário e converter de forma viral através do entretenimento.</p>
-            <button class="btn-preview btn-soon" disabled>Em Breve</button>
-        </div>
+<div class="modal-overlay" id="productModal" onclick="closeProductModal(event)">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-img-container">
+      <img id="modalImg" src="" alt="Produto">
     </div>
+    <div class="modal-info-pane">
+      <button class="modal-close-btn" onclick="closeProductModal(null)">×</button>
+      <div class="card-category" id="modalCategory">-</div>
+      <h2 id="modalName" style="font-size:24px;margin-bottom:8px;">-</h2>
+      <p id="modalDesc" style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:20px;">-</p>
+      <div class="price" id="modalPrice" style="font-size:36px;margin-bottom:20px;">R$ 0,00</div>
+      
+      <div class="variant-section" id="modalColorsSection">
+        <div class="variant-title">Cores Disponíveis</div>
+        <div class="variant-container" id="modalColors"></div>
+      </div>
+
+      <div class="variant-section" id="modalSizesSection" style="margin-bottom:28px;">
+        <div class="variant-title">Tamanhos</div>
+        <div class="variant-container" id="modalSizes"></div>
+      </div>
+
+      <button class="panel-save-btn" style="width:100%;margin-top:auto;" onclick="addSelectedToCart()">🛒 Adicionar à Sacola</button>
+    </div>
+  </div>
 </div>
 
-<div id="previewOverlay" class="preview-overlay">
-    <div class="preview-header">
-        <span style="font-weight:700; color:var(--primary); font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:2px;">// AMBIENTE DE TESTE ATIVO</span>
-        <button class="close-preview" onclick="closePreview()">Fechar Preview</button>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <span class="cart-title">Sua Sacola</span>
+    <button class="cart-close" onclick="toggleCart()">×</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700;">Subtotal</span>
+      <span class="cart-total-value" id="total">R$ 0,00</span>
     </div>
-    <div class="preview-container">
-        <div id="loaderBar" class="loader-bar"></div>
-        <div id="loaderText" class="loader-text">ESTABELECENDO CONEXÃO...</div>
-        <iframe id="previewIframe"></iframe>
-    </div>
+    <button class="panel-save-btn" style="width:100%;border-radius:14px;" onclick="checkout()">💬 Enviar Pedido no WhatsApp</button>
+  </div>
 </div>
 
-<div class="jarvis-hud-wrapper" id="jarvisWrapper">
-    <div class="jarvis-avatar-box">
-        <div class="jarvis-radar"></div>
-        <div class="jarvis-avatar" id="jarvisAvatarImg"></div>
-    </div>
-    <div class="jarvis-box" id="jarvisBoxContent">
-        <div class="jarvis-header">
-            <div class="jarvis-blink-dot"></div>
-            <span id="jarvisProtocol">H-BOT // STANDBY_</span>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="panel" id="panel">
+  <div class="panel-header">
+    <span class="panel-title">Console Admin</span>
+    <button class="btn" onclick="closeEditor()" style="padding:6px 12px;border-radius:10px;">✕</button>
+  </div>
+
+  <div class="panel-tabs">
+    <button class="panel-tab active" id="tabBtn-identidade" onclick="switchTab('identidade')">Loja</button>
+    <button class="panel-tab" id="tabBtn-produtos" onclick="switchTab('produtos')">Estoque</button>
+    <button class="panel-tab" id="tabBtn-visual" onclick="switchTab('visual')">Design</button>
+  </div>
+
+  <div class="panel-body">
+    <div class="tab-content active" id="tab-identidade">
+      <div class="field">
+        <label>Nome do Estabelecimento</label>
+        <input id="brandInput" type="text" placeholder="Ex: HYPELAB OUTLET">
+      </div>
+      <div class="field">
+        <label>Slogan ou Bio da Loja</label>
+        <input id="bioInput" type="text" placeholder="Ex: A cultura streetwear no seu mais alto nível">
+      </div>
+      <div class="field">
+        <label>WhatsApp Oficial (Com DDI/DDD)</label>
+        <input id="whatsInput" type="text" placeholder="Ex: 5511999999999">
+      </div>
+      <div class="field">
+        <label>Instagram Comercial</label>
+        <input id="instaInput" type="text" placeholder="Ex: @sua_loja">
+      </div>
+      <div class="field">
+        <label>Política de Entrega / Recado</label>
+        <input id="deliveryInput" type="text" placeholder="Ex: Frete grátis nas compras acima de R$150">
+      </div>
+      <div class="field">
+        <label>Logotipo da Marca</label>
+        <div class="upload-box">
+          <span id="logoLabel">Carregar nova Logo (.PNG/.JPG)</span>
+          <input type="file" accept="image/*" onchange="conversorImagem(this, 'logo')">
+          <center><img id="logoPreview" class="upload-preview-mini"></center>
         </div>
-        <div class="jarvis-text" id="jarvisText"></div>
+      </div>
     </div>
+
+    <div class="tab-content" id="tab-produtos">
+      <div class="field">
+        <label>Nome do Item</label>
+        <input id="pName" type="text" placeholder="Ex: Tênis Tesla Coil Black">
+      </div>
+      <div class="field">
+        <label>Preço Cobrado</label>
+        <input id="pPrice" type="text" placeholder="Ex: 349.90">
+      </div>
+      <div class="field">
+        <label>Categoria Global</label>
+        <input id="pCategory" type="text" placeholder="Ex: Calçados, Bonés, Camisetas">
+      </div>
+      <div class="field">
+        <label>Tamanhos Disponíveis (Separados por vírgula)</label>
+        <input id="pSizes" type="text" placeholder="Ex: P, M, G, GG ou 38, 39, 40">
+      </div>
+      <div class="field">
+        <label>Cores Disponíveis (Formatos Hex ou Nome em Inglês separados por vírgula)</label>
+        <input id="pColors" type="text" placeholder="Ex: #000, #fff, red, #ff003c">
+      </div>
+      <div class="field">
+        <label>Foto Real do Produto</label>
+        <div class="upload-box">
+          <span id="productLabel">Selecionar Imagem de Alta Qualidade</span>
+          <input type="file" id="pImgInput" accept="image/*" onchange="conversorImagem(this, 'product')">
+          <center><img id="productPreview" class="upload-preview-mini"></center>
+        </div>
+      </div>
+      <div class="field">
+        <label>Descrição Detalhada</label>
+        <textarea id="pDesc" rows="2" placeholder="Tamanhos em estoque, detalhes do tecido..."></textarea>
+      </div>
+      <button class="btn primary" id="btnAddProduct" style="width:100%;justify-content:center;margin-bottom:24px;" onclick="addProduct()">＋ Publicar Produto</button>
+      
+      <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:10px;letter-spacing:0.5px;">Itens no Mapeamento</div>
+      <div class="editor-product-list" id="editorProductList"></div>
+    </div>
+
+    <div class="tab-content" id="tab-visual">
+      <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:8px;letter-spacing:0.5px;">Arquitetura do Mural</div>
+      <div class="layout-selector-grid">
+        <div class="layout-card" id="layout-grid" onclick="setThemeLayout('grid')">
+          <span class="icon">🔲</span><span>Grade</span>
+        </div>
+        <div class="layout-card" id="layout-carousel" onclick="setThemeLayout('carousel')">
+          <span class="icon">🎡</span><span>Roleta</span>
+        </div>
+        <div class="layout-card" id="layout-list" onclick="setThemeLayout('list')">
+          <span class="icon">📜</span><span>Lista</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Animação de Logotipo Dinâmica</label>
+        <select id="logoAnimSelect" onchange="config.logoAnim=this.value; render(); editorDirty=true;">
+          <option value="none">Sem Animação (Estático)</option>
+          <option value="float">Flutuação Fluida (Float)</option>
+          <option value="pulse">Pulsação Orgânica (Pulse)</option>
+          <option value="glow">Aura Neon Pulsante (Glow)</option>
+        </select>
+      </div>
+
+      <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:8px;letter-spacing:0.5px;">Presets Cromáticos</div>
+      <div class="theme-grid">
+        <div class="theme-card" onclick="aplicarTemaPreset('#ff003c','#060608')">
+          <div class="theme-color-dots"><div class="theme-dot" style="background:#ff003c"></div><div class="theme-dot" style="background:#060608"></div></div><span>Cyberpunk</span>
+        </div>
+        <div class="theme-card" onclick="aplicarTemaPreset('#00e87a','#050906')">
+          <div class="theme-color-dots"><div class="theme-dot" style="background:#00e87a"></div><div class="theme-dot" style="background:#050906"></div></div><span>Volt Green</span>
+        </div>
+        <div class="theme-card" onclick="aplicarTemaPreset('#9d4edd','#07050a')">
+          <div class="theme-color-dots"><div class="theme-dot" style="background:#9d4edd"></div><div class="theme-dot" style="background:#07050a"></div></div><span>Neon Nebula</span>
+        </div>
+        <div class="theme-card" onclick="aplicarTemaPreset('#00f5ff','#05090a')">
+          <div class="theme-color-dots"><div class="theme-dot" style="background:#00f5ff"></div><div class="theme-dot" style="background:#05090a"></div></div><span>Ice Blizzard</span>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:14px;">
+        <label>Seletor Customizado de Cor</label>
+        <input type="color" id="colorInput" value="#ff003c" onchange="config.color=this.value;document.documentElement.style.setProperty('--primary', this.value)">
+      </div>
+
+      <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:8px;letter-spacing:0.5px;">Wallpapers / Fundo do App</div>
+      <div class="field">
+        <div class="upload-box">
+          <span id="bgLabel">Mudar Imagem de Fundo</span>
+          <input type="file" accept="image/*" onchange="conversorImagem(this, 'bg')">
+        </div>
+        <button class="btn" style="width:100%;justify-content:center;margin-top:8px;font-size:11px;" onclick="limparFundo()">Remover Wallpaper</button>
+      </div>
+
+      <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:8px;letter-spacing:0.5px;">Carrossel Promocional Superior</div>
+      <div class="field">
+        <div class="upload-box">
+          <span>Injetar Novo Slide</span>
+          <input type="file" accept="image/*" onchange="conversorImagem(this, 'banner')">
+        </div>
+      </div>
+      <div class="banner-manager-list" id="bannerManagerList"></div>
+    </div>
+  </div>
+
+  <div class="panel-footer-sticky">
+    <button class="panel-save-btn" id="btnMasterSave" onclick="saveConfig()">💾 Consolidar Alterações</button>
+  </div>
 </div>
 
 <script>
-const overlay = document.getElementById('previewOverlay');
-const iframe = document.getElementById('previewIframe');
-const loaderBar = document.getElementById('loaderBar');
-const loaderText = document.getElementById('loaderText');
+const PASSWORD = "KALLI420";
 
-// CONFIGURAÇÃO: Seu Whatsapp real (Substitua mantendo o 55)
-const SEU_WHATSAPP = "5511999999999";
-
-// VARIÁVEIS DE CONTROLE DOS NOVOS GATILHOS
-let engagementTimer;
-let exitIntercepted = false;
-
-function switchTab(tabId) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.grid-models').forEach(grid => grid.classList.remove('active-grid'));
-    
-    event.currentTarget.classList.add('active');
-    document.getElementById(`tab-${tabId}`).classList.add('active-grid');
-
-    triggerJarvisSpeech(tabId);
+const urlParams = new URLSearchParams(window.location.search);
+let nomeDaLoja = urlParams.get('loja');
+if (!nomeDaLoja) {
+  const pathParts = window.location.pathname.split('/');
+  const lastPart = pathParts[pathParts.length - 1];
+  if (lastPart && lastPart !== "" && !lastPart.includes('.html')) nomeDaLoja = lastPart;
 }
 
-/* 🚀 FUNÇÃO AUXILIAR GERAL DO H-BOT PARA RESPOSTAS DIRETAS */
-function triggerCustomJarvis(protocol, text, hasWAButton = false, waMsg = "") {
-    clearTimeout(typingTimeout);
-    clearTimeout(hideTimeout);
+// Inicialização Estendida do JSON com suporte a Cores, Tamanhos e Animações de Logo
+let config = { brand:"STORE", bio:"", whats:"5511999999999", instagram:"", delivery:"", color:"#ff003c", bg:"", layout:"grid", logoAnim:"none", banners:[] };
+let products = [];
+let cart = [];
+let activeFilter = "todos";
+let searchTerm = "";
+let editorDirty = false;
 
-    const wrapper = document.getElementById("jarvisWrapper");
-    const protocolField = document.getElementById("jarvisProtocol");
-    const textField = document.getElementById("jarvisText");
-    const avatar = document.getElementById("jarvisAvatarImg");
-    const box = document.getElementById("jarvisBoxContent");
+// Estado de seleção interna do Modal ativo
+let currentModalProductIndex = null;
+let selectedColor = null;
+let selectedSize = null;
 
-    avatar.classList.remove("talking-fast");
-    box.classList.remove("highlight-box");
+let tempLogoBase64 = "";
+let tempProductBase64 = "";
+let tempBgBase64 = "";
 
-    protocolField.innerText = protocol;
-    textField.innerHTML = "";
-    wrapper.classList.add("active");
-
-    let charIndex = 0;
-    function type() {
-        if (charIndex < text.length) {
-            textField.innerHTML += text.charAt(charIndex);
-            charIndex++;
-            typingTimeout = setTimeout(type, 10);
-        } else {
-            if (hasWAButton) {
-                const encodedMsg = encodeURIComponent(waMsg);
-                textField.innerHTML += `<br><br><a href="https://wa.me/${SEU_WHATSAPP}?text=${encodedMsg}" target="_blank" class="btn-preview btn-whatsapp-software" style="margin-top:10px; padding:12px; font-size:11px; text-align:center; display:block; text-decoration:none; color:#000; font-weight:800; border-radius:8px;">🚀 Finalizar no WhatsApp</a>`;
-            } else {
-                hideTimeout = setTimeout(() => {
-                    wrapper.classList.remove("active");
-                }, 9000);
-            }
-        }
-    }
-    type();
+function toast(msg, type="info") {
+  const el = document.createElement('div'); el.className = `toast ${type}`;
+  el.innerHTML = `<span>${type==='success'?'✅':'❌'}</span><span>${msg}</span>`;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => { el.remove(); }, 3000);
 }
 
-function openPreview(url){
-    loaderBar.style.width = '0%';
-    loaderText.style.display = 'block';
-    iframe.classList.remove('loaded');
-    iframe.src = url;
-    overlay.style.display = 'flex';
-    setTimeout(()=>{
-        overlay.classList.add('active');
-        loaderBar.style.width = '70%';
-    },50);
-    document.body.style.overflow = 'hidden';
-
-    // RESET DE ESTADO DOS NOVOS GATILHOS
-    clearTimeout(engagementTimer);
-    exitIntercepted = false;
-
-    // GATILHO 1: Se for o catálogo, entrega a senha imediatamente de forma curta
-    if (url.includes('catalogo.hypelabofc.site') || url.includes('levelup1')) {
-        setTimeout(() => {
-            triggerCustomJarvis(
-                "H-BOT // ACESSO_EDITOR", 
-                "Teste o editor em tempo real! Clique no painel do site e use a senha Hype420. Veja como é rápido deixar a loja com a sua cara!"
-            );
-        }, 1500);
-
-        // GATILHO 2: Monitora 5 minutos (300.000ms) editando para soltar o cupom de 10%
-        engagementTimer = setTimeout(() => {
-            const msgCupom = "Olá! Ganhei o cupom de 10% de desconto do H-Bot após testar o editor do catálogo e quero fechar minha licença.";
-            triggerCustomJarvis(
-                "H-BOT // BÔNUS_ENGANJAMENTO", 
-                "Parabéns pelo foco! Você está criando sua loja há 5 minutos. Liberei 10% DE DESCONTO exclusivo para você colocar seu site no ar agora mesmo. Aproveite!", 
-                true, 
-                msgCupom
-            );
-            document.getElementById("jarvisAvatarImg").classList.add("talking-fast");
-        }, 300000); 
-    }
-}
-
-iframe.onload = function(){
-    loaderBar.style.width = '100%';
-    setTimeout(()=>{
-        loaderText.style.display = 'none';
-        iframe.classList.add('loaded');
-    },300);
-};
-
-function closePreview(){
-    // GATILHO 3: Interceptação de saída (Trava de segurança para conversão)
-    if (!exitIntercepted) {
-        exitIntercepted = true;
-        
-        const msgRetencao = "Olá! Estava editando minha Vitrine no ambiente demo e gostaria de finalizar o projeto com o suporte.";
-        triggerCustomJarvis(
-            "H-BOT // RETENÇÃO_CRÍTICA", 
-            "Atenção! Se você sair agora, vai perder todo o visual incrível que editou para sua loja. Garanta sua estrutura pronta agora e envie direto pro WhatsApp para finalizarmos!", 
-            true, 
-            msgRetencao
-        );
-
-        // Destaca o H-Bot na tela gerando urgência visual
-        document.getElementById("jarvisAvatarImg").classList.add("talking-fast");
-        document.getElementById("jarvisBoxContent").classList.add("highlight-box");
-        return; // Interrompe o fechamento da tela na primeira tentativa
-    }
-
-    // Se o cliente insistir e clicar em Fechar de novo, sai normalmente
-    clearTimeout(engagementTimer);
-    overlay.classList.remove('active');
-    setTimeout(()=>{
-        overlay.style.display = 'none';
-        iframe.src = '';
-        iframe.classList.remove('loaded');
-        document.getElementById("jarvisAvatarImg").classList.remove("talking-fast");
-        document.getElementById("jarvisBoxContent").classList.remove("highlight-box");
-        document.getElementById("jarvisWrapper").classList.remove("active");
-    },400);
-    document.body.style.overflow = 'auto';
-}
-
-document.addEventListener('keydown',(e)=>{
-    if(e.key === 'Escape' && overlay.classList.contains('active')) closePreview();
+window.addEventListener('scroll', () => {
+  document.getElementById('backToTop').style.display = window.scrollY > 400 ? 'flex' : 'none';
 });
 
-let typingTimeout;
-let hideTimeout;
-
-const jarvisDatabase = {
-    catalogos: {
-        protocol: "H-BOT // PROTOCOLO_CATALOG",
-        text: "Varredura efetuada! O Plano Catálogo (R$ 150/mês) é estruturado milimetricamente para quem está começando. Entrega automação ágil, menu fluido de alta retenção e ativação rápida de vendas."
-    },
-    vitrinnis: {
-        protocol: "H-BOT // PROTOCOLO_VITRINNI",
-        text: "Upgrade detectado! O Plano Vitrinnis (R$ 350/mês) foi desenvolvido para marcas que exigem autoridade extrema. Destrava designs ultra-premium com branding imersivo e personalização total."
-    },
-    softwares: {
-        protocol: "H-BOT // PROTOCOLO_SOFTWARE",
-        text: "Diretriz de expansão ativa! Na aba Softwares, disponibilizamos sistemas independentes, scripts e inteligências integráveis (como eu mesmo!) para compra de licença definitiva e lucro direto."
+function conversorImagem(input, destino) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64 = e.target.result;
+    if (destino === 'logo') {
+      tempLogoBase64 = base64; document.getElementById('logoPreview').src = base64;
+      document.getElementById('logoPreview').style.display = 'block';
+      document.getElementById('logoLabel').innerText = "✓ Logo Capturada";
+    } else if (destino === 'product') {
+      tempProductBase64 = base64; document.getElementById('productPreview').src = base64;
+      document.getElementById('productPreview').style.display = 'block';
+      document.getElementById('productLabel').innerText = "✓ Foto Processada";
+    } else if (destino === 'bg') {
+      tempBgBase64 = base64; document.getElementById('bgLabel').innerText = "✓ Fundo Processado";
+    } else if (destino === 'banner') {
+      if(!config.banners) config.banners = [];
+      config.banners.push(base64); toast("Slide Armazenado! Salve para enviar à nuvem.", "success");
+      render();
     }
-};
-
-function triggerJarvisSpeech(tabKey) {
-    clearTimeout(typingTimeout);
-    clearTimeout(hideTimeout);
-
-    const wrapper = document.getElementById("jarvisWrapper");
-    const protocolField = document.getElementById("jarvisProtocol");
-    const textField = document.getElementById("jarvisText");
-    const avatar = document.getElementById("jarvisAvatarImg");
-    const box = document.getElementById("jarvisBoxContent");
-
-    avatar.classList.remove("talking-fast");
-    box.classList.remove("highlight-box");
-
-    const data = jarvisDatabase[tabKey];
-
-    protocolField.innerText = data.protocol;
-    textField.innerHTML = "";
-    wrapper.classList.add("active");
-
-    let charIndex = 0;
-    function type() {
-        if (charIndex < data.text.length) {
-            textField.innerHTML += data.text.charAt(charIndex);
-            charIndex++;
-            typingTimeout = setTimeout(type, 12); 
-        } else {
-            hideTimeout = setTimeout(() => {
-                wrapper.classList.remove("active");
-            }, 6000); 
-        }
-    }
-    type();
+    editorDirty = true;
+  };
+  reader.readAsDataURL(file);
 }
 
-function interceptLicencePurchase(event) {
-    event.preventDefault();
-    
-    clearTimeout(typingTimeout);
-    clearTimeout(hideTimeout);
-
-    const wrapper = document.getElementById("jarvisWrapper");
-    const protocolField = document.getElementById("jarvisProtocol");
-    const textField = document.getElementById("jarvisText");
-    const avatar = document.getElementById("jarvisAvatarImg");
-    const box = document.getElementById("jarvisBoxContent");
-
-    avatar.classList.add("talking-fast");
-    box.classList.add("highlight-box");
-    
-    wrapper.classList.add("active");
-    protocolField.innerText = "H-BOT // NEGOCIAÇÃO_DIRETA";
-    textField.innerHTML = "";
-
-    const speechText = "Licenciamento iniciado! Apenas R$ 197 por mês por um assistente inteligente rodando 24h, retendo leads e aumentando conversões. Estou organizando seus arquivos, te aguardo no WhatsApp do meu desenvolvedor!";
-
-    let charIndex = 0;
-    function typeSpeech() {
-        if (charIndex < speechText.length) {
-            textField.innerHTML += speechText.charAt(charIndex);
-            charIndex++;
-            typingTimeout = setTimeout(typeSpeech, 10);
-        } else {
-            setTimeout(() => {
-                avatar.classList.remove("talking-fast");
-                box.classList.remove("highlight-box");
-                wrapper.classList.remove("active");
-                
-                const whatsappMessage = encodeURIComponent("Olá! Gostaria de adquirir a licença do H-BOT Assistente Virtual Editável para o meu site. Vi que o plano de licenciamento + SLA de suporte fica por apenas R$ 197,00/mês. Como posso iniciar a integração?");
-                window.open(`https://wa.me/${SEU_WHATSAPP}?text=${whatsappMessage}`, '_blank');
-            }, 1500);
-        }
-    }
-    typeSpeech();
+function limparFundo() {
+  config.bg = ""; tempBgBase64 = "";
+  document.getElementById('bgLabel').innerText = "Mudar Imagem de Fundo";
+  document.body.style.backgroundImage = 'none';
+  toast("Wallpaper Redefinido. Salve para gravar.", "success");
 }
+
+function aplicarTemaPreset(primary, bg) {
+  document.getElementById('colorInput').value = primary;
+  config.color = primary; config.bg = bg; tempBgBase64 = bg;
+  document.documentElement.style.setProperty('--primary', primary);
+  if(bg) document.body.style.backgroundImage = `linear-gradient(${bg}, ${bg})`;
+  toast("Combinação cromática simulada!", "success");
+}
+
+function setThemeLayout(mode) {
+  config.layout = mode;
+  document.querySelectorAll('.layout-card').forEach(c => c.classList.remove('active'));
+  const activeCard = document.getElementById(`layout-${mode}`);
+  if(activeCard) activeCard.classList.add('active');
+  
+  const catalogEl = document.getElementById('catalog');
+  catalogEl.className = `catalog mode-${mode}`;
+  editorDirty = true;
+}
+
+// ENGINE DE OPERAÇÃO DO MODAL DE PRODUTO (ZOOM & ATRIBUTOS VARIÁVEIS)
+function openProductModal(idx) {
+  const p = products[idx];
+  currentModalProductIndex = idx;
+  selectedColor = null;
+  selectedSize = null;
+
+  document.getElementById('modalImg').src = p.img || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500';
+  document.getElementById('modalCategory').textContent = p.category || 'Geral';
+  document.getElementById('modalName').textContent = p.name;
+  document.getElementById('modalDesc').textContent = p.desc || 'Toque para conferir mais informações.';
+  document.getElementById('modalPrice').textContent = "R$ " + parseFloat(String(p.price).replace(',','.')).toFixed(2).replace('.',',');
+
+  // Renderização Dinâmica de Cores (Estilo Nuvemshop)
+  const colorsContainer = document.getElementById('modalColors');
+  if (p.colors && p.colors.trim() !== "") {
+    document.getElementById('modalColorsSection').style.display = "block";
+    const colorList = p.colors.split(',').map(c => c.trim());
+    colorsContainer.innerHTML = colorList.map(c => `
+      <div class="color-pill" style="background:${c};" onclick="selectColor(this, '${c}')" title="${c}"></div>
+    `).join('');
+  } else {
+    document.getElementById('modalColorsSection').style.display = "none";
+  }
+
+  // Renderização Dinâmica de Tamanhos
+  const sizesContainer = document.getElementById('modalSizes');
+  if (p.sizes && p.sizes.trim() !== "") {
+    document.getElementById('modalSizesSection').style.display = "block";
+    const sizeList = p.sizes.split(',').map(s => s.trim());
+    sizesContainer.innerHTML = sizeList.map(s => `
+      <div class="size-pill" onclick="selectSize(this, '${s}')">${s}</div>
+    `).join('');
+  } else {
+    document.getElementById('modalSizesSection').style.display = "none";
+  }
+
+  document.getElementById('productModal').style.display = "flex";
+}
+
+function closeProductModal(e) {
+  if(!e || e.target === document.getElementById('productModal')) {
+    document.getElementById('productModal').style.display = "none";
+  }
+}
+
+function selectColor(el, color) {
+  document.querySelectorAll('.color-pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected'); selectedColor = color;
+}
+
+function selectSize(el, size) {
+  document.querySelectorAll('.size-pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected'); selectedSize = size;
+}
+
+function addSelectedToCart() {
+  const p = products[currentModalProductIndex];
+  if (p.colors && p.colors.trim() !== "" && !selectedColor) { toast("Selecione uma Cor disponível!", "error"); return; }
+  if (p.sizes && p.sizes.trim() !== "" && !selectedSize) { toast("Selecione o seu Tamanho!", "error"); return; }
+
+  // Estrutura do item com variações injetadas no carrinho
+  const cartItem = {
+    ...p,
+    chosenColor: selectedColor || null,
+    chosenSize: selectedSize || null
+  };
+  
+  cart.push(cartItem);
+  renderCart();
+  document.getElementById('productModal').style.display = "none";
+  toast(`Adicionado à sacola!`, "success");
+}
+
+function removeBanner(idx) { config.banners.splice(idx, 1); render(); editorDirty = true; }
+function toggleCart() { document.getElementById('cartPanel').classList.toggle('open'); }
+function removeCart(i) { cart.splice(i, 1); renderCart(); }
+
+function renderCart() {
+  const badge = document.getElementById('cartBadge');
+  badge.textContent = cart.length; badge.style.display = cart.length > 0 ? 'flex' : 'none';
+  const container = document.getElementById('cartItems');
+  if (cart.length === 0) {
+    container.innerHTML = '<div class="cart-empty">Sua sacola está vazia.</div>';
+    document.getElementById('total').textContent = "R$ 0,00"; return;
+  }
+  let total = 0;
+  container.innerHTML = cart.map((c, i) => {
+    const p = parseFloat(String(c.price).replace(',','.')); total += isNaN(p) ? 0 : p;
+    const meta = `${c.chosenSize ? ` [Tamanho: ${c.chosenSize}]` : ''}${c.chosenColor ? ` [Cor: ${c.chosenColor}]` : ''}`;
+    return `
+      <div class="cart-item">
+        <div>
+          <span class="cart-item-name" style="font-weight:700;">📦 ${c.name}</span>
+          <small style="display:block;color:var(--primary);font-size:10px;font-weight:800;text-transform:uppercase;margin-top:2px;">${meta}</small>
+        </div>
+        <span class="cart-item-price">R$ ${p.toFixed(2).replace('.',',')}</span>
+        <button class="cart-remove" onclick="removeCart(${i})">✕</button>
+      </div>`;
+  }).join('');
+  document.getElementById('total').textContent = "R$ " + total.toFixed(2).replace('.',',');
+}
+
+function checkout() {
+  if (cart.length === 0) return;
+  let msg = `🔥 *Novo Pedido - ${config.brand}*\n\n`;
+  let total = 0;
+  cart.forEach(c => {
+    const p = parseFloat(String(c.price).replace(',','.'));
+    const spec = `${c.chosenSize ? ` (Tamanho: ${c.chosenSize}` : ''}${c.chosenColor ? ` | Cor: ${c.chosenColor})` : c.chosenSize ? ')' : ''}`;
+    msg += `▪️ 1x *${c.name}*${spec} - R$ ${p.toFixed(2).replace('.',',')}\n`; total += p;
+  });
+  msg += `\n🏁 *Total:* R$ ${total.toFixed(2).replace('.',',')}`;
+  window.open(`https://wa.me/${config.whats}?text=${encodeURIComponent(msg)}`);
+}
+
+function filterProducts() { searchTerm = document.getElementById('searchInput').value.toLowerCase(); renderCatalog(); }
+function setFilter(cat, el) { activeFilter = cat; document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active')); el.classList.add('active'); renderCatalog(); }
+
+function buildFilterTabs() {
+  const cats = ["Todos", ...new Set(products.map(p => p.category).filter(Boolean))];
+  document.getElementById('filterTabs').innerHTML = cats.map(c => `
+    <button class="filter-tab ${activeFilter===c.toLowerCase()?'active':''}" onclick="setFilter('${c.toLowerCase()}',this)">${c}</button>
+  `).join('');
+}
+
+function renderCatalog() {
+  const filtered = products.filter(p => {
+    const matchCat = activeFilter === 'todos' || (p.category||'').toLowerCase() === activeFilter;
+    const matchSearch = !searchTerm || p.name.toLowerCase().includes(searchTerm) || (p.desc||'').toLowerCase().includes(searchTerm);
+    return matchCat && matchSearch;
+  });
+  const catalog = document.getElementById('catalog');
+  document.getElementById('noResults').style.display = filtered.length === 0 ? 'block' : 'none';
+
+  catalog.innerHTML = filtered.map((p) => {
+    const realIdx = products.indexOf(p);
+    const pr = parseFloat(String(p.price).replace(',','.')).toFixed(2).replace('.',',');
+    return `
+      <div class="card" onclick="openProductModal(${realIdx})">
+        <div class="card-img-wrap">
+          <img src="${p.img || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500'}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500'">
+        </div>
+        <div class="card-content">
+          <div class="card-category">${p.category || 'Geral'}</div>
+          <div class="card-name">${p.name}</div>
+          <div class="card-desc">${p.desc || 'Toque para conferir mais informações e escolher variações.'}</div>
+          <div class="price">R$ ${pr}</div>
+          <div class="actions">
+            <button class="cartBtn" onclick="event.stopPropagation(); openProductModal(${realIdx})">Visualizar Opções</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function render() {
+  document.getElementById('brandName').textContent = (config.brand || "STORE").toUpperCase();
+  
+  const bioEl = document.getElementById('brandBio');
+  if (config.bio) { bioEl.textContent = config.bio; bioEl.style.display = 'block'; } else { bioEl.style.display = 'none'; }
+  
+  const logo = document.getElementById('brandLogo');
+  if (config.logo) { 
+    logo.src = config.logo; logo.style.display = 'block';
+    // Aplicação das Animações Customizadas solicitadas
+    logo.className = "";
+    if (config.logoAnim && config.logoAnim !== "none") { logo.classList.add(`anim-${config.logoAnim}`); }
+  } else { 
+    logo.style.display = 'none'; 
+  }
+  
+  document.documentElement.style.setProperty('--primary', config.color || '#ff003c');
+  document.documentElement.style.setProperty('--primary-glow', (config.color || '#ff003c') + '25');
+  
+  const dBadge = document.getElementById('badgeDelivery');
+  if(config.delivery) { document.getElementById('badgeDeliveryText').textContent = config.delivery; dBadge.style.display = 'inline-flex'; } else { dBadge.style.display = 'none'; }
+  const iBadge = document.getElementById('badgeInsta');
+  if(config.instagram) { document.getElementById('badgeInstaText').textContent = config.instagram; iBadge.style.display = 'inline-flex'; } else { iBadge.style.display = 'none'; }
+
+  if(config.bg) {
+    document.body.style.backgroundImage = config.bg.startsWith('data:') ? `url(${config.bg})` : `linear-gradient(${config.bg}, ${config.bg})`;
+  } else {
+    document.body.style.backgroundImage = 'none';
+  }
+
+  const activeLayout = config.layout || 'grid';
+  document.getElementById('catalog').className = `catalog mode-${activeLayout}`;
+  document.querySelectorAll('.layout-card').forEach(c => c.classList.remove('active'));
+  const matchingCard = document.getElementById(`layout-${activeLayout}`);
+  if(matchingCard) matchingCard.classList.add('active');
+
+  const sliderSec = document.getElementById('bannerSection');
+  if(config.banners && config.banners.length > 0) {
+    sliderSec.style.display = 'block';
+    document.getElementById('bannerWrapper').innerHTML = config.banners.map(b => `<div class="banner-item"><img src="${b}"></div>`).join('');
+    document.getElementById('bannerManagerList').innerHTML = config.banners.map((b, i) => `
+      <div class="banner-item flex banner-manager-item">
+        <img src="${b}"><button class="delete-prod-btn" onclick="removeBanner(${i})">Remover</button>
+      </div>`).join('');
+  } else {
+    sliderSec.style.display = 'none';
+    document.getElementById('bannerManagerList').innerHTML = '<div style="font-size:11px;color:var(--muted);text-align:center;width:100%;">Nenhum banner ativo.</div>';
+  }
+
+  buildFilterTabs(); renderCatalog(); renderEditorProductList();
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.getElementById('tabBtn-'+tab).classList.add('active');
+}
+
+function openEditor() {
+  const pass = prompt("Chave de Autenticação:"); if (pass !== PASSWORD) { if (pass !== null) toast("Credencial inválida.", "error"); return; }
+  
+  document.getElementById('brandInput').value = config.brand || "";
+  document.getElementById('bioInput').value = config.bio || "";
+  document.getElementById('whatsInput').value = config.whats || "";
+  document.getElementById('instaInput').value = config.instagram || "";
+  document.getElementById('deliveryInput').value = config.delivery || "";
+  document.getElementById('colorInput').value = config.color || "#ff003c";
+  document.getElementById('logoAnimSelect').value = config.logoAnim || "none";
+  
+  editorDirty = false; document.getElementById('panel').classList.add('active');
+}
+
+function closeEditor() {
+  if (editorDirty && !confirm("Modificações pendentes serão perdidas. Deseja fechar o painel?")) return;
+  document.getElementById('panel').classList.remove('active');
+}
+
+function saveConfig() {
+  config.brand = document.getElementById('brandInput').value.trim() || "STORE";
+  config.bio = document.getElementById('bioInput').value.trim();
+  config.whats = document.getElementById('whatsInput').value.trim();
+  config.instagram = document.getElementById('instaInput').value.trim();
+  config.delivery = document.getElementById('deliveryInput').value.trim();
+  config.color = document.getElementById('colorInput').value;
+  config.logoAnim = document.getElementById('logoAnimSelect').value;
+  
+  if(tempLogoBase64) { config.logo = tempLogoBase64; tempLogoBase64 = ""; }
+  if(tempBgBase64) { config.bg = tempBgBase64; tempBgBase64 = ""; }
+
+  render(); editorDirty = false;
+  document.getElementById('panel').classList.remove('active');
+  salvarDadosNoServidor();
+}
+
+function addProduct() {
+  const name = document.getElementById('pName').value.trim();
+  const price = document.getElementById('pPrice').value.trim();
+  if (!name || !price) { toast("Preencha Nome e Preço!", "error"); return; }
+
+  products.push({
+    name, price: price.replace(',','.'),
+    category: document.getElementById('pCategory').value.trim() || "Geral",
+    sizes: document.getElementById('pSizes').value.trim(),
+    colors: document.getElementById('pColors').value.trim(),
+    img: tempProductBase64, desc: document.getElementById('pDesc').value.trim()
+  });
+
+  tempProductBase64 = ""; document.getElementById('productPreview').style.display = 'none';
+  document.getElementById('productLabel').innerText = "Selecionar Imagem de Alta Qualidade";
+  ['pName','pPrice','pCategory','pSizes','pColors','pDesc','pImgInput'].forEach(id => document.getElementById(id).value = '');
+  
+  render(); salvarDadosNoServidor();
+}
+
+function deleteProduct(i) {
+  if (!confirm(`Remover "${products[i].name}" do estoque?`)) return;
+  products.splice(i, 1); render(); salvarDadosNoServidor();
+}
+
+function renderEditorProductList() {
+  document.getElementById('editorProductList').innerHTML = products.length === 0
+    ? '<div style="color:var(--muted);font-size:11px;text-align:center;width:100%;">Nenhum produto cadastrado.</div>'
+    : products.map((p, i) => `
+        <div class="editor-product-item">
+          <span>${p.name} <small style="color:var(--primary); font-weight:700;">(${p.category||'Geral'})</small></span>
+          <button class="delete-prod-btn" onclick="deleteProduct(${i})">Remover</button>
+        </div>`).join('');
+}
+
+async function carregarDadosDoServidor() {
+  if (!nomeDaLoja) { document.getElementById("loadingStatus").innerHTML = "❌ Rota inválida (?loja=nome)"; return; }
+  try {
+    const response = await fetch(`/api/github?caminho=Clientes/CAT${nomeDaLoja}.json`, { method: "GET" });
+    if (!response.ok) throw new Error("Inexistente");
+    const dadosGit = await response.json(); window.shaAtual = dadosGit.sha;
+
+    const conteudo = JSON.parse(decodeURIComponent(escape(atob(dadosGit.content))));
+    
+    config = { ...config, ...conteudo.config };
+    products = conteudo.products || [];
+    if(!config.banners) config.banners = [];
+
+    document.getElementById('loadingStatus').style.display = 'none';
+    document.getElementById('catalog').style.display = 'grid';
+    render();
+  } catch (erro) {
+    document.getElementById('catalog').style.display = 'none';
+    document.getElementById("loadingStatus").innerHTML = `
+      <div style="padding:24px;text-align:center;">
+        <h3 style="color:var(--primary);margin-bottom:12px;">Instância Pronta para Inicialização 🚀</h3>
+        <p style="font-size:13px;color:var(--text);margin-bottom:18px;">Sub-rota identificada para: <strong>${nomeDaLoja}</strong></p>
+        <button class="btn primary" onclick="openEditor()">⚙️ Criar Ambiente Agora</button>
+      </div>`;
+  }
+}
+
+async function salvarDadosNoServidor() {
+  if (!nomeDaLoja) return toast("Identificador da loja ausente.", "error");
+  const btn = document.getElementById('btnMasterSave');
+  if(btn) { btn.disabled = true; btn.textContent = "Sincronizando Datacenter... ⏳"; }
+
+  const conteudoBase64 = btoa(unescape(encodeURIComponent(JSON.stringify({ config, products }, null, 2))));
+  try {
+    const response = await fetch(`/api/github?caminho=Clientes/CAT${nomeDaLoja}.json`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        metodo: "PUT",
+        corpo: { message: `Build: ${nomeDaLoja}`, content: conteudoBase64, sha: window.shaAtual || undefined }
+      })
+    });
+    if (!response.ok) throw new Error("Erro HTTP.");
+    const resultado = await response.json();
+    window.shaAtual = resultado.content?.sha;
+    toast("Servidor sincronizado com sucesso! ✨", "success");
+    editorDirty = false;
+  } catch (erro) {
+    toast("Erro ao tentar persistir dados: " + erro.message, "error");
+  } finally {
+    if(btn) { btn.disabled = false; btn.textContent = "💾 Consolidar Alterações"; }
+  }
+}
+
+carregarDadosDoServidor();
 </script>
 </body>
 </html>
