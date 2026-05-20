@@ -169,11 +169,7 @@ header{
 
 .modal-img-container{width:100%;height:100%;min-height:400px;background:#050508;overflow:hidden;position:relative;}
 .modal-img-container img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease;}
-.modal-img-container img:hover{transform:scale(1.15);} /* Zoom Inteligente solicitado */
-
-.modal-info-pane{padding:32px;display:flex;flex-direction:column;position:relative;}
-.modal-close-btn{position:absolute;top:20px;right:24px;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;transition:var(--transition);}
-.modal-close-btn:hover{color:#fff;}
+.modal-img-container img:hover{transform:scale(1.15);}
 
 /* VARIANTES VISUAIS NUVEMSHOP */
 .variant-section{margin-top:20px;}
@@ -208,7 +204,7 @@ header{
 .field{margin-bottom:20px;background:rgba(255,255,255,0.01);border:1px solid var(--border);padding:14px;border-radius:16px;transition:var(--transition);}
 .field:focus-within{border-color:var(--primary);background:rgba(255,0,60,0.01);box-shadow:0 0 15px rgba(255,0,60,0.05);}
 .field label{display:block;font-size:10px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--primary);margin-bottom:8px;}
-.field input[type="text"],.field textarea,.field select{width:100%;padding:4px 0 0 0;border:none;background:transparent;color:#fff;font-size:14px;font-weight:500;outline:none;}
+.field input[type="text"],.field input[type="password"],.field textarea,.field select{width:100%;padding:4px 0 0 0;border:none;background:transparent;color:#fff;font-size:14px;font-weight:500;outline:none;}
 .field select option{background:#101015;color:#fff;}
 .field input::placeholder, .field textarea::placeholder{color:rgba(255,255,255,0.25);}
 
@@ -310,6 +306,7 @@ header{
 <div class="catalog mode-grid" id="catalog" style="display:none;"></div>
 <div id="noResults">Nenhum item localizado por aqui 😕</div>
 
+<!-- MODAL DE PRODUTO -->
 <div class="modal-overlay" id="productModal" onclick="closeProductModal(event)">
   <div class="modal-card" onclick="event.stopPropagation()">
     <div class="modal-img-container">
@@ -333,6 +330,23 @@ header{
       </div>
 
       <button class="panel-save-btn" style="width:100%;margin-top:auto;" onclick="addSelectedToCart()">🛒 Adicionar à Sacola</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE AUTENTICAÇÃO LIMPO (SUBSTITUTO DO PROMPT) -->
+<div class="modal-overlay" id="authModal" onclick="closeAuthModal(event)">
+  <div class="modal-card" style="max-width:380px; text-align:center;" onclick="event.stopPropagation()">
+    <div class="modal-info-pane" style="padding:32px;">
+      <h3 class="panel-title" style="font-size:22px; margin-bottom:18px;">Autenticação</h3>
+      <div class="field">
+        <label>Chave do Console Admin</label>
+        <input id="authPasswordInput" type="password" placeholder="Digite sua senha..." style="text-align:center; letter-spacing:3px;" onkeydown="if(event.key==='Enter') submitAuth()">
+      </div>
+      <div style="display:flex; gap:10px; margin-top:10px;">
+        <button class="btn" style="flex:1; justify-content:center;" onclick="closeAuthModal(null)">Cancelar</button>
+        <button class="btn primary" style="flex:1; justify-content:center;" onclick="submitAuth()">Acessar</button>
+      </div>
     </div>
   </div>
 </div>
@@ -519,7 +533,6 @@ if (!nomeDaLoja) {
   if (lastPart && lastPart !== "" && !lastPart.includes('.html')) nomeDaLoja = lastPart;
 }
 
-// Inicialização Estendida do JSON com suporte a Cores, Tamanhos e Animações de Logo
 let config = { brand:"STORE", bio:"", whats:"5511999999999", instagram:"", delivery:"", color:"#ff003c", bg:"", layout:"grid", logoAnim:"none", banners:[] };
 let products = [];
 let cart = [];
@@ -527,7 +540,6 @@ let activeFilter = "todos";
 let searchTerm = "";
 let editorDirty = false;
 
-// Estado de seleção interna do Modal ativo
 let currentModalProductIndex = null;
 let selectedColor = null;
 let selectedSize = null;
@@ -598,7 +610,6 @@ function setThemeLayout(mode) {
   editorDirty = true;
 }
 
-// ENGINE DE OPERAÇÃO DO MODAL DE PRODUTO (ZOOM & ATRIBUTOS VARIÁVEIS)
 function openProductModal(idx) {
   const p = products[idx];
   currentModalProductIndex = idx;
@@ -611,7 +622,6 @@ function openProductModal(idx) {
   document.getElementById('modalDesc').textContent = p.desc || 'Toque para conferir mais informações.';
   document.getElementById('modalPrice').textContent = "R$ " + parseFloat(String(p.price).replace(',','.')).toFixed(2).replace('.',',');
 
-  // Renderização Dinâmica de Cores (Estilo Nuvemshop)
   const colorsContainer = document.getElementById('modalColors');
   if (p.colors && p.colors.trim() !== "") {
     document.getElementById('modalColorsSection').style.display = "block";
@@ -623,7 +633,6 @@ function openProductModal(idx) {
     document.getElementById('modalColorsSection').style.display = "none";
   }
 
-  // Renderização Dinâmica de Tamanhos
   const sizesContainer = document.getElementById('modalSizes');
   if (p.sizes && p.sizes.trim() !== "") {
     document.getElementById('modalSizesSection').style.display = "block";
@@ -659,7 +668,6 @@ function addSelectedToCart() {
   if (p.colors && p.colors.trim() !== "" && !selectedColor) { toast("Selecione uma Cor disponível!", "error"); return; }
   if (p.sizes && p.sizes.trim() !== "" && !selectedSize) { toast("Selecione o seu Tamanho!", "error"); return; }
 
-  // Estrutura do item com variações injetadas no carrinho
   const cartItem = {
     ...p,
     chosenColor: selectedColor || null,
@@ -763,7 +771,6 @@ function render() {
   const logo = document.getElementById('brandLogo');
   if (config.logo) { 
     logo.src = config.logo; logo.style.display = 'block';
-    // Aplicação das Animações Customizadas solicitadas
     logo.className = "";
     if (config.logoAnim && config.logoAnim !== "none") { logo.classList.add(`anim-${config.logoAnim}`); }
   } else { 
@@ -813,8 +820,27 @@ function switchTab(tab) {
   document.getElementById('tabBtn-'+tab).classList.add('active');
 }
 
+/* NOVO FLUXO DE ENTRADA DO EDITOR (UI CUSTOMIZADA) */
 function openEditor() {
-  const pass = prompt("Chave de Autenticação:"); if (pass !== PASSWORD) { if (pass !== null) toast("Credencial inválida.", "error"); return; }
+  document.getElementById('authPasswordInput').value = "";
+  document.getElementById('authModal').style.display = "flex";
+  setTimeout(() => document.getElementById('authPasswordInput').focus(), 150);
+}
+
+function closeAuthModal(e) {
+  if(!e || e.target === document.getElementById('authModal')) {
+    document.getElementById('authModal').style.display = "none";
+  }
+}
+
+function submitAuth() {
+  const pass = document.getElementById('authPasswordInput').value;
+  if (pass !== PASSWORD) {
+    toast("Credencial inválida.", "error");
+    return;
+  }
+  
+  document.getElementById('authModal').style.display = "none";
   
   document.getElementById('brandInput').value = config.brand || "";
   document.getElementById('bioInput').value = config.bio || "";
@@ -824,7 +850,8 @@ function openEditor() {
   document.getElementById('colorInput').value = config.color || "#ff003c";
   document.getElementById('logoAnimSelect').value = config.logoAnim || "none";
   
-  editorDirty = false; document.getElementById('panel').classList.add('active');
+  editorDirty = false; 
+  document.getElementById('panel').classList.add('active');
 }
 
 function closeEditor() {
