@@ -34,6 +34,13 @@
       "category": "Computadores",
       "img": "https://images.unsplash.com/photo-1587202372616-b43abea06c2a?w=900&q=80",
       "desc": "PC gamer high-end RGB"
+    },
+    {
+      "name": "Teste",
+      "price": "10",
+      "category": "Teste",
+      "img": "",
+      "desc": "Teste"
     }
   ]
 }
