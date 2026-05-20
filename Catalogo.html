@@ -164,6 +164,18 @@ header{
   width:100%;max-width:760px;display:grid;grid-template-columns:1fr 1.1fr;
   overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.8);animation:scaleIn 0.35s cubic-bezier(0.16,1,0.3,1);
 }
+
+/* Modificação específica para a caixinha de senha compacta */
+.modal-card.password-card {
+  display: block;
+  max-width: 400px;
+  padding: 32px;
+  background: rgba(12, 12, 18, 0.7);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 @keyframes scaleIn{from{opacity:0;transform:scale(0.95) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
 
@@ -208,7 +220,7 @@ header{
 .field{margin-bottom:20px;background:rgba(255,255,255,0.01);border:1px solid var(--border);padding:14px;border-radius:16px;transition:var(--transition);}
 .field:focus-within{border-color:var(--primary);background:rgba(255,0,60,0.01);box-shadow:0 0 15px rgba(255,0,60,0.05);}
 .field label{display:block;font-size:10px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--primary);margin-bottom:8px;}
-.field input[type="text"],.field textarea,.field select{width:100%;padding:4px 0 0 0;border:none;background:transparent;color:#fff;font-size:14px;font-weight:500;outline:none;}
+.field input[type="text"],.field input[type="password"],.field textarea,.field select{width:100%;padding:4px 0 0 0;border:none;background:transparent;color:#fff;font-size:14px;font-weight:500;outline:none;}
 .field select option{background:#101015;color:#fff;}
 .field input::placeholder, .field textarea::placeholder{color:rgba(255,255,255,0.25);}
 
@@ -263,6 +275,7 @@ header{
 
 @media(max-width:700px){
   .modal-card{grid-template-columns:1fr;max-height:90vh;overflow-y:auto;}
+  .modal-card.password-card{max-width:100%;}
   .modal-img-container{min-height:260px;}
   .panel{width:100%;right:-100%;}
   .cart-panel{width:calc(100vw - 32px);left:16px;bottom:16px;}
@@ -309,6 +322,18 @@ header{
 <div id="loadingStatus">⚡ Sincronizando infraestrutura...</div>
 <div class="catalog mode-grid" id="catalog" style="display:none;"></div>
 <div id="noResults">Nenhum item localizado por aqui 😕</div>
+
+<div class="modal-overlay" id="passwordModal" onclick="closePasswordModal(event)">
+  <div class="modal-card password-card" onclick="event.stopPropagation()">
+    <button class="modal-close-btn" onclick="closePasswordModal(null)">×</button>
+    <div class="panel-title" style="margin-bottom:20px; text-align:center; display:block;">Acesso Restrito</div>
+    <div class="field">
+      <label>Chave do Console Admin</label>
+      <input id="adminPasswordInput" type="password" placeholder="••••••••" onkeydown="if(event.key === 'Enter') submitAdminPassword()">
+    </div>
+    <button class="panel-save-btn" style="width:100%; margin-top:10px;" onclick="submitAdminPassword()">🔑 Autenticar Instância</button>
+  </div>
+</div>
 
 <div class="modal-overlay" id="productModal" onclick="closeProductModal(event)">
   <div class="modal-card" onclick="event.stopPropagation()">
@@ -816,8 +841,24 @@ function switchTab(tab) {
   document.getElementById('tabBtn-'+tab).classList.add('active');
 }
 
+// ABRE O NOVO MODAL CUSTOMIZADO
 function openEditor() {
-  const pass = prompt("Chave de Autenticação:");
+  document.getElementById('adminPasswordInput').value = "";
+  document.getElementById('passwordModal').style.display = "flex";
+  // Autofocus inteligente no input de senha
+  setTimeout(() => { document.getElementById('adminPasswordInput').focus(); }, 100);
+}
+
+function closePasswordModal(e) {
+  if(!e || e.target === document.getElementById('passwordModal')) {
+    document.getElementById('passwordModal').style.display = "none";
+  }
+}
+
+// PROCESSA A AUTENTICAÇÃO VINDA DO MODAL PREMIUM
+function submitAdminPassword() {
+  const pass = document.getElementById('adminPasswordInput').value;
+  document.getElementById('passwordModal').style.display = "none";
   
   if (pass === PASS_DEMO) {
     isDemoMode = true;
@@ -828,7 +869,7 @@ function openEditor() {
     toast("Acesso Root Administrador concedido.", "success");
     document.querySelector('.panel-title').textContent = "Console Admin";
   } else {
-    if (pass !== null) toast("Credencial inválida.", "error");
+    if (pass !== "") toast("Credencial inválida.", "error");
     return;
   }
   
@@ -840,7 +881,8 @@ function openEditor() {
   document.getElementById('colorInput').value = config.color || "#ff003c";
   document.getElementById('logoAnimSelect').value = config.logoAnim || "none";
   
-  editorDirty = false; document.getElementById('panel').classList.add('active');
+  editorDirty = false; 
+  document.getElementById('panel').classList.add('active');
 }
 
 function closeEditor() {
