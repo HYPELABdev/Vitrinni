@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>HYPELAB MINISITE PRO</title>
 
-<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -35,9 +34,6 @@ body{
     background: var(--bg);
     color: var(--text);
     overflow-x: hidden;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
     min-height: 100vh;
 }
 
@@ -60,7 +56,6 @@ header{
     transition: all 0.3s ease;
 }
 
-/* Modificadores de Alinhamento via JS */
 header.align-center {
     display: flex;
     flex-direction: column;
@@ -282,7 +277,6 @@ header.align-center #brandLogo {
     margin-bottom: 16px;
 }
 
-/* INTERATIVIDADE: Seletores Visuais de Tamanho/Cor */
 .product-variants {
     display: flex;
     flex-direction: column;
@@ -316,18 +310,7 @@ header.align-center #brandLogo {
     color: #000;
     border-color: #fff;
 }
-.color-dot {
-    width: 18px;
-    height: 18px;
-    border-radius: 99px;
-    cursor: pointer;
-    border: 2px solid transparent;
-}
-.color-dot.active {
-    border-color: #fff;
-}
 
-/* Preço Gigante Neon */
 .price{
     color: var(--neon-green);
     font-weight: 800;
@@ -448,7 +431,6 @@ header.align-center #brandLogo {
     font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;
 }
 
-/* Custom File Upload Styling (Estilo App) */
 .file-upload-container {
     position: relative;
     width: 100%;
@@ -502,25 +484,21 @@ input[type="color"] { height: 44px; padding: 4px; cursor: pointer; }
     </div>
 </header>
 
-<!-- Seção Banners Slider -->
 <div class="banner-section" id="bannerSection">
     <div class="banner-wrapper" id="bannerWrapper"></div>
 </div>
 
-<!-- Barra de Categorias Dinâmica -->
 <div class="category-container" id="categoryContainer"></div>
 
 <div id="loadingStatus">⚡ Sincronizando com a Infraestrutura Hypelab...</div>
 <div class="catalog" id="catalog" style="display:none;"></div>
 
-<!-- Carrinho Mobile Premium -->
 <div class="cart-floating-card" id="cartCard">
     <h4><span>🛒 Sacola Ativa</span> <span id="cartCount" style="color: var(--primary)">0</span></h4>
     <div class="cart-items-container" id="cartItems"></div>
     <div class="total" id="total">Total: R$ 0,00</div>
 </div>
 
-<!-- Painel Admin -->
 <div class="panel" id="panel">
     <div class="panel-header">
         <h3>Design System & Items</h3>
@@ -590,18 +568,18 @@ input[type="color"] { height: 44px; padding: 4px; cursor: pointer; }
 
 <script>
 const PASSWORD = "KALLI420";
-const urlParams = new URLSearchParams(window.location.search);
-const nomeDaLoja = urlParams.get('loja');
 
-// Estrutura Base em conformidade estrita com o seu JSON
+// PATH ROUTING LOGIC: Mantém o link limpo e extrai o nome do repositório/loja nativamente
+const nomeDaLoja = window.location.pathname.replace(/^\/|\/$/g, '').trim();
+
 let config = {
     brand: "HYPELAB",
     logo: "",
     whats: "5511999999999",
     color: "#ff0000",
     bg: "#050505",
-    logoAlign: "center", // Fallback seguro
-    banners: []          // Fallback seguro
+    logoAlign: "center", 
+    banners: []          
 };
 
 let products = [];
@@ -610,21 +588,20 @@ let currentCategory = "Todos";
 let tempLogoBase64 = "";
 let tempProductBase64 = "";
 
-// FUNÇÕES DE DOWNLOAD/UPLOAD SEM ALTERAR AS ROTAS VERCEL
+// GET: Clientes/CAT[nomedaloja].json
 async function carregarDadosDoServidor() {
-    if (!nomeDaLoja) {
-        document.getElementById("loadingStatus").innerHTML = "❌ Setup Incompleto: Insira <code>?loja=NOME</code> na URL.";
+    if (!nomeDaLoja || nomeDaLoja === "index.html" || nomeDaLoja === "") {
+        document.getElementById("loadingStatus").innerHTML = "❌ Link inválido. Acesse a URL correta da sua loja.";
         return;
     }
     try {
-        const response = await fetch(`/api/github?caminho=Clientes/${nomeDaLoja}.json`);
+        const response = await fetch(`/api/github?caminho=Clientes/CAT${nomeDaLoja}.json`);
         if (!response.ok) throw new Error("Novo registro.");
         
         const dados = await response.json();
         config = dados.config || config;
         products = dados.products || [];
         
-        // Assegura injeção de fallbacks se chaves não existirem no arquivo carregado
         if(!config.logoAlign) config.logoAlign = "center";
         if(!config.banners) config.banners = [];
 
@@ -638,15 +615,16 @@ async function carregarDadosDoServidor() {
     }
 }
 
+// POST: Clientes/CAT[nomedaloja].json
 async function salvarDadosNoServidor() {
     if (!nomeDaLoja) return alert("ID do catálogo ausente.");
     const btnConfig = document.getElementById("btnSaveConfig");
     const btnProd = document.getElementById("btnAddProduct");
-    btnConfig.innerText = "Sincronizando Nuvem... ⏳";
-    btnProd.innerText = "Sincronizando Nuvem... ⏳";
+    if(btnConfig) btnConfig.innerText = "Sincronizando Nuvem... ⏳";
+    if(btnProd) btnProd.innerText = "Sincronizando Nuvem... ⏳";
 
     try {
-        await fetch(`/api/github?caminho=Clientes/${nomeDaLoja}.json`, {
+        await fetch(`/api/github?caminho=Clientes/CAT${nomeDaLoja}.json`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ config, products })
@@ -654,12 +632,12 @@ async function salvarDadosNoServidor() {
     } catch (erro) {
         console.error("Erro sincronia: " + erro.message);
     } finally {
-        btnConfig.innerText = "Salvar Configurações";
-        btnProd.innerText = "Cadastrar Produto";
+        if(btnConfig) btnConfig.innerText = "Salvar Configurações";
+        if(btnProd) btnProd.innerText = "Cadastrar Produto";
     }
 }
 
-// CONVERSOR REATIVO DE IMAGEM DO SMARTPHONE (FileReader Engine)
+// CONVERSOR REATIVO DE IMAGEM DO SMARTPHONE
 function uploadConverter(input, target) {
     const file = input.files[0];
     if (!file) return;
@@ -674,7 +652,7 @@ function uploadConverter(input, target) {
             tempProductBase64 = base64String;
             document.getElementById("productUploadLabel").innerText = "✓ Imagem Carregada";
         } else if (target === 'banner') {
-            config.banners.push(base64String); // Armazena string limpa direto no array de config
+            config.banners.push(base64String);
             document.getElementById("bannerUploadLabel").innerText = "✓ Banner Adicionado";
             render();
             salvarDadosNoServidor();
@@ -685,7 +663,6 @@ function uploadConverter(input, target) {
 
 /* RENDER ENGINE VISUAL */
 function render(){
-    // Manipulação dinâmica de alinhamento
     const header = document.getElementById("mainHeader");
     header.className = config.logoAlign === 'left' ? 'align-left' : 'align-center';
 
@@ -698,7 +675,6 @@ function render(){
         document.getElementById("brandLogo").style.display = "none";
     }
 
-    // CSS Variables Injection
     document.documentElement.style.setProperty('--primary', config.color);
     document.documentElement.style.setProperty('--primary-glow', config.color + '40');
 
@@ -729,7 +705,6 @@ function render(){
         catalog.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px 0;">Nenhum item localizado nesta seção.</div>`;
     } else {
         catalog.innerHTML = filteredProducts.map((p, i) => {
-            // Localiza índice real no array global
             const realIndex = products.indexOf(p);
             return `
                 <div class="card">
@@ -740,7 +715,6 @@ function render(){
                         <h4>${p.name}</h4>
                         <p class="product-desc">${p.desc || 'Sem detalhes técnicos.'}</p>
                         
-                        <!-- Variações Interativas Mockadas para visual do cliente -->
                         <div class="product-variants">
                             <div class="variant-title">Opções Disponíveis</div>
                             <div class="variant-options">
@@ -828,7 +802,7 @@ function addProduct(){
         name: pName.value,
         price: pPrice.value.replace(',', '.'),
         category: pCategory.value || "Geral",
-        img: tempProductBase64, // Grava a string Base64 capturada pelo upload nativo
+        img: tempProductBase64,
         desc: pDesc.value
     });
 
@@ -843,7 +817,7 @@ function addProduct(){
 }
 
 function deleteProduct(i){
-    if(confirm("Confirmar exclusão deste produto do banco de dados remetente?")){
+    if(confirm("Confirmar exclusão deste produto?")){
         products.splice(i, 1);
         render();
         salvarDadosNoServidor();
@@ -890,7 +864,7 @@ function openEditor(){
     document.getElementById("panel").classList.add("active");
 }
 
-// Inicializa a escuta assíncrona
+// Boot do Minisite
 carregarDadosDoServidor();
 </script>
 
