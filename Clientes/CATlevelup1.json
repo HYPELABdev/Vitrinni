@@ -1,0 +1,15 @@
+{
+  "config": {
+    "brand": "STORE",
+    "bio": "",
+    "whats": "5511999999999",
+    "instagram": "",
+    "delivery": "",
+    "color": "#00f5ff",
+    "bg": "#05090a",
+    "layout": "grid",
+    "logoAnim": "none",
+    "banners": []
+  },
+  "products": []
+}
