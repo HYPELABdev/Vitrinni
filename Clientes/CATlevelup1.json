@@ -8,7 +8,8 @@
     "color": "#00e87a",
     "bg": "",
     "layout": "carousel",
-    "logoAnim": "float",
+    "logoAnim": "spin-slow",
+    "txtAnim": "neon",
     "banners": [
       "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1779346390919.jpg"
     ],
