@@ -47,20 +47,39 @@ header{
   height:48px;width:48px;object-fit:cover;border-radius:14px;
   border:1px solid var(--border);display:none;
 }
-/* Keyframes de Animação do Logo */
+
+/* KEYFRAMES EXPANDIDOS DE ANIMAÇÃO DO LOGO (IMAGEM) */
 .anim-float{animation:logoFloat 3s ease-in-out infinite;}
 .anim-pulse{animation:logoPulse 2s ease-in-out infinite;}
 .anim-glow{animation:logoGlow 2.5s ease-in-out infinite; border-color:var(--primary) !important;}
+.anim-spin-slow{animation:logoSpin 12s linear infinite;}
+.anim-heartbeat{animation:logoHeart 1.4s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;}
+.anim-glitch{animation:logoGlitch 4s linear infinite;}
 
 @keyframes logoFloat{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-5px);} }
 @keyframes logoPulse{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.06);} }
 @keyframes logoGlow{ 0%,100%{box-shadow:0 0 4px var(--primary-glow);} 50%{box-shadow:0 0 16px var(--primary);} }
+@keyframes logoSpin{ 100%{transform:rotate(360deg);} }
+@keyframes logoHeart{ 0%,100%{transform:scale(1);} 25%{transform:scale(1.08);} 40%{transform:scale(1.03);} 55%{transform:scale(1.12);} }
+@keyframes logoGlitch{ 0%,90%,100%{transform:skew(0deg);filter:hue-rotate(0deg);} 92%{transform:skew(5deg);filter:hue-rotate(90deg);} 95%{transform:skew(-5deg);filter:hue-rotate(180deg);} 98%{transform:skew(3deg);filter:hue-rotate(270deg);} }
 
-.meta-store-info{display:flex;flex-direction:column;}
-#brandName{
+/* KEYFRAMES EXPANDIDOS DE ANIMAÇÃO DO TEXTO DO LOGO */
+#brandName {
   font-family:var(--font-display);font-size:32px;letter-spacing:1px;line-height:1;
   background:linear-gradient(135deg,#ffffff 50%,var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  transition: var(--transition);
 }
+.txt-anim-neon{animation:txtNeon 2s ease-in-out infinite alternate;}
+.txt-anim-gradient{background: linear-gradient(90deg, #fff, var(--primary), #fff, var(--muted)) !important; background-size: 300% 100% !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; animation: txtGrad 4s linear infinite;}
+.txt-anim-bounce{animation:txtBounce 3s ease-in-out infinite;}
+.txt-anim-italic{animation:txtItalic 2.5s ease-in-out infinite alternate;}
+
+@keyframes txtNeon{ 0%,100%{filter:drop-shadow(0 0 1px rgba(255,255,255,0.2));} 50%{filter:drop-shadow(0 0 8px var(--primary));} }
+@keyframes txtGrad{ 0%{background-position:0% 50%;} 100%{background-position:300% 50%;} }
+@keyframes txtBounce{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-3px);} }
+@keyframes txtItalic{ 0%{transform:skewX(0deg);filter:brightness(1);} 100%{transform:skewX(-10deg);filter:brightness(1.2);} }
+
+.meta-store-info{display:flex;flex-direction:column;}
 #brandBio{font-size:11px;color:var(--muted);margin-top:4px;font-weight:500;max-width:280px;display:none;}
 .header-actions{display:flex;align-items:center;gap:12px;}
 
@@ -191,15 +210,22 @@ header{
 }
 .size-pill.selected{background:#fff;color:#000;border-color:#fff;}
 
-/* DASHBOARD PANEL ADMIN DESIGN */
-.panel{position:fixed;right:-480px;top:0;width:450px;height:100vh;background:rgba(10,10,14,0.94);backdrop-filter:blur(35px);-webkit-backdrop-filter:blur(35px);z-index:500;border-left:1px solid var(--border);display:flex;flex-direction:column;transition:right 0.4s cubic-bezier(0.16,1,0.3,1);box-shadow:-20px 0 50px rgba(0,0,0,0.8);}
+/* DASHBOARD PANEL ADMIN DESIGN - CORRIGIDO ERRO DE FLUXO E CORTE MOBILE */
+.panel{
+  position:fixed;right:-480px;top:0;width:450px;height:100vh;
+  background:rgba(10,10,14,0.96);backdrop-filter:blur(35px);-webkit-backdrop-filter:blur(35px);
+  z-index:500;border-left:1px solid var(--border);display:flex;flex-direction:column;
+  transition:right 0.4s cubic-bezier(0.16,1,0.3,1);box-shadow:-20px 0 50px rgba(0,0,0,0.8);
+}
 .panel.active{right:0;}
-.panel-header{padding:24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.panel-header{padding:24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
 .panel-title{font-family:var(--font-display);font-size:26px;letter-spacing:1px;background:linear-gradient(90deg,#fff,var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.panel-tabs{display:flex;padding:6px;background:rgba(0,0,0,0.3);margin:0 24px;border-radius:14px;border:1px solid var(--border);}
+.panel-tabs{display:flex;padding:6px;background:rgba(0,0,0,0.3);margin:0 24px;border-radius:14px;border:1px solid var(--border);flex-shrink:0;}
 .panel-tab{flex:1;padding:10px;background:none;border:none;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;transition:var(--transition);border-radius:10px;}
 .panel-tab.active{color:#fff;background:rgba(255,255,255,0.06);box-shadow:0 2px 8px rgba(0,0,0,0.4);}
-.panel-body{flex:1;overflow-y:auto;padding:24px 24px 120px 24px;}
+
+/* Padding-bottom agressivo para evitar que o botão de salvar quebre sob a barra mobile */
+.panel-body{flex:1;overflow-y:auto;padding:24px 24px 160px 24px;position:relative;}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
 
@@ -225,14 +251,18 @@ header{
 .upload-box input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;}
 .upload-preview-mini{height:44px;width:auto;object-fit:contain;margin-top:10px;border-radius:8px;display:none;border:1px solid var(--border);}
 
-/* NOVO DESIGN DO BOTÃO DE SALVAR CONSOLIDADO */
-.panel-footer-sticky{position:absolute;bottom:0;left:0;right:0;padding:22px 24px;background:linear-gradient(to top, #060608 85%, transparent);border-top:1px solid var(--border);z-index:10;}
-.panel-save-btn{
-  width:100%;background:linear-gradient(135deg, var(--primary) 0%, #d60032 100%);color:#fff;border:1px solid rgba(255,255,255,0.1);padding:16px;
-  font-weight:800;font-size:14px;letter-spacing:1px;text-transform:uppercase;border-radius:16px;cursor:pointer;transition:0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow:0 12px 24px var(--primary-glow), inset 0 1px 0 rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;gap:10px;
+/* BOTÃO DE SALVAR REESTRUTURADO: SEM SUPORTAR QUEBRA NO MOBILE */
+.panel-footer-sticky{
+  position:absolute;bottom:0;left:0;right:0;padding:24px;
+  background:linear-gradient(to top, #09090d 80%, transparent);
+  border-top:1px solid var(--border);z-index:90;
 }
-.panel-save-btn:hover{background:linear-gradient(135deg, #ff1a50 0%, var(--primary) 100%);transform:translateY(-2px);box-shadow:0 16px 32px rgba(255,0,60,0.35);border-color:rgba(255,255,255,0.25);}
+.panel-save-btn{
+  width:100%;background:linear-gradient(135deg, var(--primary) 0%, #cc0030 100%);color:#fff;border:1px solid rgba(255,255,255,0.15);padding:16px;
+  font-weight:800;font-size:14px;letter-spacing:1px;text-transform:uppercase;border-radius:16px;cursor:pointer;transition:0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow:0 12px 28px var(--primary-glow), inset 0 1px 0 rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.panel-save-btn:hover{background:linear-gradient(135deg, #ff1a50 0%, var(--primary) 100%);transform:translateY(-2px);box-shadow:0 16px 35px rgba(255,0,60,0.4);border-color:rgba(255,255,255,0.3);}
 .panel-save-btn:active{transform:translateY(0);box-shadow:0 6px 12px var(--primary-glow);}
 
 .editor-product-list,.banner-manager-list{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
@@ -263,12 +293,14 @@ header{
 #noResults{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;display:none;}
 #backToTop{position:fixed;bottom:24px;left:24px;width:48px;height:48px;border-radius:14px;background:var(--surface2);border:1px solid var(--border);color:#fff;font-size:18px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:150;}
 
+/* GRADE DE PRESETS ULTRA-STREETWEAR */
 .theme-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:8px 0;}
 .theme-card{border:1px solid var(--border);border-radius:12px;padding:12px;background:rgba(255,255,255,0.02);cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:10px;}
+.theme-card:hover{border-color:var(--border-hover);background:rgba(255,255,255,0.04);}
 .theme-color-dots{display:flex;gap:4px;}.theme-dot{width:12px;height:12px;border-radius:50%;}
 .theme-card span{font-size:12px;font-weight:700;}
 
-/* NOVO DESIGN: CAIXA INTERNA DE SEGURANÇA (MODAL AUTH PREMIUM) */
+/* CAIXA INTERNA DE SEGURANÇA (MODAL AUTH PREMIUM) */
 .auth-overlay{position:fixed;inset:0;background:rgba(4,4,6,0.92);backdrop-filter:blur(24px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;}
 .auth-box{background:#0c0c12;border:1px solid rgba(255,255,255,0.08);border-radius:24px;width:100%;max-width:380px;padding:32px;box-shadow:0 30px 60px rgba(0,0,0,0.8);text-align:center;animation:scaleIn 0.3s cubic-bezier(0.16,1,0.3,1);}
 .auth-title{font-family:var(--font-display);font-size:28px;letter-spacing:1px;margin-bottom:6px;background:linear-gradient(90deg,#fff,var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
@@ -373,7 +405,6 @@ header{
 <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- NOVO ELEMENTO EM SUBSTITUIÇÃO AO PROMPT DO NAVEGADOR -->
 <div class="auth-overlay" id="authModal">
   <div class="auth-box">
     <h3 class="auth-title">Autenticação</h3>
@@ -469,7 +500,7 @@ header{
       </div>
       <div class="field">
         <label>Descrição Detalhada</label>
-        <textarea id="pDesc" rows="2" placeholder="Tamanhos em estoque, detalhes do tecido..."></textarea>
+        <textarea id="pDesc" rows="2" placeholder="TamanHum em estoque, detalhes do tecido..."></textarea>
       </div>
       <button class="btn primary" id="btnAddProduct" style="width:100%;justify-content:center;margin-bottom:24px;" onclick="addProduct()">＋ Publicar Produto</button>
       
@@ -492,17 +523,30 @@ header{
       </div>
 
       <div class="field">
-        <label>Animação de Logotipo Dinâmica</label>
+        <label>Animação Física do Logo (Imagem)</label>
         <select id="logoAnimSelect" onchange="config.logoAnim=this.value; render(); editorDirty=true;">
-          <option value="none">Sem Animação (Estático)</option>
+          <option value="none">Estático (Sem Animação)</option>
           <option value="float">Flutuação Fluida (Float)</option>
-          <option value="pulse">Pulsação Orgânica (Pulse)</option>
-          <option value="glow">Aura Neon Pulsante (Glow)</option>
+          <option value="pulse">Pulsação Streetwear (Pulse)</option>
+          <option value="glow">Aura Neon Dinâmica (Glow)</option>
+          <option value="spin-slow">Rotação Infinite Glow (Spin)</option>
+          <option value="heartbeat">Batimento Orgânico (Heartbeat)</option>
+          <option value="glitch">Distorção Cyber (Glitch)</option>
         </select>
       </div>
 
-      <!-- PALETA DE CORES EDITÁVEIS ALTAMENTE OTIMIZADA COM CORES STREETWEAR/NEON PREMIUM -->
-      <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:8px;letter-spacing:0.5px;">Presets Cromáticos</div>
+      <div class="field">
+        <label>Animação Estilizada do Texto (Marca)</label>
+        <select id="txtAnimSelect" onchange="config.txtAnim=this.value; render(); editorDirty=true;">
+          <option value="none">Texto Estático Padrão</option>
+          <option value="neon">Brilho Neon Pulsante</option>
+          <option value="gradient">Chroma Wave (Gradiente Animado)</option>
+          <option value="bounce">Salto Fluido Sutil</option>
+          <option value="italic">Itálico Orgânico Pulsante</option>
+        </select>
+      </div>
+
+      <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:8px;letter-spacing:0.5px;">Presets Cromáticos Premium</div>
       <div class="theme-grid">
         <div class="theme-card" onclick="aplicarTemaPreset('#ff003c','#060608')">
           <div class="theme-color-dots"><div class="theme-dot" style="background:#ff003c"></div><div class="theme-dot" style="background:#060608"></div></div><span>Infra Red</span>
@@ -519,13 +563,19 @@ header{
         <div class="theme-card" onclick="aplicarTemaPreset('#ffb800','#0a0804')">
           <div class="theme-color-dots"><div class="theme-dot" style="background:#ffb800"></div><div class="theme-dot" style="background:#0a0804"></div></div><span>Cyber Gold</span>
         </div>
+        <div class="theme-card" onclick="aplicarTemaPreset('#ff5a00','#080504')">
+          <div class="theme-color-dots"><div class="theme-dot" style="background:#ff5a00"></div><div class="theme-dot" style="background:#080504"></div></div><span>Sunset Volts</span>
+        </div>
+        <div class="theme-card" onclick="aplicarTemaPreset('#ff7ba9','#0d0609')">
+          <div class="theme-color-dots"><div class="theme-dot" style="background:#ff7ba9"></div><div class="theme-dot" style="background:#0d0609"></div></div><span>Pastel Pink</span>
+        </div>
         <div class="theme-card" onclick="aplicarTemaPreset('#ffffff','#0a0a0f')">
           <div class="theme-color-dots"><div class="theme-dot" style="background:#ffffff"></div><div class="theme-dot" style="background:#0a0a0f"></div></div><span>Monochrome</span>
         </div>
       </div>
 
       <div class="field" style="margin-top:14px;">
-        <label>Seletor Customizado de Cor</label>
+        <label>Ajuste Fino (Seletor Customizado)</label>
         <input type="color" id="colorInput" value="#ff003c" onchange="config.color=this.value;document.documentElement.style.setProperty('--primary', this.value)">
       </div>
 
@@ -579,7 +629,7 @@ header{
   setInterval(() => { (function() { return false; constructor('debugger')(); })(); }, 50);
 })();
 
-// CHAVES EM ARRAYS HEXADECIMAIS PARA DIFICULTAR LEITURA DIRETA POR STRINGS
+// CHAVES HEXADECIMAIS INTERNAS
 const _0x4c1a = [0x4b, 0x41, 0x4c, 0x4c, 0x49, 0x34, 0x32, 0x30]; // KALLI420
 const _0x2b8e = [0x48, 0x59, 0x50, 0x45, 0x34, 0x32, 0x30]; // HYPE420
 
@@ -593,13 +643,13 @@ if (!nomeDaLoja) {
   if (lastPart && lastPart !== "" && !lastPart.includes('.html')) nomeDaLoja = lastPart;
 }
 
-let config = { brand:"STORE", bio:"", whats:"5511999999999", instagram:"", delivery:"", color:"#ff003c", bg:"", layout:"grid", logoAnim:"none", banners:[] };
+let config = { brand:"STORE", bio:"", whats:"5511999999999", instagram:"", delivery:"", color:"#ff003c", bg:"", layout:"grid", logoAnim:"none", txtAnim:"none", banners:[] };
 let products = [];
 let cart = [];
 let activeFilter = "todos";
 let searchTerm = "";
 let editorDirty = false;
-let isDemoMode = false; // Flag para rastreamento de demonstração local
+let isDemoMode = false;
 
 let currentModalProductIndex = null;
 let selectedColor = null;
@@ -728,6 +778,7 @@ function aplicarTemaPreset(primary, bg) {
   document.documentElement.style.setProperty('--primary', primary);
   if(bg) document.body.style.backgroundImage = `linear-gradient(${bg}, ${bg})`;
   toast("Combinação cromática simulada!", "success");
+  editorDirty = true;
 }
 
 function setThemeLayout(mode) {
@@ -883,7 +934,7 @@ function renderCatalog() {
         <div class="card-content">
           <div class="card-category">${p.category || 'Geral'}</div>
           <div class="card-name">${p.name}</div>
-          <div class="card-desc">${p.desc || 'Toque para conferir mais informações e escolher variações.'}</div>
+          <div class="card-desc">${p.desc || 'Toque para conferir mais informações.'}</div>
           <div class="price">R$ ${pr}</div>
           <div class="actions">
             <button class="cartBtn" onclick="event.stopPropagation(); openProductModal(${realIdx})">Visualizar Opções</button>
@@ -894,8 +945,15 @@ function renderCatalog() {
 }
 
 function render() {
-  document.getElementById('brandName').textContent = (config.brand || "STORE").toUpperCase();
+  const nameEl = document.getElementById('brandName');
+  nameEl.textContent = (config.brand || "STORE").toUpperCase();
   
+  // APLICAÇÃO DE ANIMAÇÕES DO TEXTO DO LOGO
+  nameEl.className = "";
+  if(config.txtAnim && config.txtAnim !== "none") {
+    nameEl.classList.add(`txt-anim-${config.txtAnim}`);
+  }
+
   const bioEl = document.getElementById('brandBio');
   if (config.bio) { bioEl.textContent = config.bio; bioEl.style.display = 'block'; } else { bioEl.style.display = 'none'; }
   
@@ -955,7 +1013,6 @@ function switchTab(tab) {
   document.getElementById('tabBtn-'+tab).classList.add('active');
 }
 
-// MANIPULAÇÃO DA JANELA DE SENHA PREMIUM
 function triggerAuthModal() {
   document.getElementById('authKeyInput').value = "";
   document.getElementById('authModal').style.display = "flex";
@@ -993,6 +1050,7 @@ function openEditor() {
   document.getElementById('deliveryInput').value = config.delivery || "";
   document.getElementById('colorInput').value = config.color || "#ff003c";
   document.getElementById('logoAnimSelect').value = config.logoAnim || "none";
+  document.getElementById('txtAnimSelect').value = config.txtAnim || "none";
   
   if(config.logo) {
     document.getElementById('logoPreview').src = config.logo;
@@ -1029,6 +1087,7 @@ function saveConfig() {
   config.delivery = document.getElementById('deliveryInput').value.trim();
   config.color = document.getElementById('colorInput').value;
   config.logoAnim = document.getElementById('logoAnimSelect').value;
+  config.txtAnim = document.getElementById('txtAnimSelect').value;
   
   if(tempLogoSource) { config.logo = tempLogoSource; tempLogoSource = ""; }
   if(tempBgSource) { config.bg = tempBgSource; tempBgSource = ""; }
@@ -1036,7 +1095,6 @@ function saveConfig() {
   render(); editorDirty = false;
   document.getElementById('panel').classList.remove('active');
   
-  // SE ESTIVER EM MODO DEMO, IGNORA PERSISTÊNCIA NO SERVIDOR
   if (isDemoMode) {
     toast("Alterações aplicadas localmente com sucesso! ✨", "success");
   } else {
@@ -1136,7 +1194,6 @@ async function salvarDadosNoServidor() {
     if(btn) { btn.disabled = false; btn.innerHTML = "<span>💾</span><span>Consolidar Alterações</span>"; }
   }
 }
-
 carregarDadosDoServidor();
 </script>
 </body>
