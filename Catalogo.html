@@ -34,21 +34,21 @@ body::before {
   pointer-events:none;z-index:0;
 }
 
-/* APP NAVBAR WITH ANIMATION ENGINE */
+/* APP NAVBAR - CONFIGURAÇÃO CENTRALIZADA PREMIUM */
 header{
-  display:flex;justify-content:space-between;align-items:center;
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;
   padding:16px 24px;background:rgba(6,6,8,0.75);
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);gap:12px;
 }
-#brandContainer{display:flex;align-items:center;gap:14px;}
+#brandContainer{grid-column:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;}
 
 #brandLogo{
-  height:48px;width:48px;object-fit:cover;border-radius:14px;
+  height:52px;width:52px;object-fit:cover;border-radius:14px;
   border:1px solid var(--border);display:none;
 }
 
-/* KEYFRAMES EXPANDIDOS DE ANIMAÇÃO DO LOGO (IMAGEM) */
+/* KEYFRAMES DE ANIMAÇÃO DO LOGO (IMAGEM) */
 .anim-float{animation:logoFloat 3s ease-in-out infinite;}
 .anim-pulse{animation:logoPulse 2s ease-in-out infinite;}
 .anim-glow{animation:logoGlow 2.5s ease-in-out infinite; border-color:var(--primary) !important;}
@@ -63,9 +63,9 @@ header{
 @keyframes logoHeart{ 0%,100%{transform:scale(1);} 25%{transform:scale(1.08);} 40%{transform:scale(1.03);} 55%{transform:scale(1.12);} }
 @keyframes logoGlitch{ 0%,90%,100%{transform:skew(0deg);filter:hue-rotate(0deg);} 92%{transform:skew(5deg);filter:hue-rotate(90deg);} 95%{transform:skew(-5deg);filter:hue-rotate(180deg);} 98%{transform:skew(3deg);filter:hue-rotate(270deg);} }
 
-/* KEYFRAMES EXPANDIDOS DE ANIMAÇÃO DO TEXTO DO LOGO */
+/* KEYFRAMES DE ANIMAÇÃO DO TEXTO DO LOGO */
 #brandName {
-  font-family:var(--font-display);font-size:32px;letter-spacing:1px;line-height:1;
+  font-family:var(--font-display);font-size:34px;letter-spacing:1px;line-height:1;
   background:linear-gradient(135deg,#ffffff 50%,var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent;
   transition: var(--transition);
 }
@@ -79,12 +79,13 @@ header{
 @keyframes txtBounce{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-3px);} }
 @keyframes txtItalic{ 0%{transform:skewX(0deg);filter:brightness(1);} 100%{transform:skewX(-10deg);filter:brightness(1.2);} }
 
-.meta-store-info{display:flex;flex-direction:column;}
+.meta-store-info{display:flex;flex-direction:column;align-items:center;}
 #brandBio{font-size:11px;color:var(--muted);margin-top:4px;font-weight:500;max-width:280px;display:none;}
-.header-actions{display:flex;align-items:center;gap:12px;}
+.header-left-actions{grid-column:1;}
+.header-actions{grid-column:3;display:flex;align-items:center;gap:12px;}
 
 /* BADGES DE INFRA COM INSTAGRAM OFICIAL */
-.badges-delivery-row{max-width:1350px;margin:16px auto 0 auto;padding:0 24px;display:flex;gap:10px;flex-wrap:wrap;}
+.badges-delivery-row{max-width:1350px;margin:16px auto 0 auto;padding:0 24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
 .info-badge{
   background:rgba(255,255,255,0.03);border:1px solid var(--border);padding:8px 14px;
   border-radius:99px;font-size:11px;font-weight:600;display:none;align-items:center;gap:8px;color:var(--muted);
@@ -93,7 +94,7 @@ header{
 
 /* BUTTONS */
 .btn{
-  padding:12px 20px;border:1px solid var(--border);border-radius:14px;
+  padding:12px 14px;border:1px solid var(--border);border-radius:14px;
   cursor:pointer;background:var(--surface2);color:var(--text);
   font-size:13px;font-weight:700;transition:var(--transition);
   display:inline-flex;align-items:center;gap:8px;
@@ -109,12 +110,12 @@ header{
   display:none;align-items:center;justify-content:center;border:2px solid var(--bg);
 }
 
-/* BANNERS */
+/* BANNERS - FORMATO EXPANSÍVEL EVITANDO CORTES CORES E ENQUADRAMENTOS */
 .banner-section{max-width:1350px;margin:20px auto 0 auto;padding:0 24px;display:none;}
 .banner-wrapper{width:100%;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:20px;}
 .banner-wrapper::-webkit-scrollbar{display:none;}
-.banner-item{min-width:100%;scroll-snap-align:start;height:240px;border-radius:20px;overflow:hidden;border:1px solid var(--border);background:#0a0a0f;}
-.banner-item img{width:100%;height:100%;object-fit:cover;}
+.banner-item{min-width:100%;scroll-snap-align:start;height:auto;max-height:380px;border-radius:20px;overflow:hidden;border:1px solid var(--border);background:#0a0a0f;display:flex;align-items:center;justify-content:center;}
+.banner-item img{width:100%;height:100%;object-fit:contain;max-height:380px;}
 
 /* BUSCADOR */
 .search-container{max-width:1350px;margin:24px auto 0 auto;padding:0 24px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;}
@@ -125,14 +126,12 @@ header{
 .filter-tab{padding:10px 18px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:var(--transition);text-transform:uppercase;}
 .filter-tab.active{background:var(--text);color:#000;border-color:var(--text);font-weight:800;}
 
-/* ENGINE DE CONFIGURAÇÃO DE LAYOUT REATIVO */
+/* MURAL CATALOG LAYOUT */
 .catalog{max-width:1350px;margin:0 auto;padding:32px 24px;position:relative;z-index:1;}
 
-/* MODELO 1: GRADE MODERNA */
 .catalog.mode-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:24px;}
 .catalog.mode-grid .card{width:100%;}
 
-/* MODELO 2: ROLETA MOBILE */
 .catalog.mode-carousel{
   display:flex !important;flex-direction:row !important;flex-wrap:nowrap !important;
   overflow-x:auto !important;gap:20px !important;scroll-snap-type:x mandatory;
@@ -144,7 +143,6 @@ header{
   scroll-snap-align:start;
 }
 
-/* MODELO 3: LISTA MINIMALISTA */
 .catalog.mode-list{display:flex;flex-direction:column;gap:14px;}
 .catalog.mode-list .card{flex-direction:row;height:130px;align-items:center;}
 .catalog.mode-list .card-img-wrap{width:120px;height:100%;flex-shrink:0;border-radius:var(--radius) 0 0 var(--radius);}
@@ -210,7 +208,7 @@ header{
 }
 .size-pill.selected{background:#fff;color:#000;border-color:#fff;}
 
-/* DASHBOARD PANEL ADMIN DESIGN - CORRIGIDO ERRO DE FLUXO E CORTE MOBILE */
+/* DASHBOARD PANEL ADMIN DESIGN - POSICIONAMENTO E FLUXO CORRIGIDOS */
 .panel{
   position:fixed;right:-480px;top:0;width:450px;height:100vh;
   background:rgba(10,10,14,0.96);backdrop-filter:blur(35px);-webkit-backdrop-filter:blur(35px);
@@ -224,8 +222,8 @@ header{
 .panel-tab{flex:1;padding:10px;background:none;border:none;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;cursor:pointer;transition:var(--transition);border-radius:10px;}
 .panel-tab.active{color:#fff;background:rgba(255,255,255,0.06);box-shadow:0 2px 8px rgba(0,0,0,0.4);}
 
-/* Padding-bottom agressivo para evitar que o botão de salvar quebre sob a barra mobile */
-.panel-body{flex:1;overflow-y:auto;padding:24px 24px 160px 24px;position:relative;}
+/* Padding-bottom responsivo para o botão não ficar encoberto */
+.panel-body{flex:1;overflow-y:auto;padding:24px 24px 180px 24px;position:relative;}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
 
@@ -251,14 +249,14 @@ header{
 .upload-box input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;}
 .upload-preview-mini{height:44px;width:auto;object-fit:contain;margin-top:10px;border-radius:8px;display:none;border:1px solid var(--border);}
 
-/* BOTÃO DE SALVAR REESTRUTURADO: SEM SUPORTAR QUEBRA NO MOBILE */
+/* FOOTER FIXO ATUALIZADO: POSIÇÃO SEGURA DO BOTÃO MASTER */
 .panel-footer-sticky{
-  position:absolute;bottom:0;left:0;right:0;padding:24px;
-  background:linear-gradient(to top, #09090d 80%, transparent);
-  border-top:1px solid var(--border);z-index:90;
+  position:absolute;bottom:0;left:0;right:0;padding:20px 24px 32px 24px;
+  background:linear-gradient(to top, #0a0a0e 85%, transparent);
+  border-top:1px solid var(--border);z-index:99;
 }
 .panel-save-btn{
-  width:100%;background:linear-gradient(135deg, var(--primary) 0%, #cc0030 100%);color:#fff;border:1px solid rgba(255,255,255,0.15);padding:16px;
+  width:100%;background:linear-gradient(135deg, var(--primary) 0%, #cc0030 100%);color:#fff;border:1px solid rgba(255,255,255,0.15);padding:15px;
   font-weight:800;font-size:14px;letter-spacing:1px;text-transform:uppercase;border-radius:16px;cursor:pointer;transition:0.4s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow:0 12px 28px var(--primary-glow), inset 0 1px 0 rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;gap:10px;
 }
@@ -271,7 +269,7 @@ header{
 .delete-prod-btn{background:rgba(255,0,60,0.1);color:var(--primary);border:1px solid rgba(255,0,60,0.15);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:700;transition:var(--transition);}
 .delete-prod-btn:hover{background:var(--primary);color:#fff;}
 
-/* SACONA / CART */
+/* CART / SACONA */
 .cart-panel{position:fixed;bottom:24px;right:24px;width:360px;background:rgba(10,10,15,0.88);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border:1px solid var(--border);border-radius:24px;z-index:200;transform:translateY(calc(100% + 40px));opacity:0;transition:var(--transition);box-shadow:0 30px 60px rgba(0,0,0,0.7);}
 .cart-panel.open{transform:translateY(0);opacity:1;}
 .cart-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--border);}
@@ -293,14 +291,14 @@ header{
 #noResults{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;display:none;}
 #backToTop{position:fixed;bottom:24px;left:24px;width:48px;height:48px;border-radius:14px;background:var(--surface2);border:1px solid var(--border);color:#fff;font-size:18px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:150;}
 
-/* GRADE DE PRESETS ULTRA-STREETWEAR */
+/* THEME PRESET ENGINE */
 .theme-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:8px 0;}
 .theme-card{border:1px solid var(--border);border-radius:12px;padding:12px;background:rgba(255,255,255,0.02);cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:10px;}
 .theme-card:hover{border-color:var(--border-hover);background:rgba(255,255,255,0.04);}
 .theme-color-dots{display:flex;gap:4px;}.theme-dot{width:12px;height:12px;border-radius:50%;}
 .theme-card span{font-size:12px;font-weight:700;}
 
-/* CAIXA INTERNA DE SEGURANÇA (MODAL AUTH PREMIUM) */
+/* AUTH SYSTEM MODAL */
 .auth-overlay{position:fixed;inset:0;background:rgba(4,4,6,0.92);backdrop-filter:blur(24px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;}
 .auth-box{background:#0c0c12;border:1px solid rgba(255,255,255,0.08);border-radius:24px;width:100%;max-width:380px;padding:32px;box-shadow:0 30px 60px rgba(0,0,0,0.8);text-align:center;animation:scaleIn 0.3s cubic-bezier(0.16,1,0.3,1);}
 .auth-title{font-family:var(--font-display);font-size:28px;letter-spacing:1px;margin-bottom:6px;background:linear-gradient(90deg,#fff,var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
@@ -312,18 +310,25 @@ header{
 .auth-buttons{display:grid;grid-template-columns:1fr 2fr;gap:10px;}
 
 @media(max-width:700px){
+  header{grid-template-columns:auto 1fr auto; padding:12px 16px;}
   .modal-card{grid-template-columns:1fr;max-height:90vh;overflow-y:auto;}
   .modal-img-container{min-height:260px;}
   .panel{width:100%;right:-100%;}
   .cart-panel{width:calc(100vw - 32px);left:16px;bottom:16px;}
   .catalog{padding:16px;}
   .search-container{grid-template-columns:1fr;padding:0 16px;}
+  .banner-section{padding:0 16px;}
+  .banner-item{max-height:280px;}
+  .banner-item img{max-height:280px;}
 }
 </style>
 </head>
 <body>
 
 <header>
+  <div class="header-left-actions">
+    <button class="btn" onclick="triggerAuthModal()">⚙️ Control</button>
+  </div>
   <div id="brandContainer">
     <img id="brandLogo" src="" alt="Logo">
     <div class="meta-store-info">
@@ -332,7 +337,6 @@ header{
     </div>
   </div>
   <div class="header-actions">
-    <button class="btn" onclick="triggerAuthModal()">⚙️ Control</button>
     <button class="btn primary" id="cartToggleBtn" onclick="toggleCart()">
       🛒 <span id="cartBadge">0</span>
     </button>
@@ -500,7 +504,7 @@ header{
       </div>
       <div class="field">
         <label>Descrição Detalhada</label>
-        <textarea id="pDesc" rows="2" placeholder="TamanHum em estoque, detalhes do tecido..."></textarea>
+        <textarea id="pDesc" rows="2" placeholder="Tamanho em estoque, detalhes do tecido..."></textarea>
       </div>
       <button class="btn primary" id="btnAddProduct" style="width:100%;justify-content:center;margin-bottom:24px;" onclick="addProduct()">＋ Publicar Produto</button>
       
@@ -948,7 +952,6 @@ function render() {
   const nameEl = document.getElementById('brandName');
   nameEl.textContent = (config.brand || "STORE").toUpperCase();
   
-  // APLICAÇÃO DE ANIMAÇÕES DO TEXTO DO LOGO
   nameEl.className = "";
   if(config.txtAnim && config.txtAnim !== "none") {
     nameEl.classList.add(`txt-anim-${config.txtAnim}`);
@@ -1194,6 +1197,7 @@ async function salvarDadosNoServidor() {
     if(btn) { btn.disabled = false; btn.innerHTML = "<span>💾</span><span>Consolidar Alterações</span>"; }
   }
 }
+
 carregarDadosDoServidor();
 </script>
 </body>
