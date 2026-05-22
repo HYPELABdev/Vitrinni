@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>VITRINNI PRO - Core Terminal</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif;-webkit-font-smoothing:antialiased;}
+
+:root{
+  --primary:#00ff66;
+  --primary-glow:rgba(0,255,102,0.25);
+  --bg:#040712;
+  --surface:rgba(10,20,38,0.7);
+  --surface2:rgba(16,32,64,0.85);
+  --border:rgba(0,255,102,0.2);
+  --border-hover:rgba(0,240,255,0.5);
+  --text:#e2e8f0;
+  --muted:#64748b;
+  --green:#00f0ff;
+  --font-display:'Share Tech Mono',monospace;
+  --radius:12px;
+  --transition:0.3s cubic-bezier(0.19,1,0.22,1);
+}
+
+body{
+  background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh;
+  position:relative;
+}
+
+/* MATRIZ DE FUNDO ANIMADA E GRID CYBER */
+body::before {
+  content:'';position:fixed;inset:0;
+  background: 
+    linear-gradient(rgba(0,255,102,0.015) 50%, rgba(0,0,0,0) 50%),
+    linear-gradient(90deg, rgba(0,255,102,0.01) 50%, rgba(0,0,0,0) 50%),
+    radial-gradient(circle at 50% 50%, rgba(10,20,50,0.6), var(--bg));
+  background-size: 100% 4px, 4px 100%, cover;
+  pointer-events:none;z-index:0;
+}
+
+/* APP NAVBAR HOLOGRÁFICA */
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 20px;background:rgba(4,7,18,0.85);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);
+  box-shadow:0 4px 20px rgba(0,255,102,0.05);
+}
+#brandContainer{display:flex;align-items:center;gap:12px;}
+
+#brandLogo{
+  height:44px;width:44px;object-fit:cover;border-radius:8px;
+  border:1px solid var(--border);display:none;
+}
+
+/* ANIMAÇÕES CORE TERMINAL */
+.anim-float{animation:logoFloat 3s ease-in-out infinite;}
+.anim-pulse{animation:logoPulse 2s ease-in-out infinite;}
+.anim-glow{animation:logoGlow 2.5s ease-in-out infinite; border-color:var(--green) !important;}
+
+@keyframes logoFloat{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-4px);} }
+@keyframes logoPulse{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
+@keyframes logoGlow{ 0%,100%{box-shadow:0 0 5px var(--primary-glow);} 50%{box-shadow:0 0 15px var(--green);} }
+
+.meta-store-info{display:flex;flex-direction:column;}
+#brandName{
+  font-family:var(--font-display);font-size:26px;letter-spacing:1px;line-height:1;
+  color:#fff;text-shadow:0 0 10px var(--primary-glow);
+}
+#brandBio{font-family:var(--font-display);font-size:11px;color:var(--muted);margin-top:4px;max-width:280px;display:none;text-transform:uppercase;}
+.header-actions{display:flex;align-items:center;gap:10px;}
+
+/* BADGES DE INFRAESTRUTURA */
+.badges-delivery-row{max-width:1350px;margin:12px auto 0 auto;padding:0 20px;display:flex;gap:8px;flex-wrap:wrap;}
+.info-badge{
+  background:rgba(2,6,23,0.6);border:1px solid var(--border);padding:6px 12px;
+  border-radius:4px;font-size:11px;font-family:var(--font-display);display:none;align-items:center;gap:6px;color:#fff;
+}
+.info-badge svg{width:12px;height:12px;fill:var(--primary);filter:drop-shadow(0 0 5px var(--primary));}
+
+/* SCI-FI CUT BUTTONS */
+.btn{
+  padding:10px 16px;border:1px solid var(--border);border-radius:6px;
+  cursor:pointer;background:var(--surface);color:#fff;
+  font-family:var(--font-display);font-size:12px;text-transform:uppercase;transition:var(--transition);
+  display:inline-flex;align-items:center;gap:6px;
+  clip-path:polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
+}
+.btn:hover{border-color:var(--border-hover);background:var(--surface2);box-shadow:0 0 10px rgba(0,240,255,0.2);transform:translateY(-1px);}
+.btn.primary{background:transparent;border-color:var(--primary);color:var(--primary);box-shadow:inset 0 0 8px var(--primary-glow), 0 0 10px var(--primary-glow);}
+.btn.primary:hover{background:var(--primary);color:#040712;box-shadow:0 0 20px var(--primary);font-weight:bold;}
+
+#cartToggleBtn{position:relative;}
+#cartBadge{
+  position:absolute;top:-4px;right:-4px;background:var(--green);color:#040712;
+  font-size:9px;font-weight:900;width:18px;height:18px;border-radius:50%;
+  display:none;align-items:center;justify-content:center;border:1px solid var(--bg);
+}
+
+/* BANNERS / CARROSSEL HOLOGRÁFICO */
+.banner-section{max-width:1350px;margin:16px auto 0 auto;padding:0 20px;display:none;}
+.banner-wrapper{width:100%;display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:10px;}
+.banner-wrapper::-webkit-scrollbar{display:none;}
+.banner-item{min-width:100%;scroll-snap-align:start;height:180px;border-radius:10px;overflow:hidden;border:1px solid var(--border);position:relative;}
+.banner-item::after {
+  content: '';position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(4,7,18,0.4), transparent);
+}
+.banner-item img{width:100%;height:100%;object-fit:cover;}
+
+/* TERMINAL SEARCH */
+.search-container{max-width:1350px;margin:20px auto 0 auto;padding:0 20px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;}
+#searchInput{
+  width:100%;padding:12px 16px;border-radius:6px;border:1px solid var(--border);
+  background:rgba(2,6,23,0.8);color:#fff;font-family:var(--font-display);font-size:13px;outline:none;transition:var(--transition);
+}
+#searchInput:focus{border-color:var(--green);box-shadow:0 0 12px rgba(0,240,255,0.25);}
+.filter-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:4px 0;}
+.filter-tabs::-webkit-scrollbar{display:none;}
+.filter-tab{
+  padding:8px 14px;border-radius:4px;border:1px solid var(--border);
+  background:rgba(2,6,23,0.5);color:var(--muted);font-family:var(--font-display);font-size:11px;cursor:pointer;white-space:nowrap;transition:var(--transition);
+}
+.filter-tab.active{background:var(--primary);color:#040712;border-color:var(--primary);font-weight:bold;box-shadow:0 0 10px var(--primary-glow);}
+
+/* REATIVE CATALOG MODES */
+.catalog{max-width:1350px;margin:0 auto;padding:24px 20px;position:relative;z-index:1;}
+
+.catalog.mode-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;}
+.catalog.mode-grid .card{width:100%;}
+
+.catalog.mode-carousel{
+  display:flex !important;flex-direction:row !important;flex-wrap:nowrap !important;
+  overflow-x:auto !important;gap:16px !important;scroll-snap-type:x mandatory;
+  padding-bottom:16px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.catalog.mode-carousel::-webkit-scrollbar{display:none;}
+.catalog.mode-carousel .card{
+  flex:0 0 260px !important;min-width:260px !important;max-width:260px !important;
+  scroll-snap-align:start;
+}
+
+.catalog.mode-list{display:flex;flex-direction:column;gap:12px;}
+.catalog.mode-list .card{flex-direction:row;height:120px;align-items:center;}
+.catalog.mode-list .card-img-wrap{width:100px;height:100%;flex-shrink:0;border-radius:var(--radius) 0 0 var(--radius);}
+.catalog.mode-list .card-content{padding:12px 16px;flex-direction:row;align-items:center;justify-content:between;width:100%;}
+.catalog.mode-list .price{margin:0 16px 0 auto;}
+.catalog.mode-list .actions{width:auto;margin-top:0;}
+
+/* PREMIUM CYBER CARDS */
+.card{
+  background:var(--surface);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;
+  transition:var(--transition);display:flex;flex-direction:column;cursor:pointer;
+  position:relative;
+}
+.card:hover{transform:translateY(-4px);border-color:var(--green);box-shadow:0 10px 25px rgba(0,240,255,0.15);}
+.card-img-wrap{position:relative;height:240px;overflow:hidden;background:#020617;border-bottom:1px solid rgba(0,255,102,0.1);}
+.card img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease;}
+.card:hover img{transform:scale(1.03);}
+
+.card-content{padding:16px;display:flex;flex-direction:column;flex-grow:1;}
+.card-category{align-self:flex-start;font-family:var(--font-display);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:4px;}
+.card-name{font-weight:700;font-size:16px;margin-bottom:6px;line-height:1.2;color:#fff;}
+.card-desc{font-size:12px;color:var(--muted);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.price{font-family:var(--font-display);font-size:24px;color:var(--primary);margin-top:auto;}
+.actions{margin-top:12px;}
+.actions .cartBtn{
+  width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;
+  background:rgba(2,6,23,0.7);color:#fff;cursor:pointer;font-family:var(--font-display);font-size:12px;transition:var(--transition);
+}
+.card:hover .cartBtn{border-color:var(--primary);color:var(--primary);box-shadow:inset 0 0 6px var(--primary-glow);}
+
+/* HOLO-MATRIX VIEW MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(2,4,10,0.9);backdrop-filter:blur(16px);
+  z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;
+}
+.modal-card{
+  background:rgba(4,7,18,0.95);border:1px solid var(--green);border-radius:16px;
+  width:100%;max-width:720px;display:grid;grid-template-columns:1fr 1.1fr;
+  overflow:hidden;box-shadow:0 0 40px rgba(0,240,255,0.2);
+}
+
+.modal-img-container{width:100%;height:100%;min-height:360px;background:#020617;overflow:hidden;}
+.modal-img-container img{width:100%;height:100%;object-fit:cover;}
+
+.modal-info-pane{padding:24px;display:flex;flex-direction:column;position:relative;}
+.modal-close-btn{position:absolute;top:16px;right:20px;background:none;border:none;color:var(--muted);font-size:26px;cursor:pointer;transition:var(--transition);z-index:10;}
+.modal-close-btn:hover{color:var(--primary);}
+
+/* VARIANTS PILLS */
+.variant-section{margin-top:16px;}
+.variant-title{font-family:var(--font-display);font-size:11px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.variant-container{display:flex;flex-wrap:wrap;gap:6px;}
+
+.color-pill{
+  width:24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,0.1);
+  cursor:pointer;transition:var(--transition);
+}
+.color-pill.selected{border-color:#fff;transform:scale(1.15);box-shadow:0 0 10px rgba(255,255,255,0.4);}
+.size-pill{
+  padding:6px 12px;border:1px solid var(--border);background:rgba(2,6,23,0.5);
+  font-family:var(--font-display);font-size:12px;border-radius:4px;cursor:pointer;color:#fff;transition:var(--transition);
+}
+.size-pill.selected{background:var(--green);color:#040712;border-color:var(--green);font-weight:bold;}
+
+/* CONSOLE CORE ADMIN (PANEL) */
+.panel{
+  position:fixed;right:-460px;top:0;width:440px;height:100vh;
+  background:rgba(4,7,18,0.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  z-index:500;border-left:1px solid var(--border);display:flex;flex-direction:column;
+  transition:right 0.4s cubic-bezier(0.16,1,0.3,1);box-shadow:-10px 0 30px rgba(0,0,0,0.5);
+}
+.panel.active{right:0;}
+.panel-header{padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.panel-title{font-family:var(--font-display);font-size:22px;letter-spacing:1px;color:var(--primary);text-shadow:0 0 8px var(--primary-glow);}
+.panel-tabs{display:flex;padding:4px;background:rgba(2,6,23,0.8);margin:0 20px;border-radius:6px;border:1px solid var(--border);}
+.panel-tab{
+  flex:1;padding:8px;background:none;border:none;color:var(--muted);
+  font-family:var(--font-display);font-size:12px;text-transform:uppercase;cursor:pointer;transition:var(--transition);
+}
+.panel-tab.active{color:var(--primary);background:rgba(0,255,102,0.08);border-radius:4px;}
+.panel-body{flex:1;overflow-y:auto;padding:20px 20px 100px 20px;}
+
+.field{margin-bottom:16px;background:rgba(2,6,23,0.6);border:1px solid var(--border);padding:12px;border-radius:6px;}
+.field:focus-within{border-color:var(--green);box-shadow:0 0 10px rgba(0,240,255,0.15);}
+.field label{display:block;font-family:var(--font-display);font-size:10px;text-transform:uppercase;color:var(--green);margin-bottom:6px;}
+.field input[type="text"],.field textarea,.field select{width:100%;border:none;background:transparent;color:#fff;font-size:13px;outline:none;}
+.field select option{background:#040712;color:#fff;}
+
+.inline-url-input{margin-top:10px;border-top:1px dashed rgba(0,255,102,0.1);padding-top:8px;}
+
+.layout-selector-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 16px 0;}
+.layout-card{border:1px solid var(--border);border-radius:6px;padding:10px 4px;background:rgba(2,6,23,0.4);cursor:pointer;transition:var(--transition);text-align:center;}
+.layout-card.active{border-color:var(--green);background:rgba(0,240,255,0.1);box-shadow:0 0 8px rgba(0,240,255,0.15);}
+.layout-card span{font-family:var(--font-display);font-size:11px;color:#fff;}
+
+.upload-box{border:1px dashed var(--border);border-radius:6px;padding:14px;text-align:center;background:rgba(2,6,23,0.3);cursor:pointer;position:relative;}
+.upload-box span{font-size:11px;color:var(--muted);font-family:var(--font-display);}
+.upload-box input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.upload-preview-mini{height:40px;width:auto;margin-top:8px;border-radius:4px;display:none;border:1px solid var(--border);}
+.panel-footer-sticky{position:absolute;bottom:0;left:0;right:0;padding:16px 20px;background:rgba(4,7,18,0.9);border-top:1px solid var(--border);z-index:10;}
+
+.panel-save-btn{
+  width:100%;background:transparent;border:1px solid var(--primary);color:var(--primary);
+  padding:12px;font-family:var(--font-display);font-size:13px;text-transform:uppercase;font-weight:bold;
+  border-radius:6px;cursor:pointer;transition:var(--transition);
+  box-shadow:inset 0 0 10px var(--primary-glow), 0 0 10px var(--primary-glow);
+}
+.panel-save-btn:hover{background:var(--primary);color:#040712;box-shadow:0 0 15px var(--primary);}
+
+.editor-product-list,.banner-manager-list{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+.editor-product-item,.banner-manager-item{display:flex;justify-content:space-between;align-items:center;background:rgba(2,6,23,0.5);border:1px solid var(--border);padding:10px;border-radius:6px;font-size:12px;}
+.delete-prod-btn{background:rgba(255,0,96,0.1);color:#ff0060;border:1px solid rgba(255,0,96,0.3);padding:4px 8px;border-radius:4px;cursor:pointer;font-family:var(--font-display);font-size:10px;}
+.delete-prod-btn:hover{background:#ff0060;color:#fff;}
+
+/* FUTURISTIC FLOATING SACOLA (CART) */
+.cart-panel{
+  position:fixed;bottom:20px;right:20px;width:340px;background:rgba(4,7,18,0.95);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--green);
+  border-radius:12px;z-index:200;transform:translateY(calc(100% + 40px));opacity:0;transition:var(--transition);
+  box-shadow:0 0 25px rgba(0,240,255,0.2);
+}
+.cart-panel.open{transform:translateY(0);opacity:1;}
+.cart-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border);}
+.cart-title{font-family:var(--font-display);font-size:20px;color:var(--green);}
+.cart-close{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;}
+.cart-items{padding:10px 20px;max-height:220px;overflow-y:auto;}
+.cart-item{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:10px 0;border-bottom:1px solid rgba(0,255,102,0.1);}
+.cart-footer{padding:16px 20px;border-top:1px solid var(--border);}
+.cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.cart-total-value{font-family:var(--font-display);font-size:22px;color:var(--primary);}
+
+/* TOAST RADAR NOTIFICATIONS */
+.toast-container{position:fixed;top:80px;right:20px;z-index:2000;display:flex;flex-direction:column;gap:6px;}
+.toast{
+  background:#040712;border:1px solid var(--border);border-radius:6px;padding:12px 16px;
+  font-family:var(--font-display);font-size:12px;text-transform:uppercase;display:flex;align-items:center;gap:8px;
+  box-shadow:0 0 15px rgba(0,255,102,0.1);animation:toastIn 0.3s cubic-bezier(0.19,1,0.22,1) both;
+}
+.toast.success{border-color:var(--primary);color:var(--primary);}
+.toast.error{border-color:#ff0060;color:#ff0060;}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+
+#loadingStatus{font-family:var(--font-display);text-align:center;padding:100px 20px;font-size:14px;color:var(--green);text-shadow:0 0 8px rgba(0,240,255,0.4);}
+#noResults{font-family:var(--font-display);text-align:center;padding:40px 20px;color:var(--muted);font-size:13px;display:none;}
+#backToTop{position:fixed;bottom:20px;left:20px;width:40px;height:40px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:#fff;font-family:var(--font-display);cursor:pointer;display:none;align-items:center;justify-content:center;z-index:150;}
+
+.theme-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:8px 0;}
+.theme-card{border:1px solid var(--border);border-radius:6px;padding:10px;background:rgba(2,6,23,0.4);cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:8px;}
+.theme-card span{font-family:var(--font-display);font-size:11px;}
+
+@media(max-width:700px){
+  .modal-card{grid-template-columns:1fr;max-height:85vh;overflow-y:auto;}
+  .modal-img-container{min-height:220px;}
+  .panel{width:100%;right:-100%;}
+  .cart-panel{width:calc(100vw - 32px);left:16px;bottom:16px;}
+  .catalog{padding:12px;}
+  .search-container{grid-template-columns:1fr;padding:0 16px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div id="brandContainer">
+    <img id="brandLogo" src="" alt="Logo">
+    <div class="meta-store-info">
+      <h3 id="brandName">SYNCING CLIENT...</h3>
+      <span id="brandBio"></span>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="btn" onclick="openEditor()">⚙️ Control</button>
+    <button class="btn primary" id="cartToggleBtn" onclick="toggleCart()">
+      🛒 <span id="cartBadge">0</span>
+    </button>
+  </div>
+</header>
+
+<div class="badges-delivery-row">
+  <div class="info-badge" id="badgeDelivery">🛵 <span id="badgeDeliveryText"></span></div>
+  <div class="info-badge" id="badgeInsta">
+    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+    <span id="badgeInstaText"></span>
+  </div>
+</div>
+
+<div class="banner-section" id="bannerSection">
+  <div class="banner-wrapper" id="bannerWrapper"></div>
+</div>
+
+<div class="search-container">
+  <input type="text" id="searchInput" placeholder="> AGUARDANDO PARAMETRO DE BUSCA..." oninput="filterProducts()">
+  <div class="filter-tabs" id="filterTabs"></div>
+</div>
+
+<div id="loadingStatus">⚡ INJETANDO PROTOCOLO DATALINK...</div>
+<div class="catalog mode-grid" id="catalog" style="display:none;"></div>
+<div id="noResults">> NEON CLUSTER VAZIO PARA ESTE FILTRO</div>
+
+<div class="modal-overlay" id="productModal" onclick="closeProductModal(event)">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-img-container">
+      <img id="modalImg" src="" alt="Produto">
+    </div>
+    <div class="modal-info-pane">
+      <button class="modal-close-btn" onclick="closeProductModal(null)">×</button>
+      <div class="card-category" id="modalCategory">-</div>
+      <h2 id="modalName" style="font-size:22px;margin-bottom:8px;color:#fff;">-</h2>
+      <p id="modalDesc" style="font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:16px;">-</p>
+      <div class="price" id="modalPrice" style="font-size:32px;margin-bottom:16px;color:var(--primary);">R$ 0,00</div>
+      
+      <div class="variant-section" id="modalColorsSection">
+        <div class="variant-title">Injetar Cor</div>
+        <div class="variant-container" id="modalColors"></div>
+      </div>
+
+      <div class="variant-section" id="modalSizesSection" style="margin-bottom:24px;">
+        <div class="variant-title">Carregar Escopo Tamanho</div>
+        <div class="variant-container" id="modalSizes"></div>
+      </div>
+
+      <button class="panel-save-btn" style="width:100%;margin-top:auto;" onclick="addSelectedToCart()">🛒 Compilar na Sacola</button>
+    </div>
+  </div>
+</div>
+
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <span class="cart-title">Data sacola</span>
+    <button class="cart-close" onclick="toggleCart()">×</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span style="font-family:var(--font-display);font-size:11px;color:var(--muted);text-transform:uppercase;">Valor Consolidado</span>
+      <span class="cart-total-value" id="total">R$ 0,00</span>
+    </div>
+    <button class="panel-save-btn" style="width:100%;" onclick="checkout()">💬 Disparar Pedido no WhatsApp</button>
+  </div>
+</div>
+
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="panel" id="panel">
+  <div class="panel-header">
+    <span class="panel-title">Mainframe Admin</span>
+    <button class="btn" onclick="closeEditor()" style="padding:4px 8px;">✕</button>
+  </div>
+
+  <div class="panel-tabs">
+    <button class="panel-tab active" id="tabBtn-identidade" onclick="switchTab('identidade')">Cluster Loja</button>
+    <button class="panel-tab" id="tabBtn-produtos" onclick="switchTab('produtos')">Estoque Core</button>
+    <button class="panel-tab" id="tabBtn-visual" onclick="switchTab('visual')">Matriz Visual</button>
+  </div>
+
+  <div class="panel-body">
+    <div class="tab-content active" id="tab-identidade">
+      <div class="field">
+        <label>Nome do Estabelecimento</label>
+        <input id="brandInput" type="text" placeholder="Ex: HYPELAB OUTLET">
+      </div>
+      <div class="field">
+        <label>Slogan ou Bio da Loja</label>
+        <input id="bioInput" type="text" placeholder="Ex: A cultura streetwear no seu mais alto nível">
+      </div>
+      <div class="field">
+        <label>WhatsApp Oficial (Com DDI/DDD)</label>
+        <input id="whatsInput" type="text" placeholder="Ex: 5511999999999">
+      </div>
+      <div class="field">
+        <label>Instagram Comercial</label>
+        <input id="instaInput" type="text" placeholder="Ex: @sua_loja">
+      </div>
+      <div class="field">
+        <label>Política de Entrega / Recado</label>
+        <input id="deliveryInput" type="text" placeholder="Ex: Frete grátis nas compras acima de R$150">
+      </div>
+      <div class="field">
+        <label>Logotipo da Marca</label>
+        <div class="upload-box">
+          <span id="logoLabel">Carregar nova Logo de Cluster</span>
+          <input type="file" accept="image/*" onchange="conversorImagem(this, 'logo')">
+          <center><img id="logoPreview" class="upload-preview-mini"></center>
+        </div>
+        <div class="inline-url-input">
+          <input id="logoUrlInput" type="text" placeholder="Ou cole a URL direta de imagem/GIF" oninput="handleUrlInput(this.value, 'logo')">
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-produtos">
+      <div class="field">
+        <label>Nome do Item</label>
+        <input id="pName" type="text" placeholder="Ex: Tênis Tesla Coil Black">
+      </div>
+      <div class="field">
+        <label>Preço Cobrado</label>
+        <input id="pPrice" type="text" placeholder="Ex: 349.90">
+      </div>
+      <div class="field">
+        <label>Categoria Global</label>
+        <input id="pCategory" type="text" placeholder="Ex: Calçados, Bonés, Camisetas">
+      </div>
+      <div class="field">
+        <label>Tamanhos Disponíveis (Separados por vírgula)</label>
+        <input id="pSizes" type="text" placeholder="Ex: P, M, G, GG ou 38, 39, 40">
+      </div>
+      <div class="field">
+        <label>Cores Disponíveis (Hex/Nome separados por vírgula)</label>
+        <input id="pColors" type="text" placeholder="Ex: #000, #fff, red, #ff003c">
+      </div>
+      <div class="field">
+        <label>Foto Real do Produto</label>
+        <div class="upload-box">
+          <span id="productLabel">Injetar Render de Alta Resolução</span>
+          <input type="file" id="pImgInput" accept="image/*" onchange="conversorImagem(this, 'product')">
+          <center><img id="productPreview" class="upload-preview-mini"></center>
+        </div>
+        <div class="inline-url-input">
+          <input id="pImgUrlInput" type="text" placeholder="Ou cole a URL direta da foto/GIF" oninput="handleUrlInput(this.value, 'product')">
+        </div>
+      </div>
+      <div class="field">
+        <label>Descrição Detalhada</label>
+        <textarea id="pDesc" rows="2" placeholder="Especificações técnicas, tecidos, caimento..."></textarea>
+      </div>
+      <button class="btn primary" id="btnAddProduct" style="width:100%;justify-content:center;margin-bottom:20px;" onclick="addProduct()">＋ Compilar Produto no Catálogo</button>
+      
+      <div style="font-family:var(--font-display);font-size:11px;color:var(--primary);margin-bottom:10px;text-transform:uppercase;">Mapeamento Ativo do Banco</div>
+      <div class="editor-product-list" id="editorProductList"></div>
+    </div>
+
+    <div class="tab-content" id="tab-visual">
+      <div style="font-family:var(--font-display);font-size:11px;color:var(--primary);margin-bottom:8px;text-transform:uppercase;">Mural UI Engine</div>
+      <div class="layout-selector-grid">
+        <div class="layout-card" id="layout-grid" onclick="setThemeLayout('grid')">
+          <span>🔲 Grade</span>
+        </div>
+        <div class="layout-card" id="layout-carousel" onclick="setThemeLayout('carousel')">
+          <span>🎡 Roleta</span>
+        </div>
+        <div class="layout-card" id="layout-list" onclick="setThemeLayout('list')">
+          <span>📜 Lista</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Filtro de Animação do Logo</label>
+        <select id="logoAnimSelect" onchange="config.logoAnim=this.value; render(); editorDirty=true;">
+          <option value="none">Estático Padrão</option>
+          <option value="float">Flutuação Fluida (Float)</option>
+          <option value="pulse">Pulsação Organica (Pulse)</option>
+          <option value="glow">Aura Neon Pulsante (Glow)</option>
+        </select>
+      </div>
+
+      <div style="font-family:var(--font-display);font-size:11px;color:var(--primary);margin-bottom:8px;text-transform:uppercase;">Presets Cromáticos Subterrâneos</div>
+      <div class="theme-grid">
+        <div class="theme-card" onclick="aplicarTemaPreset('#00ff66','#040712')">
+          <span>Acid Lime</span>
+        </div>
+        <div class="theme-card" onclick="aplicarTemaPreset('#00f0ff','#020914')">
+          <span>Ice Blizzard</span>
+        </div>
+        <div class="theme-card" onclick="aplicarTemaPreset('#9d4edd','#080410')">
+          <span>Hyper Purple</span>
+        </div>
+        <div class="theme-card" onclick="aplicarTemaPreset('#ff0055','#0d0208')">
+          <span>Infra Red</span>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:12px;">
+        <label>Modulador Customizado</label>
+        <input type="color" id="colorInput" value="#00ff66" onchange="config.color=this.value;document.documentElement.style.setProperty('--primary', this.value)">
+      </div>
+
+      <div style="font-family:var(--font-display);font-size:11px;color:var(--primary);margin-bottom:8px;text-transform:uppercase;">App Wallpaper / Fundo do Sistema</div>
+      <div class="field">
+        <div class="upload-box">
+          <span id="bgLabel">Mudar Background Base</span>
+          <input type="file" accept="image/*" onchange="conversorImagem(this, 'bg')">
+        </div>
+        <div class="inline-url-input" style="margin-bottom:8px;">
+          <input id="bgUrlInput" type="text" placeholder="Ou cole a URL do Wallpaper/GIF ativo" oninput="handleUrlInput(this.value, 'bg')">
+        </div>
+        <button class="btn" style="width:100%;justify-content:center;font-size:11px;" onclick="limparFundo()">Purgar Wallpaper Customizado</button>
+      </div>
+
+      <div style="font-family:var(--font-display);font-size:11px;color:var(--primary);margin-bottom:8px;text-transform:uppercase;">Clusters Promocionais (Slides)</div>
+      <div class="field">
+        <div class="upload-box">
+          <span>Injetar Novo Slide Superior</span>
+          <input type="file" accept="image/*" onchange="conversorImagem(this, 'banner')">
+        </div>
+        <div class="inline-url-input" style="display:grid;grid-template-columns:1fr auto;gap:6px;">
+          <input id="bannerUrlInput" type="text" placeholder="Ou cole a URL direta do Slide/GIF">
+          <button class="btn" style="padding:4px 10px;" onclick="addBannerUrl()">Injetar</button>
+        </div>
+      </div>
+      <div class="banner-manager-list" id="bannerManagerList"></div>
+    </div>
+  </div>
+
+  <div class="panel-footer-sticky">
+    <button class="panel-save-btn" id="btnMasterSave" onclick="saveConfig()">💾 Gravar Alterações na Nuvem</button>
+  </div>
+</div>
+
+<script>
+const PASSWORD = "KALLI420";
+
+const urlParams = new URLSearchParams(window.location.search);
+let nomeDaLoja = urlParams.get('loja');
+if (!nomeDaLoja) {
+  const pathParts = window.location.pathname.split('/');
+  const lastPart = pathParts[pathParts.length - 1];
+  if (lastPart && lastPart !== "" && !lastPart.includes('.html')) nomeDaLoja = lastPart;
+}
+
+let config = { brand:"STORE", bio:"", whats:"5511999999999", instagram:"", delivery:"", color:"#00ff66", bg:"", layout:"grid", logoAnim:"none", banners:[] };
+let products = [];
+let cart = [];
+let activeFilter = "todos";
+let searchTerm = "";
+let editorDirty = false;
+
+let currentModalProductIndex = null;
+let selectedColor = null;
+let selectedSize = null;
+
+let tempLogoSource = "";
+let tempProductSource = "";
+let tempBgSource = "";
+
+function toast(msg, type="info") {
+  const el = document.createElement('div'); el.className = `toast ${type}`;
+  el.innerHTML = `<span>${type==='success'?'⚡':'⚠️'}</span><span>${msg}</span>`;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => { el.remove(); }, 3000);
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('backToTop').style.display = window.scrollY > 400 ? 'flex' : 'none';
+});
+
+function conversorImagem(input, destino) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      let width = img.width; let height = img.height; const MAX_WIDTH = 800;
+      if (width > MAX_WIDTH) { height = Math.round((height * MAX_WIDTH) / width); width = MAX_WIDTH; }
+      canvas.width = width; canvas.height = height; ctx.drawImage(img, 0, 0, width, height);
+      const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+      if (destino === 'logo') {
+        tempLogoSource = compressedBase64; document.getElementById('logoPreview').src = compressedBase64;
+        document.getElementById('logoPreview').style.display = 'block'; document.getElementById('logoLabel').innerText = "✓ LOGO DECODIFICADA";
+        document.getElementById('logoUrlInput').value = "";
+      } else if (destino === 'product') {
+        tempProductSource = compressedBase64; document.getElementById('productPreview').src = compressedBase64;
+        document.getElementById('productPreview').style.display = 'block'; document.getElementById('productLabel').innerText = "✓ RENDER DECODIFICADO";
+        document.getElementById('pImgUrlInput').value = "";
+      } else if (destino === 'bg') {
+        tempBgSource = compressedBase64; document.getElementById('bgLabel').innerText = "✓ MATRIX BACKGROUND OK";
+        document.getElementById('bgUrlInput').value = "";
+      } else if (destino === 'banner') {
+        if(!config.banners) config.banners = []; config.banners.push(compressedBase64);
+        toast("Slide em cache! Salve para subir.", "success"); render();
+      }
+      editorDirty = true;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleUrlInput(value, destino) {
+  const val = value.trim();
+  if (destino === 'logo') {
+    tempLogoSource = val;
+    if(val) { document.getElementById('logoPreview').src = val; document.getElementById('logoPreview').style.display = 'block'; document.getElementById('logoLabel').innerText = "✓ LINKADO"; }
+    else { document.getElementById('logoPreview').style.display = 'none'; document.getElementById('logoLabel').innerText = "Carregar nova Logo de Cluster"; }
+  } else if (destino === 'product') {
+    tempProductSource = val;
+    if(val) { document.getElementById('productPreview').src = val; document.getElementById('productPreview').style.display = 'block'; document.getElementById('productLabel').innerText = "✓ LINKADO"; }
+    else { document.getElementById('productPreview').style.display = 'none'; document.getElementById('productLabel').innerText = "Injetar Render de Alta Resolução"; }
+  } else if (destino === 'bg') {
+    tempBgSource = val;
+    if(val) { document.getElementById('bgLabel').innerText = "✓ BACKGROUND WEB LINKADO"; }
+    else { document.getElementById('bgLabel').innerText = "Mudar Background Base"; }
+  }
+  editorDirty = true;
+}
+
+function addBannerUrl() {
+  const urlInput = document.getElementById('bannerUrlInput'); const val = urlInput.value.trim();
+  if(!val) { toast("Falta a URL do endpoint!", "error"); return; }
+  if(!config.banners) config.banners = []; config.banners.push(val); urlInput.value = "";
+  toast("Slide acoplado!", "success"); render(); editorDirty = true;
+}
+
+function limparFundo() {
+  config.bg = ""; tempBgSource = ""; document.getElementById('bgLabel').innerText = "Mudar Background Base";
+  document.getElementById('bgUrlInput').value = ""; document.body.style.backgroundImage = 'none';
+  toast("Fundo padrão restabelecido.", "success");
+}
+
+function aplicarTemaPreset(primary, bg) {
+  document.getElementById('colorInput').value = primary; config.color = primary; config.bg = bg; tempBgSource = bg;
+  document.documentElement.style.setProperty('--primary', primary);
+  if(bg) document.body.style.backgroundImage = `linear-gradient(${bg}, ${bg})`;
+  toast("Preset injetado com sucesso!", "success");
+}
+
+function setThemeLayout(mode) {
+  config.layout = mode; document.querySelectorAll('.layout-card').forEach(c => c.classList.remove('active'));
+  const activeCard = document.getElementById(`layout-${mode}`); if(activeCard) activeCard.classList.add('active');
+  const catalogEl = document.getElementById('catalog'); catalogEl.className = `catalog mode-${mode}`;
+  editorDirty = true;
+}
+
+function openProductModal(idx) {
+  const p = products[idx]; currentModalProductIndex = idx; selectedColor = null; selectedSize = null;
+  document.getElementById('modalImg').src = p.img || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500';
+  document.getElementById('modalCategory').textContent = p.category || 'Geral';
+  document.getElementById('modalName').textContent = p.name;
+  document.getElementById('modalDesc').textContent = p.desc || 'Sem meta-informações descritivas.';
+  document.getElementById('modalPrice').textContent = "R$ " + parseFloat(String(p.price).replace(',','.')).toFixed(2).replace('.',',');
+
+  const colorsContainer = document.getElementById('modalColors');
+  if (p.colors && p.colors.trim() !== "") {
+    document.getElementById('modalColorsSection').style.display = "block";
+    colorsContainer.innerHTML = p.colors.split(',').map(c => `
+      <div class="color-pill" style="background:${c.trim()};" onclick="selectColor(this, '${c.trim()}')"></div>
+    `).join('');
+  } else { document.getElementById('modalColorsSection').style.display = "none"; }
+
+  const sizesContainer = document.getElementById('modalSizes');
+  if (p.sizes && p.sizes.trim() !== "") {
+    document.getElementById('modalSizesSection').style.display = "block";
+    sizesContainer.innerHTML = p.sizes.split(',').map(s => `
+      <div class="size-pill" onclick="selectSize(this, '${s.trim()}')">${s.trim()}</div>
+    `).join('');
+  } else { document.getElementById('modalSizesSection').style.display = "none"; }
+  document.getElementById('productModal').style.display = "flex";
+}
+
+function closeProductModal(e) { if(!e || e.target === document.getElementById('productModal')) { document.getElementById('productModal').style.display = "none"; } }
+function selectColor(el, color) { document.querySelectorAll('.color-pill').forEach(p => p.classList.remove('selected')); el.classList.add('selected'); selectedColor = color; }
+function selectSize(el, size) { document.querySelectorAll('.size-pill').forEach(p => p.classList.remove('selected')); el.classList.add('selected'); selectedSize = size; }
+
+function addSelectedToCart() {
+  const p = products[currentModalProductIndex];
+  if (p.colors && p.colors.trim() !== "" && !selectedColor) { toast("Selecione o espectro de cor!", "error"); return; }
+  if (p.sizes && p.sizes.trim() !== "" && !selectedSize) { toast("Selecione o tamanho de partição!", "error"); return; }
+  cart.push({ ...p, chosenColor: selectedColor || null, chosenSize: selectedSize || null });
+  renderCart(); document.getElementById('productModal').style.display = "none";
+  toast(`Compilado na sacola com sucesso!`, "success");
+}
+
+function removeBanner(idx) { config.banners.splice(idx, 1); render(); editorDirty = true; }
+function toggleCart() { document.getElementById('cartPanel').classList.toggle('open'); }
+function removeCart(i) { cart.splice(i, 1); renderCart(); }
+
+function renderCart() {
+  const badge = document.getElementById('cartBadge');
+  badge.textContent = cart.length; badge.style.display = cart.length > 0 ? 'flex' : 'none';
+  const container = document.getElementById('cartItems');
+  if (cart.length === 0) { container.innerHTML = '<div style="font-size:11px;color:var(--muted);text-align:center;">SACOLA REBOOTADA. SEM DADOS.</div>'; document.getElementById('total').textContent = "R$ 0,00"; return; }
+  let total = 0;
+  container.innerHTML = cart.map((c, i) => {
+    const p = parseFloat(String(c.price).replace(',','.')); total += isNaN(p) ? 0 : p;
+    const meta = `${c.chosenSize ? ` [Tamanho: ${c.chosenSize}]` : ''}${c.chosenColor ? ` [Cor: ${c.chosenColor}]` : ''}`;
+    return `
+      <div class="cart-item">
+        <div>
+          <span style="font-weight:700;color:#fff;">📦 ${c.name}</span>
+          <small style="display:block;color:var(--primary);font-size:10px;margin-top:2px;font-family:var(--font-display);">${meta}</small>
+        </div>
+        <span style="font-family:var(--font-display);color:var(--green)">R$ ${p.toFixed(2).replace('.',',')}</span>
+        <button class="delete-prod-btn" style="padding:2px 6px;" onclick="removeCart(${i})">✕</button>
+      </div>`;
+  }).join('');
+  document.getElementById('total').textContent = "R$ " + total.toFixed(2).replace('.',',');
+}
+
+function checkout() {
+  if (cart.length === 0) return;
+  let msg = `🔥 *NOVO PEDIDO COMPILADO - ${config.brand}*\n\n`; let total = 0;
+  cart.forEach(c => {
+    const p = parseFloat(String(c.price).replace(',','.'));
+    const spec = `${c.chosenSize ? ` (Tam: ${c.chosenSize}` : ''}${c.chosenColor ? ` | Cor: ${c.chosenColor})` : c.chosenSize ? ')' : ''}`;
+    msg += `▪️ 1x *${c.name}*${spec} - R$ ${p.toFixed(2).replace('.',',')}\n`; total += p;
+  });
+  msg += `\n🏁 *TOTAL DA FATURA:* R$ ${total.toFixed(2).replace('.',',')}`;
+  window.open(`https://wa.me/${config.whats}?text=${encodeURIComponent(msg)}`);
+}
+
+function filterProducts() { searchTerm = document.getElementById('searchInput').value.toLowerCase(); renderCatalog(); }
+function setFilter(cat, el) { activeFilter = cat; document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active')); el.classList.add('active'); renderCatalog(); }
+
+function buildFilterTabs() {
+  const cats = ["Todos", ...new Set(products.map(p => p.category).filter(Boolean))];
+  document.getElementById('filterTabs').innerHTML = cats.map(c => `
+    <button class="filter-tab ${activeFilter===c.toLowerCase()?'active':''}" onclick="setFilter('${c.toLowerCase()}',this)">${c}</button>
+  `).join('');
+}
+
+function renderCatalog() {
+  const filtered = products.filter(p => {
+    const matchCat = activeFilter === 'todos' || (p.category||'').toLowerCase() === activeFilter;
+    const matchSearch = !searchTerm || p.name.toLowerCase().includes(searchTerm) || (p.desc||'').toLowerCase().includes(searchTerm);
+    return matchCat && matchSearch;
+  });
+  const catalog = document.getElementById('catalog'); document.getElementById('noResults').style.display = filtered.length === 0 ? 'block' : 'none';
+
+  catalog.innerHTML = filtered.map((p) => {
+    const realIdx = products.indexOf(p); const pr = parseFloat(String(p.price).replace(',','.')).toFixed(2).replace('.',',');
+    return `
+      <div class="card" onclick="openProductModal(${realIdx})">
+        <div class="card-img-wrap">
+          <img src="${p.img || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500'}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500'">
+        </div>
+        <div class="card-content">
+          <div class="card-category">${p.category || 'Geral'}</div>
+          <div class="card-name">${p.name}</div>
+          <div class="card-desc">${p.desc || 'Toque para verificar parâmetros, mídias e tamanhos.'}</div>
+          <div class="price">R$ ${pr}</div>
+          <div class="actions">
+            <button class="cartBtn" onclick="event.stopPropagation(); openProductModal(${realIdx})">> DECODIFICAR OPÇÕES</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function render() {
+  document.getElementById('brandName').textContent = (config.brand || "STORE").toUpperCase();
+  const bioEl = document.getElementById('brandBio'); if (config.bio) { bioEl.textContent = config.bio; bioEl.style.display = 'block'; } else { bioEl.style.display = 'none'; }
+  const logo = document.getElementById('brandLogo');
+  if (config.logo) { logo.src = config.logo; logo.style.display = 'block'; logo.className = ""; if (config.logoAnim && config.logoAnim !== "none") { logo.classList.add(`anim-${config.logoAnim}`); } }
+  else { logo.style.display = 'none'; }
+  
+  document.documentElement.style.setProperty('--primary', config.color || '#00ff66');
+  document.documentElement.style.setProperty('--primary-glow', (config.color || '#00ff66') + '25');
+  
+  const dBadge = document.getElementById('badgeDelivery'); if(config.delivery) { document.getElementById('badgeDeliveryText').textContent = config.delivery; dBadge.style.display = 'inline-flex'; } else { dBadge.style.display = 'none'; }
+  const iBadge = document.getElementById('badgeInsta'); if(config.instagram) { document.getElementById('badgeInstaText').textContent = config.instagram; iBadge.style.display = 'inline-flex'; } else { iBadge.style.display = 'none'; }
+
+  if(config.bg) {
+    if (config.bg.startsWith('data:') || config.bg.startsWith('http:') || config.bg.startsWith('https:')) { document.body.style.backgroundImage = `url(${config.bg})`; }
+    else { document.body.style.backgroundImage = `linear-gradient(${config.bg}, ${config.bg})`; }
+  } else { document.body.style.backgroundImage = 'none'; }
+
+  const activeLayout = config.layout || 'grid'; document.getElementById('catalog').className = `catalog mode-${activeLayout}`;
+  document.querySelectorAll('.layout-card').forEach(c => c.classList.remove('active'));
+  const matchingCard = document.getElementById(`layout-${activeLayout}`); if(matchingCard) matchingCard.classList.add('active');
+
+  const sliderSec = document.getElementById('bannerSection');
+  if(config.banners && config.banners.length > 0) {
+    sliderSec.style.display = 'block';
+    document.getElementById('bannerWrapper').innerHTML = config.banners.map(b => `<div class="banner-item"><img src="${b}"></div>`).join('');
+    document.getElementById('bannerManagerList').innerHTML = config.banners.map((b, i) => `
+      <div class="banner-manager-item"><img src="${b}" style="height:30px; border-radius:4px;"><button class="delete-prod-btn" onclick="removeBanner(${i})">Purgar</button></div>`).join('');
+  } else { sliderSec.style.display = 'none'; document.getElementById('bannerManagerList').innerHTML = '<div style="font-size:11px;color:var(--muted);text-align:center;width:100%;">NENHUM EMBED ATIVO.</div>'; }
+  buildFilterTabs(); renderCatalog(); renderEditorProductList();
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active'); document.getElementById('tabBtn-'+tab).classList.add('active');
+}
+
+function openEditor() {
+  const pass = prompt("Chave de Autenticação:"); if (pass !== PASSWORD) { if (pass !== null) toast("Acesso negado. Assinatura inválida.", "error"); return; }
+  document.getElementById('brandInput').value = config.brand || ""; document.getElementById('bioInput').value = config.bio || "";
+  document.getElementById('whatsInput').value = config.whats || ""; document.getElementById('instaInput').value = config.instagram || "";
+  document.getElementById('deliveryInput').value = config.delivery || ""; document.getElementById('colorInput').value = config.color || "#00ff66";
+  document.getElementById('logoAnimSelect').value = config.logoAnim || "none";
+  
+  if(config.logo) { document.getElementById('logoPreview').src = config.logo; document.getElementById('logoPreview').style.display = 'block'; if(!config.logo.startsWith('data:')) document.getElementById('logoUrlInput').value = config.logo; }
+  else { document.getElementById('logoPreview').style.display = 'none'; document.getElementById('logoUrlInput').value = ""; }
+  if(config.bg && (config.bg.startsWith('http:') || config.bg.startsWith('https:'))) { document.getElementById('bgUrlInput').value = config.bg; }
+  else { document.getElementById('bgUrlInput').value = ""; }
+  tempLogoSource = ""; tempProductSource = ""; tempBgSource = "";
+  document.getElementById('productPreview').style.display = 'none'; document.getElementById('pImgUrlInput').value = "";
+  editorDirty = false; document.getElementById('panel').classList.add('active');
+}
+
+function closeEditor() { if (editorDirty && !confirm("Os buffers de alteração serão limpos. Fechar console?")) return; document.getElementById('panel').classList.remove('active'); }
+
+function saveConfig() {
+  config.brand = document.getElementById('brandInput').value.trim() || "STORE"; config.bio = document.getElementById('bioInput').value.trim();
+  config.whats = document.getElementById('whatsInput').value.trim(); config.instagram = document.getElementById('instaInput').value.trim();
+  config.delivery = document.getElementById('deliveryInput').value.trim(); config.color = document.getElementById('colorInput').value;
+  config.logoAnim = document.getElementById('logoAnimSelect').value;
+  if(tempLogoSource) { config.logo = tempLogoSource; tempLogoSource = ""; } if(tempBgSource) { config.bg = tempBgSource; tempBgSource = ""; }
+  render(); editorDirty = false; document.getElementById('panel').classList.remove('active'); salvarDadosNoServidor();
+}
+
+function addProduct() {
+  const name = document.getElementById('pName').value.trim(); const price = document.getElementById('pPrice').value.trim();
+  if (!name || !price) { toast("Falta injetar nome e valor corporativo!", "error"); return; }
+  const imgFinal = tempProductSource || document.getElementById('pImgUrlInput').value.trim();
+  products.push({
+    name, price: price.replace(',','.'), category: document.getElementById('pCategory').value.trim() || "Geral",
+    sizes: document.getElementById('pSizes').value.trim(), colors: document.getElementById('pColors').value.trim(),
+    img: imgFinal, desc: document.getElementById('pDesc').value.trim()
+  });
+  tempProductSource = ""; document.getElementById('productPreview').style.display = 'none';
+  document.getElementById('productLabel').innerText = "Injetar Render de Alta Resolução";
+  ['pName','pPrice','pCategory','pSizes','pColors','pDesc','pImgInput','pImgUrlInput'].forEach(id => document.getElementById(id).value = '');
+  render(); salvarDadosNoServidor();
+}
+
+function deleteProduct(i) { if (!confirm(`Expulsar item "${products[i].name}" do estoque de dados?`)) return; products.splice(i, 1); render(); salvarDadosNoServidor(); }
+function renderEditorProductList() {
+  document.getElementById('editorProductList').innerHTML = products.length === 0
+    ? '<div style="color:var(--muted);font-size:11px;text-align:center;">DATABASE ZERADO</div>'
+    : products.map((p, i) => `
+        <div class="editor-product-item"><span>${p.name}</span><button class="delete-prod-btn" onclick="deleteProduct(${i})">Expulsar</button></div>`).join('');
+}
+
+async function carregarDadosDoServidor() {
+  if (!nomeDaLoja) { document.getElementById("loadingStatus").innerHTML = "❌ Rota inválida (?loja=nome)"; return; }
+  try {
+    const response = await fetch(`/api/github?caminho=Clientes/CAT${nomeDaLoja}.json`, { method: "GET" });
+    if (!response.ok) throw new Error("Inexistente"); const dadosGit = await response.json(); window.shaAtual = dadosGit.sha;
+    const conteudo = JSON.parse(decodeURIComponent(escape(atob(dadosGit.content))));
+    config = { ...config, ...conteudo.config }; products = conteudo.products || []; if(!config.banners) config.banners = [];
+    document.getElementById('loadingStatus').style.display = 'none'; document.getElementById('catalog').style.display = 'grid'; render();
+  } catch (erro) {
+    document.getElementById('catalog').style.display = 'none';
+    document.getElementById("loadingStatus").innerHTML = `
+      <div style="padding:20px;text-align:center;">
+        <h3 style="color:var(--primary);margin-bottom:10px;">MAINFRAME INSTANCE DETECTED 🚀</h3>
+        <p style="font-size:12px;margin-bottom:16px;">Sub-alocação identificada para o cluster: <strong>${nomeDaLoja}</strong></p>
+        <button class="btn primary" onclick="openEditor()">⚙️ Inicializar Ambiente Core</button>
+      </div>`;
+  }
+}
+
+async function salvarDadosNoServidor() {
+  if (!nomeDaLoja) return toast("ID de terminal ausente.", "error"); const btn = document.getElementById('btnMasterSave'); if(btn) { btn.disabled = true; btn.textContent = "UPLOADING TO GITHUB DATACENTER... ⏳"; }
+  const conteudoBase64 = btoa(unescape(encodeURIComponent(JSON.stringify({ config, products }, null, 2))));
+  try {
+    const response = await fetch(`/api/github?caminho=Clientes/CAT${nomeDaLoja}.json`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ metodo: "PUT", corpo: { message: `Build Matrix: ${nomeDaLoja}`, content: conteudoBase64, sha: window.shaAtual || undefined } })
+    });
+    if (!response.ok) throw new Error("Falha de Handshake."); const resultado = await response.json(); window.shaAtual = resultado.content?.sha;
+    toast("Datacenter Sincronizado e online! ✨", "success"); editorDirty = false;
+  } catch (erro) { toast("Erro crítico de persistência: " + erro.message, "error"); }
+  finally { if(btn) { btn.disabled = false; btn.textContent = "💾 Gravar Alterações na Nuvem"; } }
+}
+
+carregarDadosDoServidor();
+</script>
+</body>
+</html>
