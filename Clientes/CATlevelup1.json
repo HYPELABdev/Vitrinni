@@ -15,5 +15,15 @@
     ],
     "logo": "https://fiverr-res.cloudinary.com/image/upload/t_main1,q_auto,f_auto,q_auto,f_auto/v1/attachments/delivery/asset/2a4acff0825b50ab79d4da4fd97caf96-1667548985/Coin%20Gif%20.gif"
   },
-  "products": []
+  "products": [
+    {
+      "name": "🔥 PELÚCIA BLASTOISE",
+      "price": "120.00",
+      "category": "PELÚCIA",
+      "sizes": "22cm",
+      "colors": "BLUE",
+      "img": "https://ae-pic-a1.aliexpress-media.com/kf/S8d41a1df70bd4cb9b8c2bd5d3da4edbcn.jpg_960x960q75.jpg_.avif",
+      "desc": "✨NOVA PELUCIA ANIME POLEMON BLASTOISE ✨"
+    }
+  ]
 }
