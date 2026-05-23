@@ -57,13 +57,50 @@ header{
   transition: var(--transition);
 }
 
-/* Configurações de Botões Ocultos/Sutis */
+/* Botão Admin - Gear Visível Premium */
 .header-left-actions{grid-column:1;display:flex;justify-content:flex-start;}
 .btn-sutil-admin{
-  background:none;border:none;color:rgba(255,255,255,0.25);font-size:18px;
-  cursor:pointer;padding:10px;transition:var(--transition);display:flex;align-items:center;justify-content:center;
+  width:46px;height:46px;border-radius:14px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.18);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:var(--transition);position:relative;
+  box-shadow:0 4px 16px rgba(0,0,0,0.35);
+  animation:adminGearPulse 3s ease-in-out infinite;
 }
-.btn-sutil-admin:hover{color:var(--text);transform:rotate(45deg);}
+.btn-sutil-admin:hover{
+  background:rgba(255,0,60,0.1);
+  border-color:var(--primary);
+  box-shadow:0 0 22px var(--primary-glow), 0 4px 16px rgba(0,0,0,0.4);
+}
+.admin-gear-svg{
+  width:20px;height:20px;fill:rgba(255,255,255,0.82);
+  transition:fill 0.3s ease;
+  animation:adminGearSpin 10s linear infinite;
+}
+.btn-sutil-admin:hover .admin-gear-svg{
+  fill:#fff;animation-duration:1.2s;
+}
+/* Indicador de ponto ativo */
+.btn-sutil-admin::after{
+  content:'';position:absolute;top:7px;right:7px;
+  width:7px;height:7px;border-radius:50%;
+  background:var(--primary);
+  box-shadow:0 0 6px var(--primary);
+  animation:dotBlink 2s ease-in-out infinite;
+}
+@keyframes adminGearPulse{
+  0%,100%{border-color:rgba(255,255,255,0.18);box-shadow:0 4px 16px rgba(0,0,0,0.35);}
+  50%{border-color:rgba(255,0,60,0.4);box-shadow:0 4px 16px rgba(0,0,0,0.35),0 0 14px rgba(255,0,60,0.2);}
+}
+@keyframes adminGearSpin{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+@keyframes dotBlink{
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:0.4;transform:scale(0.7);}
+}
 
 .header-actions{grid-column:3;display:flex;justify-content:flex-end;}
 .btn-cart-premium{
@@ -350,6 +387,63 @@ header{
 .auth-field input::placeholder{letter-spacing:0;font-size:13px;color:rgba(255,255,255,0.25);font-weight:500;}
 .auth-buttons{display:grid;grid-template-columns:1fr 2fr;gap:10px;}
 
+/* COLOR PICKER VISUAL - EDITOR DE PRODUTOS */
+.color-palette-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin:10px 0 14px 0;}
+.color-swatch-btn{
+  width:100%;aspect-ratio:1;border-radius:10px;
+  border:2px solid transparent;cursor:pointer;
+  transition:transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position:relative;
+}
+.color-swatch-btn:hover{transform:scale(1.12);box-shadow:0 4px 12px rgba(0,0,0,0.5);}
+.color-swatch-btn.selected{
+  border-color:#ffffff !important;
+  box-shadow:0 0 0 2px rgba(255,255,255,0.3), 0 4px 12px rgba(0,0,0,0.5);
+  transform:scale(1.08);
+}
+.color-swatch-btn.selected::after{
+  content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:900;color:#fff;
+  text-shadow:0 0 4px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,1);
+}
+.color-selected-pills{
+  display:flex;flex-wrap:wrap;gap:6px;
+  min-height:30px;margin-bottom:10px;
+  padding:8px;border-radius:12px;
+  background:rgba(255,255,255,0.02);
+  border:1px dashed rgba(255,255,255,0.08);
+}
+.color-pill-selected{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:99px;padding:4px 10px 4px 6px;
+  cursor:pointer;transition:var(--transition);
+}
+.color-pill-selected:hover{background:rgba(255,0,60,0.1);border-color:var(--primary);}
+.color-pill-selected .pill-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;border:1px solid rgba(255,255,255,0.15);}
+.color-pill-selected .pill-name{font-size:10px;font-weight:700;color:#fff;letter-spacing:0.3px;}
+.color-pill-selected .pill-x{font-size:12px;color:var(--muted);margin-left:1px;}
+.color-custom-row{display:flex;gap:8px;align-items:center;margin-top:8px;}
+.color-custom-row input[type="color"]{
+  width:42px;height:42px;border:1px solid rgba(255,255,255,0.15);
+  border-radius:10px;background:transparent;cursor:pointer;padding:3px;
+}
+.color-custom-row input[type="text"]{
+  flex:1;padding:10px 14px;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);border-radius:10px;
+  color:#fff;font-size:12px;font-weight:600;outline:none;
+  transition:var(--transition);
+}
+.color-custom-row input[type="text"]:focus{border-color:var(--primary);}
+.color-add-btn{
+  padding:10px 16px;background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.12);border-radius:10px;
+  color:#fff;font-size:12px;font-weight:700;cursor:pointer;
+  white-space:nowrap;transition:var(--transition);
+}
+.color-add-btn:hover{background:var(--primary);border-color:transparent;}
+.color-section-label{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;}
 @media(max-width:700px){
   header{grid-template-columns:50px 1fr 50px; padding:20px 16px;}
   #brandLogo{height:68px;width:68px;}
@@ -370,7 +464,11 @@ header{
 
 <header>
   <div class="header-left-actions">
-    <button class="btn-sutil-admin" onclick="triggerAuthModal()" title="Configurações">🛠️</button>
+    <button class="btn-sutil-admin" onclick="triggerAuthModal()" title="Painel Admin">
+      <svg class="admin-gear-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+      </svg>
+    </button>
   </div>
   <div id="brandContainer">
     <img id="brandLogo" src="" alt="Logo">
@@ -531,8 +629,49 @@ header{
         <input id="pSizes" type="text" placeholder="Ex: P, M, G, GG ou 38, 39, 40">
       </div>
       <div class="field">
-        <label>Cores Disponíveis (Formatos Hex ou Nome em Inglês separados por vírgula)</label>
-        <input id="pColors" type="text" placeholder="Ex: #000, #fff, red, #ff003c">
+        <label>Cores do Produto</label>
+        <!-- Pills das cores selecionadas -->
+        <div class="color-section-label" style="margin-top:4px;">Selecionadas</div>
+        <div class="color-selected-pills" id="pColorsPreview">
+          <span style="font-size:11px;color:var(--muted);align-self:center;">Nenhuma cor selecionada</span>
+        </div>
+        <!-- Paleta de cores fashion -->
+        <div class="color-section-label">Paleta Rápida</div>
+        <div class="color-palette-grid" id="colorPaletteGrid">
+          <button class="color-swatch-btn" data-color="#000000" style="background:#000000;" onclick="toggleProductColor('#000000')" title="Preto"></button>
+          <button class="color-swatch-btn" data-color="#1a1a1a" style="background:#1a1a1a;" onclick="toggleProductColor('#1a1a1a')" title="Preto Carvão"></button>
+          <button class="color-swatch-btn" data-color="#3d3d3d" style="background:#3d3d3d;" onclick="toggleProductColor('#3d3d3d')" title="Cinza Escuro"></button>
+          <button class="color-swatch-btn" data-color="#6e6e6e" style="background:#6e6e6e;" onclick="toggleProductColor('#6e6e6e')" title="Cinza"></button>
+          <button class="color-swatch-btn" data-color="#b0b0b0" style="background:#b0b0b0;" onclick="toggleProductColor('#b0b0b0')" title="Cinza Claro"></button>
+          <button class="color-swatch-btn" data-color="#ffffff" style="background:#ffffff;border:1px solid rgba(255,255,255,0.2);" onclick="toggleProductColor('#ffffff')" title="Branco"></button>
+          <button class="color-swatch-btn" data-color="#8B4513" style="background:#8B4513;" onclick="toggleProductColor('#8B4513')" title="Marrom"></button>
+          <button class="color-swatch-btn" data-color="#C47B3A" style="background:#C47B3A;" onclick="toggleProductColor('#C47B3A')" title="Caramelo"></button>
+          <button class="color-swatch-btn" data-color="#F5DEB3" style="background:#F5DEB3;" onclick="toggleProductColor('#F5DEB3')" title="Trigo"></button>
+          <button class="color-swatch-btn" data-color="#ff003c" style="background:#ff003c;" onclick="toggleProductColor('#ff003c')" title="Vermelho"></button>
+          <button class="color-swatch-btn" data-color="#cc0022" style="background:#cc0022;" onclick="toggleProductColor('#cc0022')" title="Vinho"></button>
+          <button class="color-swatch-btn" data-color="#800000" style="background:#800000;" onclick="toggleProductColor('#800000')" title="Bordô"></button>
+          <button class="color-swatch-btn" data-color="#ff5a00" style="background:#ff5a00;" onclick="toggleProductColor('#ff5a00')" title="Laranja"></button>
+          <button class="color-swatch-btn" data-color="#ffb800" style="background:#ffb800;" onclick="toggleProductColor('#ffb800')" title="Dourado"></button>
+          <button class="color-swatch-btn" data-color="#ffe000" style="background:#ffe000;" onclick="toggleProductColor('#ffe000')" title="Amarelo"></button>
+          <button class="color-swatch-btn" data-color="#00e87a" style="background:#00e87a;" onclick="toggleProductColor('#00e87a')" title="Verde Neon"></button>
+          <button class="color-swatch-btn" data-color="#006633" style="background:#006633;" onclick="toggleProductColor('#006633')" title="Verde Escuro"></button>
+          <button class="color-swatch-btn" data-color="#00f0ff" style="background:#00f0ff;" onclick="toggleProductColor('#00f0ff')" title="Ciano"></button>
+          <button class="color-swatch-btn" data-color="#0080ff" style="background:#0080ff;" onclick="toggleProductColor('#0080ff')" title="Azul"></button>
+          <button class="color-swatch-btn" data-color="#003cff" style="background:#003cff;" onclick="toggleProductColor('#003cff')" title="Azul Royal"></button>
+          <button class="color-swatch-btn" data-color="#001a80" style="background:#001a80;" onclick="toggleProductColor('#001a80')" title="Marinho"></button>
+          <button class="color-swatch-btn" data-color="#bd00ff" style="background:#bd00ff;" onclick="toggleProductColor('#bd00ff')" title="Roxo Neon"></button>
+          <button class="color-swatch-btn" data-color="#ff69b4" style="background:#ff69b4;" onclick="toggleProductColor('#ff69b4')" title="Rosa Hot"></button>
+          <button class="color-swatch-btn" data-color="#ff7ba9" style="background:#ff7ba9;" onclick="toggleProductColor('#ff7ba9')" title="Rosa Pastel"></button>
+        </div>
+        <!-- Cor customizada -->
+        <div class="color-section-label">Cor Customizada</div>
+        <div class="color-custom-row">
+          <input type="color" id="customColorPicker" value="#ff003c" title="Escolha uma cor">
+          <input type="text" id="customColorHex" placeholder="Ex: #abc123 ou navy" maxlength="30">
+          <button class="color-add-btn" onclick="addCustomProductColor()">+ Adicionar</button>
+        </div>
+        <!-- Input oculto compatível com o sistema -->
+        <input type="hidden" id="pColors" value="">
       </div>
       <div class="field">
         <label>Foto Real do Produto</label>
@@ -1164,7 +1303,8 @@ function addProduct() {
 
   tempProductSource = ""; document.getElementById('productPreview').style.display = 'none';
   document.getElementById('productLabel').innerText = "Selecionar Imagem de Alta Qualidade";
-  ['pName','pPrice','pCategory','pSizes','pColors','pDesc','pImgInput','pImgUrlInput'].forEach(id => document.getElementById(id).value = '');
+  ['pName','pPrice','pCategory','pSizes','pDesc','pImgInput','pImgUrlInput'].forEach(id => document.getElementById(id).value = '');
+  resetProductColorPicker();
   
   render(); 
   if(!isDemoMode) salvarDadosNoServidor();
@@ -1239,6 +1379,84 @@ async function salvarDadosNoServidor() {
     if(btn) { btn.disabled = false; btn.innerHTML = "<span>💾</span><span>Consolidar Alterações</span>"; }
   }
 }
+
+// ============================================================
+// COLOR PICKER VISUAL - SISTEMA DE CORES DOS PRODUTOS
+// ============================================================
+let selectedProductColors = [];
+
+function toggleProductColor(color) {
+  const idx = selectedProductColors.indexOf(color);
+  if (idx > -1) {
+    selectedProductColors.splice(idx, 1);
+  } else {
+    selectedProductColors.push(color);
+  }
+  syncColorPicker();
+  editorDirty = true;
+}
+
+function addCustomProductColor() {
+  const hexInput = document.getElementById('customColorHex').value.trim();
+  const pickerVal = document.getElementById('customColorPicker').value;
+  const color = hexInput || pickerVal;
+  if (!color) return;
+  if (!selectedProductColors.includes(color)) {
+    selectedProductColors.push(color);
+    syncColorPicker();
+    editorDirty = true;
+  }
+  document.getElementById('customColorHex').value = '';
+}
+
+function removeProductColor(color) {
+  selectedProductColors = selectedProductColors.filter(c => c !== color);
+  syncColorPicker();
+  editorDirty = true;
+}
+
+function resetProductColorPicker() {
+  selectedProductColors = [];
+  syncColorPicker();
+}
+
+function syncColorPicker() {
+  // Atualiza o input oculto
+  document.getElementById('pColors').value = selectedProductColors.join(', ');
+
+  // Atualiza as pills de preview
+  const preview = document.getElementById('pColorsPreview');
+  if (!preview) return;
+  if (selectedProductColors.length === 0) {
+    preview.innerHTML = '<span style="font-size:11px;color:var(--muted);align-self:center;">Nenhuma cor selecionada</span>';
+  } else {
+    preview.innerHTML = selectedProductColors.map(c => `
+      <div class="color-pill-selected" onclick="removeProductColor('${c}')" title="Remover ${c}">
+        <div class="pill-dot" style="background:${c};"></div>
+        <span class="pill-name">${c}</span>
+        <span class="pill-x">×</span>
+      </div>
+    `).join('');
+  }
+
+  // Atualiza estado ativo dos swatches
+  document.querySelectorAll('.color-swatch-btn').forEach(btn => {
+    const c = btn.getAttribute('data-color');
+    if (selectedProductColors.includes(c)) {
+      btn.classList.add('selected');
+    } else {
+      btn.classList.remove('selected');
+    }
+  });
+}
+
+// Sincroniza colorPicker nativo com campo hex ao mudar
+document.addEventListener('DOMContentLoaded', () => {
+  const cp = document.getElementById('customColorPicker');
+  if (cp) cp.addEventListener('input', e => {
+    document.getElementById('customColorHex').value = e.target.value;
+  });
+});
 
 carregarDadosDoServidor();
 </script>
