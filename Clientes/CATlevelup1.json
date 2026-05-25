@@ -7,7 +7,7 @@
     "delivery": "Frete grátis nas compras acima de R$150,00",
     "color": "#00e87a",
     "bg": "#050906",
-    "layout": "carousel",
+    "layout": "list",
     "logoAnim": "pulse",
     "txtAnim": "neon",
     "banners": [
