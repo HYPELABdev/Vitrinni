@@ -10,9 +10,7 @@
     "layout": "carousel",
     "logoAnim": "pulse",
     "txtAnim": "neon",
-    "banners": [
-      "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1779346390919.jpg"
-    ],
+    "banners": [],
     "fontStyle": "modern",
     "uiMode": "light",
     "radiusStyle": "rounded",
