@@ -3,17 +3,21 @@
     "brand": "HP STORY",
     "bio": "LOJINHA ONLINE E RAPIDO ✅",
     "whats": "5511949946730",
-    "instagram": "@Hypelab.io",
-    "delivery": "Frete grátis nas compras acima de R$150,00",
     "color": "#00e87a",
-    "bg": "#050906",
-    "layout": "carousel",
-    "logoAnim": "pulse",
-    "txtAnim": "neon",
+    "layout": "list",
+    "fontStyle": "modern",
+    "uiMode": "light",
+    "radiusStyle": "rounded",
+    "logo": "https://fiverr-res.cloudinary.com/image/upload/t_main1,q_auto,f_auto,q_auto,f_auto/v1/attachments/delivery/asset/2a4acff0825b50ab79d4da4fd97caf96-1667548985/Coin%20Gif%20.gif",
     "banners": [
       "https://cdn.jsdelivr.net/gh/HYPELABdev/Vitrinni/img/img_1779346390919.jpg"
     ],
-    "logo": "https://fiverr-res.cloudinary.com/image/upload/t_main1,q_auto,f_auto,q_auto,f_auto/v1/attachments/delivery/asset/2a4acff0825b50ab79d4da4fd97caf96-1667548985/Coin%20Gif%20.gif"
+    "instagram": "@Hypelab.io",
+    "delivery": "Frete grátis nas compras acima de R$150,00",
+    "bg": "#050906",
+    "logoAnim": "pulse",
+    "txtAnim": "neon",
+    "modeStyle": "dark"
   },
   "products": [
     {
