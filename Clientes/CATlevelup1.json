@@ -28,6 +28,15 @@
       "colors": "#000000",
       "img": "https://m.media-amazon.com/images/I/61FAV6g-AgL._AC_SY1000_.jpg",
       "desc": "Feitas com precisão e atenção aos detalhes, nossas calças techwear são feitas com materiais de alta qualidade que são projetados para suportar as demandas do seu estilo de vida ativo. O design preto elegante exala uma sensação de mistério e estilo, tornando-as perfeitas para aqueles que abraçam a estética cyberpunk."
+    },
+    {
+      "name": "Moletom Streetwear",
+      "price": "249.90",
+      "category": "Moletom",
+      "sizes": "P,M,G,GG,XG",
+      "colors": "#000000, #006633, #bd00ff",
+      "img": "https://m.media-amazon.com/images/I/41xeOg+QObL._AC_SY1000_.jpg",
+      "desc": "100 algodão ✅"
     }
   ]
 }
