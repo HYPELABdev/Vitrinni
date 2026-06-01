@@ -10,7 +10,9 @@
     "layout": "carousel",
     "logoAnim": "pulse",
     "txtAnim": "neon",
-    "banners": [],
+    "banners": [
+      "https://i.ibb.co/5hc0qMnL/087899af4303e650a549bf6da91b4723.jpg"
+    ],
     "fontStyle": "modern",
     "uiMode": "light",
     "radiusStyle": "rounded",
